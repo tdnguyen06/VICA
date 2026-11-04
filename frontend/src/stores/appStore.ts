@@ -13,12 +13,11 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   currentProvince: null,
-  mapCenter: [106.660172, 10.762622], // Vietnam center/default (approx Ho Chi Minh / Da Nang)
-  mapZoom: 5.5,
+  mapCenter: [107.5, 16.0], // Tâm địa lý Việt Nam bao trọn dải đất hình chữ S và biển đảo
+  mapZoom: 5.8,
   selectedCategory: 'all',
   setMapCenter: (mapCenter) => set({ mapCenter }),
   setMapZoom: (mapZoom) => set({ mapZoom }),
   setCurrentProvince: (currentProvince) => set({ currentProvince }),
   setSelectedCategory: (selectedCategory) => set({ selectedCategory }),
 }));
-
