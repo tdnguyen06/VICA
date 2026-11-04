@@ -1,0 +1,150 @@
+version: '3.8'
+
+services:
+  # =========================================================================
+  # PostgreSQL with PostGIS (Spatial Data) & pgvector (Vector Embeddings)
+  # =========================================================================
+  postgres:
+    build:
+      context: ./infrastructure/docker/postgres
+      dockerfile: Dockerfile
+    container_name: vica-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-vietnam_cultural_atlas}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/docker/postgres/init-extensions.sql:/docker-entrypoint-initdb.d/01-init-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-vietnam_cultural_atlas}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - vica-network
+
+  # =========================================================================
+  # Redis Cache & Session Store
+  # =========================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: vica-redis
+    restart: unless-stopped
+    command: >
+      sh -c '
+        if [ -n "${REDIS_PASSWORD}" ]; then
+          redis-server --requirepass "${REDIS_PASSWORD}"
+        else
+          redis-server
+        fi
+      '
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - vica-network
+
+  # =========================================================================
+  # RabbitMQ Message Broker
+  # =========================================================================
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vica-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-guest}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+    networks:
+      - vica-network
+
+  # =========================================================================
+  # Backend Spring Boot Service (Optional for full-docker dev)
+  # =========================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: vica-backend
+    restart: unless-stopped
+    profiles: ["app", "all"]
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-vietnam_cultural_atlas}
+      DB_USERNAME: ${DB_USERNAME:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-guest}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      JWT_SECRET: ${JWT_SECRET:-culturalAtlasSecretKeyForDevelopmentPhaseMustBeAtLeast32BytesLong!}
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173,http://localhost:80,http://127.0.0.1:5173"
+      AI_PROVIDER: ${AI_PROVIDER:-gemini}
+      AI_API_KEY: ${AI_API_KEY:-}
+    ports:
+      - "${SERVER_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - vica-network
+
+  # =========================================================================
+  # Frontend React SPA Service (Optional for full-docker dev)
+  # =========================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vica-frontend
+    restart: unless-stopped
+    profiles: ["app", "all"]
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      - backend
+    networks:
+      - vica-network
+
+networks:
+  vica-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
