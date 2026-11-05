@@ -1,0 +1,1890 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "An Giang",
+        "Note": null,
+        "name_vi": "An Giang",
+        "admin_unit": "Tỉnh/Thành phố An Giang",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Miếu Bà Chúa Xứ Núi Sam & Di chỉ Óc Eo Ba Thê",
+        "cultural_summary": "Miếu Bà Chúa Xứ Núi Sam linh thiêng đón hàng triệu lượt khách hành hương mỗi năm; kết hợp quần thể di chỉ Óc Eo Ba Thê - trung tâm thương cảng sầm uất bậc nhất của vương quốc cổ Phù Nam.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Lễ hội & Văn hóa Cổ đại",
+        "historical_period": "Văn hóa Phù Nam (Thế kỷ 1 - 7)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/71/Mieuba2.jpg/960px-Mieuba2.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Miếu Bà Chúa Xứ Núi Sam & Di chỉ cổ Óc Eo Ba Thê",
+        "wiki_title": "Miếu Bà Chúa Xứ Núi Sam",
+        "id": 1,
+        "name": "An Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.1562,
+          10.4974
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ba Ria - Vung Tau",
+        "Note": null,
+        "name_vi": "Bà Rịa - Vũng Tàu",
+        "admin_unit": "Tỉnh/Thành phố Bà Rịa - Vũng Tàu",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Lịch sử Nhà tù Côn Đảo & Bạch Dinh",
+        "cultural_summary": "Nhà tù Côn Đảo - trường học cách mạng kiên trung với hệ thống \"Chuồng Cọp\" huyền thoại; cùng Bạch Dinh - dinh thự kiến trúc La Mã cổ kính bên bờ biển Vũng Tàu.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thời kỳ Pháp thuộc (1862 - 1975)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Nh%C3%A0_t%C3%B9_C%C3%B4n_%C4%90%E1%BA%A3o.JPG/960px-Nh%C3%A0_t%C3%B9_C%C3%B4n_%C4%90%E1%BA%A3o.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Di tích Lịch sử Nhà tù Côn Đảo - Trường học cách mạng kiên trung",
+        "wiki_title": "Nhà tù Côn Đảo",
+        "id": 2,
+        "name": "Bà Rịa - Vũng Tàu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.2125,
+          10.5929
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Bac Giang",
+        "Note": null,
+        "name_vi": "Bắc Giang",
+        "admin_unit": "Tỉnh/Thành phố Bắc Giang",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Chốn tổ Chùa Vĩnh Nghiêm (Mộc bản Kinh Phật)",
+        "cultural_summary": "Đại danh lam cổ tự, cái nôi đào tạo tăng đồ của Thiền phái Trúc Lâm Yên Tử do Tam Tổ Trúc Lâm (Trần Nhân Tông, Pháp Loa, Huyền Quang) sáng lập, lưu giữ kho mộc bản kinh Phật vô giá.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Tư liệu Ký ức Thế giới UNESCO",
+        "historical_period": "Thời Trần (Thế kỷ 13)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Ch%C3%B9a_V%C4%A9nh_Nghi%C3%AAm_-_Y%C3%AAn_D%C5%A9ng_-_B%E1%BA%AFc_Giang_-_panoramio_%2824%29.jpg/960px-Ch%C3%B9a_V%C4%A9nh_Nghi%C3%AAm_-_Y%C3%AAn_D%C5%A9ng_-_B%E1%BA%AFc_Giang_-_panoramio_%2824%29.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Chốn tổ Chùa Vĩnh Nghiêm - Mộc bản Kinh Phật Di sản Thế giới",
+        "wiki_title": "Chùa Vĩnh Nghiêm (Bắc Ninh)",
+        "id": 3,
+        "name": "Bắc Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.6649,
+          21.369
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Bac Kan",
+        "Note": null,
+        "name_vi": "Bắc Kạn",
+        "admin_unit": "Tỉnh/Thành phố Bắc Kạn",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Vườn quốc gia Ba Bể (Hồ Ba Bể trên núi đá vôi)",
+        "cultural_summary": "Hồ nước ngọt tự nhiên trên núi đá vôi lớn nhất Việt Nam nằm lọt thỏm giữa những dãy núi đá hùng vĩ và rừng nguyên sinh, gắn liền với huyền tích dân gian về nguồn gốc hồ Ba Bể.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Danh lam Thắng cảnh Quốc gia Đặc biệt",
+        "historical_period": "Kiến tạo Karst 200 triệu năm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Ba_Be_Lake_6464.jpg/960px-Ba_Be_Lake_6464.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Hồ Ba Bể - Danh lam thắng cảnh Vườn quốc gia Ba Bể",
+        "wiki_title": "Vườn quốc gia Ba Bể",
+        "id": 4,
+        "name": "Bắc Kạn"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.8908,
+          22.2348
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Bac Lieu",
+        "Note": null,
+        "name_vi": "Bạc Liêu",
+        "admin_unit": "Tỉnh/Thành phố Bạc Liêu",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu lưu niệm Nghệ thuật Đờn ca tài tử & Nhạc sĩ Cao Văn Lầu",
+        "cultural_summary": "Cái nôi khai sinh bản \"Dạ cổ hoài lang\" bất hủ - tiền thân của vọng cổ và nghệ thuật cải lương Nam Bộ, biểu tượng tâm hồn người dân phương Nam trù phú, nghĩa tình.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể UNESCO",
+        "historical_period": "Đầu thế kỷ 20",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/B%E1%BA%A1c_Li%C3%AAu_windpower_farm.jpg/960px-B%E1%BA%A1c_Li%C3%AAu_windpower_farm.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Nhà Công tử Bạc Liêu & Khu lưu niệm Đờn ca tài tử Nam Bộ",
+        "wiki_title": "Bạc Liêu (tỉnh)",
+        "id": 5,
+        "name": "Bạc Liêu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.4675,
+          9.2767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Bac Ninh",
+        "Note": null,
+        "name_vi": "Bắc Ninh",
+        "admin_unit": "Tỉnh/Thành phố Bắc Ninh",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Chùa Dâu & Không gian Văn hóa Quan họ Kinh Bắc",
+        "cultural_summary": "Chùa Dâu - trung tâm Phật giáo cổ xưa nhất Việt Nam (khởi dựng thế kỷ 2) thờ Tứ Pháp; cùng những làn điệu Dân ca Quan họ trao duyên mộc mạc, say đắm lòng người xứ Kinh Bắc.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể UNESCO",
+        "historical_period": "Thời Bắc thuộc (Thế kỷ 2) - nay",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/b/bd/Dau_pagoda.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Chùa Dâu cổ tự & Đất tổ Dân ca Quan họ Kinh Bắc",
+        "wiki_title": "Chùa Dâu",
+        "id": 6,
+        "name": "Bắc Ninh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.1107,
+          21.1032
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ben Tre",
+        "Note": null,
+        "name_vi": "Bến Tre",
+        "admin_unit": "Tỉnh/Thành phố Bến Tre",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt Danh nhân Nguyễn Đình Chiểu",
+        "cultural_summary": "Nơi an nghỉ của nhà thơ yêu nước, người thầy thuốc mù trọn đời vì dân tộc Nguyễn Đình Chiểu - tác giả áng thơ bất hủ \"Lục Vân Tiên\" và \"Văn tế nghĩa sĩ Cần Giuộc\".",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Danh nhân Văn hóa Thế giới UNESCO",
+        "historical_period": "Thế kỷ 19",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Ch%C3%A2n_dung_Nguy%E1%BB%85n_%C4%90%C3%ACnh_Chi%E1%BB%83u.jpg/960px-Ch%C3%A2n_dung_Nguy%E1%BB%85n_%C4%90%C3%ACnh_Chi%E1%BB%83u.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Quốc gia Đặc biệt Danh nhân Nguyễn Đình Chiểu",
+        "wiki_title": "Nguyễn Đình Chiểu",
+        "id": 7,
+        "name": "Bến Tre"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.5191,
+          10.0938
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Binh Dinh",
+        "Note": null,
+        "name_vi": "Bình Định",
+        "admin_unit": "Tỉnh/Thành phố Bình Định",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Bảo tàng Quang Trung & Cái nôi Võ cổ truyền Tây Sơn",
+        "cultural_summary": "Quê hương của ba anh em người anh hùng áo vải cờ đào Nguyễn Huệ (Quang Trung - Nguyễn Nhạc - Nguyễn Lữ), nơi sản sinh hào khí Tây Sơn và di sản võ thuật cổ truyền đỉnh cao.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt",
+        "historical_period": "Thời Tây Sơn (Thế kỷ 18)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG/960px-T%C6%B0%E1%BB%A3ng_%C4%91%C3%A0i_Quang_Trung_t%E1%BA%A1i_B%E1%BA%A3o_t%C3%A0ng_Quang_Trung.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Bảo tàng Quang Trung & Vùng đất võ cổ truyền Tây Sơn",
+        "wiki_title": "Bảo tàng Quang Trung",
+        "id": 8,
+        "name": "Bình Định"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.9214,
+          14.22
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Binh Duong",
+        "Note": null,
+        "name_vi": "Bình Dương",
+        "admin_unit": "Tỉnh/Thành phố Bình Dương",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Làng nghề Sơn mài cổ truyền Tương Bình Hiệp & Chùa Bà Thiên Hậu",
+        "cultural_summary": "Cái nôi nghệ thuật sơn mài truyền thống trứ danh miền Đông Nam Bộ với kỹ thuật dát vỏ trứng, cẩn xà cừ tinh xảo lưu truyền qua nhiều thế hệ thợ thủ công tài hoa.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể Quốc gia",
+        "historical_period": "Thế kỷ 18 - nay",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Thien_Hau_Pagoda_%2810017896294%29.jpg/960px-Thien_Hau_Pagoda_%2810017896294%29.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Lễ hội Chùa Bà Thiên Hậu & Làng nghề sơn mài Tương Bình Hiệp",
+        "wiki_title": "Hội quán Tuệ Thành",
+        "id": 9,
+        "name": "Bình Dương"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.6879,
+          11.1889
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Binh Phuoc",
+        "Note": null,
+        "name_vi": "Bình Phước",
+        "admin_unit": "Tỉnh/Thành phố Bình Phước",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Căn cứ Bộ Chỉ huy Quân giải phóng miền Nam (Căn cứ Tà Thiết)",
+        "cultural_summary": "\"Khu rừng Chính phủ\" - căn cứ đầu não của Bộ Chỉ huy miền Nam, nơi vạch ra kế hoạch chiến dịch Hồ Chí Minh lịch sử giải phóng hoàn toàn miền Nam thống nhất đất nước.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Kháng chiến chống Mỹ (1973 - 1975)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c9/L%E1%BB%99c_Ninh%2C_Binh_Phuoc.jpg/960px-L%E1%BB%99c_Ninh%2C_Binh_Phuoc.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Căn cứ Bộ Chỉ huy Quân giải phóng miền Nam (Căn cứ Tà Thiết)",
+        "wiki_title": "Lộc Ninh (huyện)",
+        "id": 10,
+        "name": "Bình Phước"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.9553,
+          11.756
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Binh Thuan",
+        "Note": null,
+        "name_vi": "Bình Thuận",
+        "admin_unit": "Tỉnh/Thành phố Bình Thuận",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Tháp Chăm Po Sah Inư & Trường Dục Thanh",
+        "cultural_summary": "Tháp Po Sah Inư - nhóm tháp Chăm cổ nhất còn lại thờ thần Shiva; kết hợp Trường Dục Thanh nơi người thanh niên yêu nước Nguyễn Tất Thành (Bác Hồ) từng dạy học năm 1910.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Kiến trúc Cổ kính",
+        "historical_period": "Thế kỷ 8 - 9 & Năm 1910",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Th%C3%A1p_Po_Sah_Inu%2C_Phan_Thi%E1%BA%BFt%2C_B%C3%ACnh_Thu%E1%BA%ADn.JPG/960px-Th%C3%A1p_Po_Sah_Inu%2C_Phan_Thi%E1%BA%BFt%2C_B%C3%ACnh_Thu%E1%BA%ADn.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Tháp Chăm Po Sah Inư & Di tích Trường Dục Thanh",
+        "wiki_title": "Tháp Po Sah Inư",
+        "id": 11,
+        "name": "Bình Thuận"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.8204,
+          11.0444
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ca Mau",
+        "Note": null,
+        "name_vi": "Cà Mau",
+        "admin_unit": "Tỉnh/Thành phố Cà Mau",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Cột mốc Tọa độ Quốc gia GPS 0001 & Rừng ngập mặn Mũi Cà Mau",
+        "cultural_summary": "Điểm cực Nam thiêng liêng của dải đất hình chữ S, nơi đất biết nở, rừng biết đi và biển sinh sôi, điểm đến linh thiêng chạm vào niềm tự hào chủ quyền cương thổ của mỗi người Việt.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Khu Dự trữ Sinh quyển Thế giới UNESCO",
+        "historical_period": "Địa đầu cực Nam Tổ quốc",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7b/Tuongdaimuicamau.jpg/960px-Tuongdaimuicamau.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Cột mốc Tọa độ Quốc gia GPS 0001 tại Đất Mũi Cà Mau",
+        "wiki_title": "Mũi Cà Mau",
+        "id": 12,
+        "name": "Cà Mau"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.0451,
+          8.9864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Can Tho city",
+        "Note": null,
+        "name_vi": "Cần Thơ",
+        "admin_unit": "Tỉnh/Thành phố Cần Thơ",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Chợ nổi Cái Răng & Nhà cổ Bình Thủy",
+        "cultural_summary": "Bản sắc văn hóa sông nước miệt vườn Tây Đô với tiếng \"cây bẹo\" chào hàng rộn rã; kết hợp nhà cổ Bình Thủy 5 gian 2 mái kiến trúc Đông - Tây giao thoa lộng lẫy.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể Quốc gia",
+        "historical_period": "Đầu thế kỷ 20",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/M%E1%BB%99t_c%E1%BA%A3nh_%E1%BB%9F_ch%E1%BB%A3_n%E1%BB%95i_C%C3%A1i_R%C4%83ng.jpg/960px-M%E1%BB%99t_c%E1%BA%A3nh_%E1%BB%9F_ch%E1%BB%A3_n%E1%BB%95i_C%C3%A1i_R%C4%83ng.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Chợ nổi Cái Răng & Nhà cổ Bình Thủy miền Tây sông nước",
+        "wiki_title": "Chợ nổi Cái Răng",
+        "id": 13,
+        "name": "Cần Thơ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.4948,
+          10.1399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Cao Bang",
+        "Note": null,
+        "name_vi": "Cao Bằng",
+        "admin_unit": "Tỉnh/Thành phố Cao Bằng",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Pác Bó & Thác Bản Giốc",
+        "cultural_summary": "Suối Lê-nin, núi Các Mác nơi Chủ tịch Hồ Chí Minh đặt bước chân đầu tiên trở về Tổ quốc sau 30 năm bôn ba; bên cạnh Thác Bản Giốc hùng vĩ bậc nhất biên cương Đông Bắc.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt & Danh thắng",
+        "historical_period": "Năm 1941 & Địa chất kỳ quan",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e1/Bangioc9tam.jpg/960px-Bangioc9tam.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Thác Bản Giốc đại ngàn & Khu di tích cách mạng Pác Bó",
+        "wiki_title": "Thác Bản Giốc",
+        "id": 14,
+        "name": "Cao Bằng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.3815,
+          22.6409
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Dak Lak",
+        "Note": null,
+        "name_vi": "Đắk Lắk",
+        "admin_unit": "Tỉnh/Thành phố Đắk Lắk",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Không gian Văn hóa Cồng chiêng Tây Nguyên & Buôn Đôn",
+        "cultural_summary": "Tiếng cồng chiêng ngân vang linh thiêng gắn liền vòng đời con người và thần linh giữa đại ngàn đất đỏ Bazan; cùng truyền thuyết săn bắt và thuần dưỡng voi rừng lừng danh Buôn Đôn.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể UNESCO",
+        "historical_period": "Sử thi Dân tộc học",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/B%E1%BB%99_c%E1%BB%93ng_chi%C3%AAng.jpg/960px-B%E1%BB%99_c%E1%BB%93ng_chi%C3%AAng.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Không gian Văn hóa Cồng chiêng Tây Nguyên & Buôn Đôn",
+        "wiki_title": "Không gian văn hóa cồng chiêng Tây Nguyên",
+        "id": 15,
+        "name": "Đắk Lắk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.3422,
+          12.6784
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Dak Nong",
+        "Note": null,
+        "name_vi": "Đắk Nông",
+        "admin_unit": "Tỉnh/Thành phố Đắk Nông",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Công viên Địa chất Toàn cầu UNESCO & Sử thi Ót Ndrông M'Nông",
+        "cultural_summary": "Hệ thống hang động núi lửa bazan dài và quy mô bậc nhất Đông Nam Á cùng kho tàng sử thi truyền miệng Ót Ndrông đồ sộ của đồng bào M'Nông.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Công viên Địa chất Toàn cầu UNESCO",
+        "historical_period": "Hoạt động núi lửa cổ đại",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Draysap02.JPG/960px-Draysap02.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Công viên Địa chất Toàn cầu UNESCO Đắk Nông",
+        "wiki_title": "Công viên địa chất Đắk Nông",
+        "id": 16,
+        "name": "Đắk Nông"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.7299,
+          12.1778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Dien Bien",
+        "Note": null,
+        "name_vi": "Điện Biên",
+        "admin_unit": "Tỉnh/Thành phố Điện Biên",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Di tích Chiến trường Điện Biên Phủ (Đồi A1, Hầm De Castries)",
+        "cultural_summary": "Biểu tượng chiến thắng lừng lẫy năm châu, chấn động địa cầu; nơi ghi dấu sự hy sinh anh dũng và nghệ thuật quân sự tài tình của Quân đội Nhân dân Việt Nam.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Chiến thắng Điện Biên Phủ (1954)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/Victory_in_Battle_of_Dien_Bien_Phu.jpg/960px-Victory_in_Battle_of_Dien_Bien_Phu.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu di tích Chiến trường Điện Biên Phủ (Đồi A1, Hầm De Castries)",
+        "wiki_title": "Chiến dịch Điện Biên Phủ",
+        "id": 17,
+        "name": "Điện Biên"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.2639,
+          21.7212
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Dong Nai",
+        "Note": null,
+        "name_vi": "Đồng Nai",
+        "admin_unit": "Tỉnh/Thành phố Đồng Nai",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Văn Miếu Trấn Biên (Văn miếu đầu tiên Đàng Trong)",
+        "cultural_summary": "Văn miếu đầu tiên được xây dựng tại phương Nam năm 1715, tôn vinh Khổng Tử và các danh nhân văn hóa Đại Việt, biểu tượng mở cõi phương Nam đề cao đạo học.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia",
+        "historical_period": "Năm 1715 (Thời Chúa Nguyễn Chuẩn)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Nh%C3%A0_th%E1%BB%9D_ch%C3%ADnh_V%C4%83n_mi%E1%BA%BFu_Tr%E1%BA%A5n_Bi%C3%AAn.jpg/960px-Nh%C3%A0_th%E1%BB%9D_ch%C3%ADnh_V%C4%83n_mi%E1%BA%BFu_Tr%E1%BA%A5n_Bi%C3%AAn.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Văn Miếu Trấn Biên - Văn miếu đầu tiên của vùng đất Nam Bộ",
+        "wiki_title": "Văn miếu Trấn Biên",
+        "id": 18,
+        "name": "Đồng Nai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.1975,
+          11.1856
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Dong Thap",
+        "Note": null,
+        "name_vi": "Đồng Tháp",
+        "admin_unit": "Tỉnh/Thành phố Đồng Tháp",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt Gò Tháp & Mộ Cụ Nguyễn Sinh Sắc",
+        "cultural_summary": "Gò Tháp - trung tâm tôn giáo và kiến trúc đền tháp văn hóa Óc Eo cổ đại; cùng khu lăng mộ trang nghiêm của Cụ Phó bảng Nguyễn Sinh Sắc - thân sinh Chủ tịch Hồ Chí Minh.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Văn hóa Phù Nam & Đầu thế kỷ 20",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/%C4%90%E1%BB%81n_th%E1%BB%9D_V%C3%B5_Duy_D%C6%B0%C6%A1ng_v%C3%A0_%C4%90%E1%BB%91c_Binh_Ki%E1%BB%81u.jpg/960px-%C4%90%E1%BB%81n_th%E1%BB%9D_V%C3%B5_Duy_D%C6%B0%C6%A1ng_v%C3%A0_%C4%90%E1%BB%91c_Binh_Ki%E1%BB%81u.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Quốc gia Đặc biệt Gò Tháp & Mộ Cụ Phó bảng Nguyễn Sinh Sắc",
+        "wiki_title": "Gò Tháp",
+        "id": 19,
+        "name": "Đồng Tháp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.726,
+          10.5091
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Gia Lai",
+        "Note": null,
+        "name_vi": "Gia Lai",
+        "admin_unit": "Tỉnh/Thành phố Gia Lai",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Thắng cảnh Biển Hồ (Hồ T'Nưng) & Tây Sơn Thượng Đạo",
+        "cultural_summary": "\"Đôi mắt Pleiku Biển Hồ đầy\" - miệng núi lửa bazan nguyên sơ huyền bí; nơi hòa quyện cùng vùng đất Tây Sơn Thượng Đạo - căn cứ đầu tiên dựng cờ khởi nghĩa của nhà Tây Sơn.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Danh lam Thắng cảnh Quốc gia",
+        "historical_period": "Miệng núi lửa hàng triệu năm",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/9c/Chi%E1%BB%81u_cao_nguy%C3%AAn_-_Late_afternoon_in_the_Central_High_Plateaux_-_panoramio.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Thắng cảnh Biển Hồ Pleiku (Hồ T'Nưng) & Tây Sơn Thượng Đạo",
+        "wiki_title": "Gia Lai",
+        "id": 20,
+        "name": "Gia Lai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.2793,
+          13.8556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ha Giang",
+        "Note": null,
+        "name_vi": "Hà Giang",
+        "admin_unit": "Tỉnh/Thành phố Hà Giang",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Cao nguyên đá Đồng Văn & Cột cờ Quốc gia Lũng Cú",
+        "cultural_summary": "Điểm tột Bắc thiêng liêng của Tổ quốc với lá cờ 54m² tung bay kiêu hãnh trên đỉnh Long Sơn; ôm trọn hẻm vực Tu Sản sâu nhất Đông Nam Á trên dòng Nho Quế xanh biếc.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Công viên Địa chất Toàn cầu UNESCO",
+        "historical_period": "Kiến tạo Karst 500 triệu năm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/20/C%E1%BB%99t_c%E1%BB%9D_L%C5%A9ng_C%C3%BA.JPG/960px-C%E1%BB%99t_c%E1%BB%9D_L%C5%A9ng_C%C3%BA.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Cột cờ Quốc gia Lũng Cú & Cao nguyên đá Đồng Văn hùng vĩ",
+        "wiki_title": "Cột cờ Lũng Cú",
+        "id": 21,
+        "name": "Hà Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.7421,
+          22.5622
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ha Nam",
+        "Note": null,
+        "name_vi": "Hà Nam",
+        "admin_unit": "Tỉnh/Thành phố Hà Nam",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Tam Chúc & Chùa Bà Đanh cổ tự",
+        "cultural_summary": "Vùng non nước hữu tình với Chùa Tam Chúc tựa lưng vào núi Thất Tinh hướng ra hồ Lục Nhạc; cùng Chùa Bà Đanh nổi danh trong câu ca dao dân gian hàng trăm năm.",
+        "cultural_category": "history",
+        "cultural_category_label": "Quần thể Văn hóa Tâm linh Quốc gia",
+        "historical_period": "Thời Đinh - Lý & Kiến trúc thế kỷ 17",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/06/Sunset_in_Ha_Nam%2C_Vietnam.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Quần thể Văn hóa Tâm linh Tam Chúc & Chùa Bà Đanh",
+        "wiki_title": "Tam Chúc",
+        "id": 22,
+        "name": "Hà Nam"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.9358,
+          20.5428
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ha Noi city",
+        "Note": null,
+        "name_vi": "Hà Nội",
+        "admin_unit": "Tỉnh/Thành phố Hà Nội",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Hoàng thành Thăng Long & Văn Miếu - Quốc Tử Giám",
+        "cultural_summary": "Kinh đô ngàn năm văn hiến, trung tâm quyền lực chính trị - văn hóa liên tục suốt 13 thế kỷ của các triều đại phong kiến Đại Việt; nơi lưu giữ 82 bia Tiến sĩ vinh danh truyền thống hiếu học.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Thế giới UNESCO",
+        "historical_period": "Thời Lý - Trần - Lê (1010 - 1789)",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Hanoi_citadel.jpg",
+        "image_caption": "Hoàng thành Thăng Long (Di sản Thế giới UNESCO) & Văn Miếu Quốc Tử Giám",
+        "wiki_title": "Hoàng thành Thăng Long (Cổng Đoan Môn)",
+        "id": 23,
+        "name": "Hà Nội"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.7346,
+          21.0265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ha Tinh",
+        "Note": null,
+        "name_vi": "Hà Tĩnh",
+        "admin_unit": "Tỉnh/Thành phố Hà Tĩnh",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu lưu niệm Đại thi hào Nguyễn Du & Ngã ba Đồng Lộc",
+        "cultural_summary": "Quê hương của Đại thi hào Nguyễn Du với kiệt tác \"Truyện Kiều\" sống mãi trong lòng dân tộc; bên cạnh tượng đài bất tử 10 cô gái thanh niên xung phong anh dũng tại Ngã ba Đồng Lộc.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Danh nhân Văn hóa Thế giới UNESCO",
+        "historical_period": "Thế kỷ 18 & Kháng chiến chống Mỹ",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Toancanhthixa.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Di tích Lịch sử Ngã ba Đồng Lộc & Khu lưu niệm Đại thi hào Nguyễn Du",
+        "wiki_title": "Hà Tĩnh",
+        "id": 24,
+        "name": "Hà Tĩnh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.7193,
+          18.3016
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Hai Duong",
+        "Note": null,
+        "name_vi": "Hải Dương",
+        "admin_unit": "Tỉnh/Thành phố Hải Dương",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Di tích Côn Sơn - Kiếp Bạc",
+        "cultural_summary": "Cõi thiêng gắn liền tên tuổi người anh hùng dân tộc Trần Hưng Đạo chém giặc cứu nước và Danh nhân Văn hóa Thế giới Nguyễn Trãi với áng thơ \"Côn Sơn ca\" rung động lòng người.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt",
+        "historical_period": "Thời Trần (Thế kỷ 13 - 15)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Den_kiep_bac.jpg/960px-Den_kiep_bac.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Di tích Côn Sơn - Kiếp Bạc gắn liền với Anh hùng Dân tộc",
+        "wiki_title": "Khu di tích Côn Sơn – Kiếp Bạc",
+        "id": 25,
+        "name": "Hải Dương"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.3264,
+          20.8582
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Hai Phong city",
+        "Note": null,
+        "name_vi": "Hải Phòng",
+        "admin_unit": "Tỉnh/Thành phố Hải Phòng",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Lịch sử Bạch Đằng Giang & Quần đảo Cát Bà",
+        "cultural_summary": "Dòng sông chiến tích nơi ba lần nhấn chìm giặc ngoại xâm phương Bắc với bãi cọc ngầm lừng lẫy của Ngô Quyền, Lê Hoàn và Trần Quốc Tuấn; kết hợp quần đảo Cát Bà sinh thái tuyệt mỹ.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Thiên nhiên Thế giới UNESCO",
+        "historical_period": "Chiến thắng 938, 981, 1288 & Địa chất",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/QD_Catba2.jpg/960px-QD_Catba2.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Quần đảo Cát Bà (Khu dự trữ sinh quyển thế giới) & Bạch Đằng Giang",
+        "wiki_title": "Quần đảo Cát Bà",
+        "id": 26,
+        "name": "Hải Phòng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.6186,
+          20.7739
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Hau Giang",
+        "Note": null,
+        "name_vi": "Hậu Giang",
+        "admin_unit": "Tỉnh/Thành phố Hậu Giang",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Quốc gia đặc biệt Chiến thắng Chương Thiện & Chợ nổi Ngã Bảy",
+        "cultural_summary": "Di tích ghi dấu chiến công hiển hách đánh bại 75 lượt tiểu đoàn địch của quân dân Tây Nam Bộ năm 1973; cùng nét giao thương sông nước sầm uất tại ngã 7 dòng sông giao hội.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Năm 1973 & Thế kỷ 20",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/Cho_noi.jpg/960px-Cho_noi.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Di tích Chiến thắng Chương Thiện & Chợ nổi Ngã Bảy Phụng Hiệp",
+        "wiki_title": "Chợ nổi Ngã Bảy",
+        "id": 27,
+        "name": "Hậu Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.6452,
+          9.799
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Hoa Binh",
+        "Note": null,
+        "name_vi": "Hòa Bình",
+        "admin_unit": "Tỉnh/Thành phố Hòa Bình",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Cái nôi Văn hóa Hòa Bình & Thung lũng bản Lác Mai Châu",
+        "cultural_summary": "Nơi phát tích \"Văn hóa Hòa Bình\" - nền văn hóa tiền sử vang danh giới khảo cổ toàn cầu; cùng nếp nhà sàn thanh bình và điệu xòe Thái rộn ràng thung lũng Mai Châu.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Khảo cổ Tiền sử",
+        "historical_period": "Thời đồ đá mới (18.000 năm trước)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Salta-VallesCalchaquies-P3140151.JPG/960px-Salta-VallesCalchaquies-P3140151.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Cái nôi Văn hóa Hòa Bình & Thung lũng bản Lác Mai Châu",
+        "wiki_title": "Thung lũng",
+        "id": 28,
+        "name": "Hòa Bình"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.3599,
+          20.6944
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Hung Yen",
+        "Note": null,
+        "name_vi": "Hưng Yên",
+        "admin_unit": "Tỉnh/Thành phố Hưng Yên",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Di tích Phố Hiến (\"Thứ nhất Kinh Kỳ, thứ nhì Phố Hiến\")",
+        "cultural_summary": "Thương cảng quốc tế hưng thịnh bậc nhất Bắc Bộ thế kỷ 17, nơi hội tụ thương nhân Á - Âu với chùa Chuông (\"Phố Hiến đệ nhất danh lam\"), đền Mẫu và văn bia cổ kính.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thế kỷ 16 - 17",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Ph%C6%B0%E1%BB%9Dng_Ph%E1%BB%91_Hi%E1%BA%BFn.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Quần thể Di tích Phố Hiến: Thứ nhất Kinh Kỳ, thứ nhì Phố Hiến",
+        "wiki_title": "Phố Hiến",
+        "id": 29,
+        "name": "Hưng Yên"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.031,
+          20.8876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Kien Giang",
+        "Note": null,
+        "name_vi": "Kiên Giang",
+        "admin_unit": "Tỉnh/Thành phố Kiên Giang",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Đảo ngọc Phú Quốc & Khu di tích Căn cứ U Minh Thượng",
+        "cultural_summary": "Đảo ngọc lớn nhất Việt Nam với rừng nguyên sinh và bãi biển thiên đường; cùng rừng tràm U Minh Thượng - căn cứ kháng chiến kiên cường qua hai cuộc kháng chiến vĩ đại.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Khu Dự trữ Sinh quyển Thế giới UNESCO",
+        "historical_period": "Lịch sử khai phá phương Nam",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bc/Phu_Quoc%2C_Viet_Nam.jpg/960px-Phu_Quoc%2C_Viet_Nam.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Đảo ngọc Phú Quốc & Vườn quốc gia Rừng ngập mặn U Minh Thượng",
+        "wiki_title": "Phú Quốc",
+        "id": 30,
+        "name": "Kiên Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.1141,
+          9.7288
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Kon Tum",
+        "Note": null,
+        "name_vi": "Kon Tum",
+        "admin_unit": "Tỉnh/Thành phố Kon Tum",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Nhà thờ Gỗ Kon Tum (Kiến trúc Roman kết hợp nhà rông Ba Na)",
+        "cultural_summary": "Tuyệt phẩm kiến trúc hoàn toàn bằng gỗ cà chít thủ công trên 100 năm tuổi, giao thoa kỳ diệu giữa phong cách Roman châu Âu và mái nhà rông truyền thống của đồng bào Ba Na Tây Nguyên.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Kiến trúc Nghệ thuật Độc bản",
+        "historical_period": "Năm 1913 - 1918",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/Nh%C3%A0_th%E1%BB%9D_g%E1%BB%97_Kon_Tum.jpg/960px-Nh%C3%A0_th%E1%BB%9D_g%E1%BB%97_Kon_Tum.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Nhà thờ Gỗ Kon Tum hơn 100 năm tuổi mang đậm bản sắc Tây Nguyên",
+        "wiki_title": "Nhà thờ chính tòa Kon Tum",
+        "id": 31,
+        "name": "Kon Tum"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.9074,
+          14.6482
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lai Chau",
+        "Note": null,
+        "name_vi": "Lai Châu",
+        "admin_unit": "Tỉnh/Thành phố Lai Châu",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Hang động Pu Sam Cáp & Bản Sì Thâu Chải",
+        "cultural_summary": "\"Tây Bắc đệ nhất động\" với những cột nhũ đá kỳ ảo như vườn địa đàng chốn trần gian; hòa cùng sắc chàm nguyên sơ và bản sắc độc đáo của người Dao đỏ dưới chân đỉnh Tả Liên Sơn.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Danh lam Thắng cảnh Quốc gia",
+        "historical_period": "Kiến tạo nhũ đá tự nhiên",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/19/O_Quy_Ho_pass.jpg/960px-O_Quy_Ho_pass.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Hang động Pu Sam Cáp & Đèo Ô Quý Hồ hùng vĩ",
+        "wiki_title": "Đèo Ô Quý Hồ",
+        "id": 32,
+        "name": "Lai Châu"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.3373,
+          22.3867
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lam Dong",
+        "Note": null,
+        "name_vi": "Lâm Đồng",
+        "admin_unit": "Tỉnh/Thành phố Lâm Đồng",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Dinh Bảo Đại & Không gian Di sản Kiến trúc Đà Lạt",
+        "cultural_summary": "Dinh thự xa hoa của vị Hoàng đế cuối cùng triều Nguyễn nằm giữa đồi thông thơ mộng; nơi lưu giữ những dấu ấn kiến trúc Pháp cổ độc đáo và khí hậu ôn đới miền sương mờ.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Kiến trúc Nghệ thuật",
+        "historical_period": "Đầu thế kỷ 20",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e2/Da_Lat_-_Viet_Nam.jpg/960px-Da_Lat_-_Viet_Nam.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Cung điện Dinh Bảo Đại & Không gian kiến trúc di sản Đà Lạt",
+        "wiki_title": "Đà Lạt",
+        "id": 33,
+        "name": "Lâm Đồng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.3759,
+          11.9287
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lang Son",
+        "Note": null,
+        "name_vi": "Lạng Sơn",
+        "admin_unit": "Tỉnh/Thành phố Lạng Sơn",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Di tích Động Tam Thanh, Chùa Tiên & Thành Nhà Mạc",
+        "cultural_summary": "\"Đồng Đăng có phố Kỳ Lừa, có nàng Tô Thị, có chùa Tam Thanh\" - quần thể thắng tích bất hủ đi vào thi ca gắn với hình tượng nàng Tô Thị son sắt thủy chung chờ chồng.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Văn hóa Quốc gia",
+        "historical_period": "Thế kỷ 16 - 17",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Ch%C3%B9a_Tam_Thanh.jpg/960px-Ch%C3%B9a_Tam_Thanh.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Động Tam Thanh, tượng nàng Tô Thị hóa đá & Thành cổ Nhà Mạc",
+        "wiki_title": "Chùa Tam Thanh",
+        "id": 34,
+        "name": "Lạng Sơn"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.4058,
+          21.953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Lao Cai",
+        "Note": null,
+        "name_vi": "Lào Cai",
+        "admin_unit": "Tỉnh/Thành phố Lào Cai",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Đền Bảo Hà (Ông Hoàng Bảy) & Ruộng bậc thang Sa Pa",
+        "cultural_summary": "Đền Bảo Hà thờ Thần vệ quốc Hoàng Bảy trấn giữ biên ải; kết hợp kỳ quan ruộng bậc thang Sa Pa uốn lượn như dải lụa vàng giữa mây ngàn Hoàng Liên Sơn.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể & Danh thắng",
+        "historical_period": "Thời Cảnh Hưng (Thế kỷ 18)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Ru%E1%BB%99ng_b%E1%BA%ADc_thang_B%E1%BA%A3n_Ph%C3%B9ng_1_-_NKS.jpg/960px-Ru%E1%BB%99ng_b%E1%BA%ADc_thang_B%E1%BA%A3n_Ph%C3%B9ng_1_-_NKS.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Ruộng bậc thang Sa Pa kỳ vĩ & Đền thờ Ông Hoàng Bảy Bảo Hà",
+        "wiki_title": "Ruộng bậc thang",
+        "id": 35,
+        "name": "Lào Cai"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.1495,
+          22.2973
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Long An",
+        "Note": null,
+        "name_vi": "Long An",
+        "admin_unit": "Tỉnh/Thành phố Long An",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Đồn Rạch Cát & Cụm Di tích Lịch sử Vàm Cỏ Đông",
+        "cultural_summary": "Pháo đài quân sự kiên cố bằng bê tông cốt thép độc nhất vô nhị trên sông Soài Rạp; cùng dòng sông Vàm Cỏ Đông oai hùng chảy vào thơ ca và âm nhạc kháng chiến cứu nước.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quân sự Quốc gia",
+        "historical_period": "Năm 1903 (Thời Pháp thuộc)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/S%C3%B4ng_V%C3%A0m_C%E1%BB%8F_%C4%90%C3%B4ng%2C_%C4%91o%E1%BA%A1n_qua_B%E1%BA%BFn_L%E1%BB%A9c%2C_Long_An.jpg/960px-S%C3%B4ng_V%C3%A0m_C%E1%BB%8F_%C4%90%C3%B4ng%2C_%C4%91o%E1%BA%A1n_qua_B%E1%BA%BFn_L%E1%BB%A9c%2C_Long_An.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Pháo đài cổ Đồn Rạch Cát & Dòng sông Vàm Cỏ Đông hào hùng",
+        "wiki_title": "Sông Vàm Cỏ Đông",
+        "id": 36,
+        "name": "Long An"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.9878,
+          10.6874
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Nam Dinh",
+        "Note": null,
+        "name_vi": "Nam Định",
+        "admin_unit": "Tỉnh/Thành phố Nam Định",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Đền Trần & Tượng Quốc công Tiết chế Hưng Đạo Đại Vương",
+        "cultural_summary": "Vùng đất phát tích vương triều Trần rực rỡ với ba lần đại thắng quân Mông - Nguyên; nơi lưu giữ Tượng đài Hưng Đạo Đại Vương Trần Quốc Tuấn uy nghiêm và Lễ hội Khai ấn Đền Trần linh thiêng.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt & Lễ hội Khai ấn",
+        "historical_period": "Thời Trần (Thế kỷ 13)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d9/Tam_quan_Den_Tran.jpg/960px-Tam_quan_Den_Tran.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Đền Trần & Tượng Quốc công Tiết chế Hưng Đạo Đại Vương",
+        "wiki_title": "Tam quan Đền Trần (Nam Định)",
+        "id": 37,
+        "name": "Nam Định"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.1289,
+          20.3551
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Nghe An",
+        "Note": null,
+        "name_vi": "Nghệ An",
+        "admin_unit": "Tỉnh/Thành phố Nghệ An",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt Kim Liên (Quê hương Bác Hồ)",
+        "cultural_summary": "Mảnh đất Làng Sen và Làng Hoàng Trù mộc mạc nuôi dưỡng tâm hồn và ý chí của Chủ tịch Hồ Chí Minh - vị lãnh tụ thiên tài, Danh nhân Văn hóa kiệt xuất của dân tộc.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt",
+        "historical_period": "Thời kỳ Cận đại (1890 - nay)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Kim_Lien_Monuments_Park.JPG/960px-Kim_Lien_Monuments_Park.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Quốc gia Đặc biệt Kim Liên - Quê hương Chủ tịch Hồ Chí Minh",
+        "wiki_title": "Khu di tích lịch sử Kim Liên",
+        "id": 38,
+        "name": "Nghệ An"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.8968,
+          19.251
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ninh Binh",
+        "Note": null,
+        "name_vi": "Ninh Bình",
+        "admin_unit": "Tỉnh/Thành phố Ninh Bình",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Danh thắng Tràng An & Cố đô Hoa Lư",
+        "cultural_summary": "Di sản hỗn hợp đầu tiên của Đông Nam Á, nơi Đinh Tiên Hoàng Đế dựng nước Đại Cồ Việt giữa non non nước nước karst đá vôi triệu năm sừng sững tráng lệ.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản hỗn hợp Văn hóa & Thiên nhiên Thế giới",
+        "historical_period": "Thời Đinh - Tiền Lê (Thế kỷ 10)",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/0/08/Muaxuantamcoc.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Quần thể Danh thắng Tràng An & Cố đô Hoa Lư - Di sản Kép thế giới",
+        "wiki_title": "Quần thể danh thắng Tràng An",
+        "id": 39,
+        "name": "Ninh Bình"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.8287,
+          20.2813
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ninh Thuan",
+        "Note": null,
+        "name_vi": "Ninh Thuận",
+        "admin_unit": "Tỉnh/Thành phố Ninh Thuận",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Tháp Po Klong Garai & Nghệ thuật làm Gốm Bàu Trúc",
+        "cultural_summary": "Tháp Chăm hùng vĩ nhất còn nguyên vẹn trên đồi Trầu thờ vua Po Klong Garai; hòa cùng Làng gốm Bàu Trúc nặn tay không bàn xoay độc bản cổ nhất Đông Nam Á.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể UNESCO",
+        "historical_period": "Thế kỷ 13 - 14 & Cổ truyền Chăm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4f/Po_Klong_Garai.jpg/960px-Po_Klong_Garai.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Tháp Chăm cổ Po Klong Garai & Làng gốm Bàu Trúc truyền thống",
+        "wiki_title": "Tháp Po Klong Garai",
+        "id": 40,
+        "name": "Ninh Thuận"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.8749,
+          11.7599
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Phu Tho",
+        "Note": null,
+        "name_vi": "Phú Thọ",
+        "admin_unit": "Tỉnh/Thành phố Phú Thọ",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt Đền Hùng (Cội nguồn Dân tộc)",
+        "cultural_summary": "\"Dù ai đi ngược về xuôi / Nhớ ngày Giỗ Tổ mùng mười tháng ba\" - đỉnh thiêng Nghĩa Lĩnh phụng thờ các Vua Hùng dựng nước Văn Lang, cội nguồn đoàn kết muôn đời của con Lạc cháu Hồng.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể UNESCO",
+        "historical_period": "Thời đại Hùng Vương dựng nước",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f8/Mausoleum_of_Hung_King.JPG/960px-Mausoleum_of_Hung_King.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Quốc gia Đặc biệt Đền Hùng - Cội nguồn non sông Đất Việt",
+        "wiki_title": "Đền Hùng",
+        "id": 41,
+        "name": "Phú Thọ"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.1257,
+          21.3376
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Phu Yen",
+        "Note": null,
+        "name_vi": "Phú Yên",
+        "admin_unit": "Tỉnh/Thành phố Phú Yên",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Thắng cảnh Quốc gia đặc biệt Gành Đá Đĩa & Tháp Nhạn",
+        "cultural_summary": "Hiện tượng địa chất kỳ thú hiếm hoi trên thế giới với hàng vạn cột đá bazan hình lục lăng xếp chồng lên nhau như tổ ong khổng lồ vươn mình ra biển biếc.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Danh lam Thắng cảnh Quốc gia Đặc biệt",
+        "historical_period": "Núi lửa bazan hàng triệu năm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/G%C3%A0nh_%C4%90%C3%A1_%C4%90%C4%A9a.jpg/960px-G%C3%A0nh_%C4%90%C3%A1_%C4%90%C4%A9a.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Danh thắng Quốc gia Đặc biệt Gành Đá Đĩa kỳ thú & Tháp Nhạn",
+        "wiki_title": "Gành Đá Đĩa",
+        "id": 42,
+        "name": "Phú Yên"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          109.0559,
+          13.0476
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Quang Binh",
+        "Note": null,
+        "name_vi": "Quảng Bình",
+        "admin_unit": "Tỉnh/Thành phố Quảng Bình",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Vườn quốc gia Phong Nha - Kẻ Bàng (Động Sơn Đoòng)",
+        "cultural_summary": "Vương quốc hang động số một thế giới với Sơn Đoòng - hang động tự nhiên lớn nhất hành tinh chứa cả rừng nguyên sinh và thời tiết độc lập trong lòng hang.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Thiên nhiên Thế giới UNESCO",
+        "historical_period": "Kiến tạo Karst 400 triệu năm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/V%C3%A0o_%C4%91%E1%BB%99ng_Phong_Nha.jpg/960px-V%C3%A0o_%C4%91%E1%BB%99ng_Phong_Nha.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Vườn quốc gia Phong Nha - Kẻ Bàng (Động Phong Nha & Sơn Đoòng)",
+        "wiki_title": "Động Phong Nha",
+        "id": 43,
+        "name": "Quảng Bình"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.2109,
+          17.6415
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Quang Nam",
+        "Note": null,
+        "name_vi": "Quảng Nam",
+        "admin_unit": "Tỉnh/Thành phố Quảng Nam",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Đô thị cổ Hội An & Thánh địa Mỹ Sơn",
+        "cultural_summary": "Thương cảng đèn lồng Hội An lung linh bên dòng sông Hoài; cùng thung lũng đền tháp Mỹ Sơn huyền bí của vương triều Chăm Pa - vùng đất có hai Di sản Thế giới độc nhất.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Thế giới UNESCO",
+        "historical_period": "Thế kỷ 4 - 19",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/PhoCoHoiAn.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+        "image_caption": "Đô thị cổ Hội An & Quần thể Thánh địa Mỹ Sơn (Di sản Thế giới UNESCO)",
+        "wiki_title": "Phố cổ Hội An",
+        "id": 44,
+        "name": "Quảng Nam"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.0503,
+          15.558
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Quang Ngai",
+        "Note": null,
+        "name_vi": "Quảng Ngãi",
+        "admin_unit": "Tỉnh/Thành phố Quảng Ngãi",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Văn hóa Sa Huỳnh & Lễ khao lề thế lính Hoàng Sa (Lý Sơn)",
+        "cultural_summary": "Lễ khao lề thế lính Hoàng Sa trên đất đảo Lý Sơn - khúc tráng ca tri ân những binh phu dong thuyền cắm mốc chủ quyền; bên cạnh di sản Văn hóa Sa Huỳnh rực rỡ thời tiền sử.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể Quốc gia",
+        "historical_period": "Từ thế kỷ 17 & 3000 năm trước",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg/960px-C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Đảo Lý Sơn - Nơi gìn giữ Lễ Khao lề thế lính Hoàng Sa & Văn hóa Sa Huỳnh",
+        "wiki_title": "Lý Sơn",
+        "id": 45,
+        "name": "Quảng Ngãi"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.6146,
+          15.0542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Quang Ninh",
+        "Note": null,
+        "name_vi": "Quảng Ninh",
+        "admin_unit": "Tỉnh/Thành phố Quảng Ninh",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Vịnh Hạ Long & Non thiêng Yên Tử",
+        "cultural_summary": "Kỳ quan thiên nhiên thế giới Vịnh Hạ Long với hàng ngàn đảo ngọc rồng thiêng hạ cánh; kết hợp đỉnh Chùa Đồng Yên Tử nơi Vua Trần Nhân Tông đắc đạo nhập Niết Bàn.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Thiên nhiên Thế giới UNESCO",
+        "historical_period": "Kiến tạo Karst & Thời Trần (1299)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/29/V%E1%BB%8Bnh_H%E1%BA%A1_Long_-_NKS.jpg/960px-V%E1%BB%8Bnh_H%E1%BA%A1_Long_-_NKS.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Kỳ quan Thiên nhiên Thế giới Vịnh Hạ Long & Non thiêng Yên Tử",
+        "wiki_title": "Vịnh Hạ Long",
+        "id": 46,
+        "name": "Quảng Ninh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.1633,
+          21.1732
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Quang Tri",
+        "Note": null,
+        "name_vi": "Quảng Trị",
+        "admin_unit": "Tỉnh/Thành phố Quảng Trị",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Thành cổ Quảng Trị, Địa đạo Vịnh Mốc & Đôi bờ Hiền Lương",
+        "cultural_summary": "Nơi mỗi tấc đất, ngọn cỏ đều thấm đẫm máu xương của các anh hùng liệt sĩ trong cuộc chiến 81 ngày đêm bảo vệ Thành Cổ; cùng biểu tượng nỗi đau và khát vọng thống nhất sông Bến Hải.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "81 ngày đêm rực lửa (1972)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Th%C3%A0nh_c%E1%BB%95_Qu%E1%BA%A3ng_Tr%E1%BB%8B_4.jpg/960px-Th%C3%A0nh_c%E1%BB%95_Qu%E1%BA%A3ng_Tr%E1%BB%8B_4.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Thành cổ Quảng Trị anh hùng, Địa đạo Vịnh Mốc & Đôi bờ Hiền Lương",
+        "wiki_title": "Thành cổ Quảng Trị",
+        "id": 47,
+        "name": "Quảng Trị"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.9682,
+          16.7778
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Soc Trang",
+        "Note": null,
+        "name_vi": "Sóc Trăng",
+        "admin_unit": "Tỉnh/Thành phố Sóc Trăng",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Chùa Dơi (Mahatup) & Lễ hội Đua ghe Ngo Oóc Om Bóc",
+        "cultural_summary": "Ngôi chùa Khmer cổ hơn 400 năm tuổi với hàng ngàn cá thể dơi ngựa treo mình kỳ lạ; cùng ngày hội đua ghe Ngo rộn rã tiếng hò reo trên dòng sông Maspero huyền thoại.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể Quốc gia",
+        "historical_period": "Khởi dựng năm 1569",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/54/Ch%C3%B9a_D%C6%A1i_%2845715215502%29.jpg/960px-Ch%C3%B9a_D%C6%A1i_%2845715215502%29.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Chùa Dơi (Mahatup) cổ tự linh thiêng & Lễ hội Đua ghe Ngo náo nhiệt",
+        "wiki_title": "Chùa Dơi",
+        "id": 48,
+        "name": "Sóc Trăng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.989,
+          9.5627
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Son La",
+        "Note": null,
+        "name_vi": "Sơn La",
+        "admin_unit": "Tỉnh/Thành phố Sơn La",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Nhà tù Sơn La (Cây đào Tô Hiệu) & Thủy điện Sơn La",
+        "cultural_summary": "\"Địa ngục trần gian\" nơi thực dân Pháp giam cầm những người cộng sản kiên trung; nở rộ cây đào Tô Hiệu biểu tượng cho sức sống và khí tiết cách mạng bất khuất.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thời Pháp thuộc (1908 - 1945)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1e/Nhatusonla.jpg/960px-Nhatusonla.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Di tích Lịch sử Nhà tù Sơn La với Cây đào Tô Hiệu bất diệt",
+        "wiki_title": "Nhà tù Sơn La",
+        "id": 49,
+        "name": "Sơn La"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          103.8295,
+          21.2943
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Tay Ninh",
+        "Note": null,
+        "name_vi": "Tây Ninh",
+        "admin_unit": "Tỉnh/Thành phố Tây Ninh",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Tòa Thánh Tây Ninh & Núi Bà Đen linh sơn",
+        "cultural_summary": "Trung ương Tòa Thánh Đạo Cao Đài đồ sộ với kiến trúc vạn giáo hòa đồng uy nghi; cùng \"Nóc nhà Đông Nam Bộ\" Núi Bà Đen cao 986m quanh năm mây phủ linh thiêng.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Trung ương Đạo Cao Đài & Thắng cảnh",
+        "historical_period": "Khởi công năm 1931",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1a/T%C3%B2a_Th%C3%A1nh_T%C3%A2y_Ninh_042013.JPG/960px-T%C3%B2a_Th%C3%A1nh_T%C3%A2y_Ninh_042013.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Tòa Thánh Tây Ninh độc đáo & Đỉnh Núi Bà Đen linh sinh",
+        "wiki_title": "Tòa Thánh Tây Ninh",
+        "id": 50,
+        "name": "Tây Ninh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.1347,
+          11.4873
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Thai Binh",
+        "Note": null,
+        "name_vi": "Thái Bình",
+        "admin_unit": "Tỉnh/Thành phố Thái Bình",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Chùa Keo (Thần Quang Tự - Kiệt tác Gỗ Lim)",
+        "cultural_summary": "Một trong những ngôi chùa cổ bằng gỗ lim đẹp nhất Việt Nam với Gác Chuông 3 tầng 12 mái hoàn toàn bằng mộng gỗ tinh vi, tuyệt tác kiến trúc nghệ thuật thời Lê thế kỷ 17.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt",
+        "historical_period": "Thời Lê Trung Hưng (Năm 1632)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fb/Chuakeothaibinh.jpg/960px-Chuakeothaibinh.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Gác chuông Chùa Keo (Thần Quang Tự) - Kiệt tác kiến trúc gỗ lim cổ truyền",
+        "wiki_title": "Gác chuông Chùa Keo Thái Bình",
+        "id": 51,
+        "name": "Thái Bình"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.3542,
+          20.5189
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Thai Nguyen",
+        "Note": null,
+        "name_vi": "Thái Nguyên",
+        "admin_unit": "Tỉnh/Thành phố Thái Nguyên",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt ATK Định Hóa & Đồi chè Tân Cương",
+        "cultural_summary": "\"Thủ đô gió ngàn\" ATK Định Hóa - nơi Trung ương Đảng và Bác Hồ đưa ra các quyết sách lịch sử chiến thắng thực dân Pháp; cùng danh trà Tân Cương thơm ngọt đượm tình đất Thái.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thủ đô Kháng chiến (1947 - 1954)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/ATK_Dinh_Hoa.jpg/960px-ATK_Dinh_Hoa.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Quốc gia Đặc biệt ATK Định Hóa & Đồi chè Tân Cương",
+        "wiki_title": "ATK",
+        "id": 52,
+        "name": "Thái Nguyên"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.8284,
+          21.6057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Thanh Hoa",
+        "Note": null,
+        "name_vi": "Thanh Hóa",
+        "admin_unit": "Tỉnh/Thành phố Thanh Hóa",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Di sản Thế giới Thành Nhà Hồ & Di tích Lam Kinh",
+        "cultural_summary": "Kinh thành bằng đá khối khổng lồ độc nhất vô nhị ở Đông Nam Á do Hồ Quý Ly xây dựng năm 1397; kết hợp Lam Kinh - thánh địa địa linh nhân kiệt phát tích cuộc khởi nghĩa Lam Sơn vĩ đại.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Thế giới UNESCO",
+        "historical_period": "Thời Hồ (1397) & Hậu Lê (1428)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/C%E1%BB%95ng_Nam.jpg/960px-C%E1%BB%95ng_Nam.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Di sản Thế giới Thành Nhà Hồ bằng đá độc nhất vô nhị & Lam Kinh",
+        "wiki_title": "Thành nhà Hồ",
+        "id": 53,
+        "name": "Thanh Hóa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.5438,
+          19.8876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Thua Thien - Hue",
+        "Note": null,
+        "name_vi": "Thừa Thiên Huế",
+        "admin_unit": "Tỉnh/Thành phố Thừa Thiên Huế",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Quần thể Di tích Cố đô Huế & Nhã nhạc Cung đình",
+        "cultural_summary": "Kinh đô triều Nguyễn uy nghi bên dòng sông Hương thơ mộng với Ngọ Môn, Điện Thái Hòa, lăng tẩm hoàng gia và Nhã nhạc Cung đình - âm nhạc bác học đỉnh cao của cung đình xưa.",
+        "cultural_category": "unesco",
+        "cultural_category_label": "Di sản Văn hóa Thế giới UNESCO",
+        "historical_period": "Triều Nguyễn (1802 - 1945)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Ngomon2.jpg/960px-Ngomon2.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Ngọ Môn & Quần thể Di tích Cố đô Huế (Di sản Thế giới UNESCO)",
+        "wiki_title": "Ngọ Môn - Đại Nội Huế",
+        "id": 54,
+        "name": "Thừa Thiên Huế"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          107.4501,
+          16.3611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Tien Giang",
+        "Note": null,
+        "name_vi": "Tiền Giang",
+        "admin_unit": "Tỉnh/Thành phố Tiền Giang",
+        "is_sovereignty": false,
+        "color": "#e11d48",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Lịch sử Rạch Gầm - Xoài Mút (Chiến công Quang Trung)",
+        "cultural_summary": "Khúc sông Tiền lẫy lừng ghi dấu nghệ thuật quân sự tài tình của người anh hùng áo vải Nguyễn Huệ mai phục tiêu diệt 5 vạn quân thủy bộ Xiêm xâm lược năm 1785.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Đại phá quân Xiêm (Năm 1785)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d7/Khu_di_t%C3%ADch_chi%E1%BA%BFn_th%E1%BA%AFng_G%E1%BA%A1ch_G%E1%BA%A7m_Xo%C3%A0i_M%C3%BAt.jpg/960px-Khu_di_t%C3%ADch_chi%E1%BA%BFn_th%E1%BA%AFng_G%E1%BA%A1ch_G%E1%BA%A7m_Xo%C3%A0i_M%C3%BAt.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Di tích Chiến thắng Rạch Gầm - Xoài Mút vang danh Hoàng đế Quang Trung",
+        "wiki_title": "Trận Rạch Gầm – Xoài Mút",
+        "id": 55,
+        "name": "Tiền Giang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.2077,
+          10.4486
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Ho Chi Minh city",
+        "Note": null,
+        "name_vi": "TP. Hồ Chí Minh",
+        "admin_unit": "Tỉnh/Thành phố TP. Hồ Chí Minh",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Dinh Độc Lập, Bến Nhà Rồng & Địa đạo Củ Chi",
+        "cultural_summary": "Bến Nhà Rồng nơi Bác Hồ ra đi tìm đường cứu nước năm 1911; Dinh Độc Lập chứng kiến thời khắc non sông thu về một mối ngày 30/4/1975; và trận đồ ngầm Địa đạo Củ Chi huyền thoại.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thời kỳ Cận hiện đại (1911 - 1975)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp_v%C3%A0o_n%C3%A0m_2024.jpg/960px-Dinh_%C4%90%E1%BB%99c_L%E1%BA%ADp_v%C3%A0o_n%C3%A0m_2024.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Dinh Độc Lập, Bến Nhà Rồng & Di tích Lịch sử Địa đạo Củ Chi",
+        "wiki_title": "Dinh Độc Lập",
+        "id": 56,
+        "name": "TP. Hồ Chí Minh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.6266,
+          10.7759
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Tra Vinh",
+        "Note": null,
+        "name_vi": "Trà Vinh",
+        "admin_unit": "Tỉnh/Thành phố Trà Vinh",
+        "is_sovereignty": false,
+        "color": "#0284c7",
+        "region": "Đất liền",
+        "cultural_landmark": "Chùa Âng (Wat Angkorajaborey) & Lễ hội Ok Om Bok",
+        "cultural_summary": "Ngôi chùa cổ nhất của đồng bào Khmer Trà Vinh tọa lạc bên hồ Ba Om cổ kính với kiến trúc Angkor tuyệt mỹ; cùng nghi thức cúng trăng đút cốm dẹp cầu quốc thái dân an.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di sản Văn hóa Phi vật thể Quốc gia",
+        "historical_period": "Khởi dựng thế kỷ 10",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Ch%C3%B9a_%C3%82ng.jpg/960px-Ch%C3%B9a_%C3%82ng.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Chùa Âng cổ kính ngàn năm tuổi & Lễ hội Ok Om Bok rực rỡ sắc màu",
+        "wiki_title": "Chùa Âng",
+        "id": 57,
+        "name": "Trà Vinh"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.3526,
+          9.7773
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Tuyen Quang",
+        "Note": null,
+        "name_vi": "Tuyên Quang",
+        "admin_unit": "Tỉnh/Thành phố Tuyên Quang",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu di tích Quốc gia đặc biệt Tân Trào & Lễ hội Thành Tuyên",
+        "cultural_summary": "Cây đa Tân Trào, Lán Nà Nưa nơi Bác Hồ chủ trì Quốc dân Đại hội phát lệnh Tổng khởi nghĩa Cách mạng Tháng Tám năm 1945; cùng Lễ hội rước đèn khổng lồ độc đáo bậc nhất Việt Nam.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Quốc gia Đặc biệt",
+        "historical_period": "Thủ đô Khu Giải phóng (1945)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/11/C%C3%A2y_%C4%90a_l%E1%BB%8Bch_s%E1%BB%AD_T%C3%A2n_Tr%C3%A0o.JPG/960px-C%C3%A2y_%C4%90a_l%E1%BB%8Bch_s%E1%BB%AD_T%C3%A2n_Tr%C3%A0o.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Thủ đô Kháng chiến Tân Trào - Nơi phát tích cội nguồn cách mạng",
+        "wiki_title": "Chiến khu Tân Trào",
+        "id": 58,
+        "name": "Tuyên Quang"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.2244,
+          22.098
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Vinh Long",
+        "Note": null,
+        "name_vi": "Vĩnh Long",
+        "admin_unit": "Tỉnh/Thành phố Vĩnh Long",
+        "is_sovereignty": false,
+        "color": "#d97706",
+        "region": "Đất liền",
+        "cultural_landmark": "Văn Thánh Miếu Vĩnh Long & Làng gạch gốm Mang Thít",
+        "cultural_summary": "Văn Thánh Miếu xây dựng năm 1864 nhằm nêu cao lòng yêu nước và đạo học phương Nam trước họa xâm lăng; cùng \"Vương quốc đỏ\" lò gạch Mang Thít cổ xưa trải dọc dòng sông Cổ Chiên.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Văn hóa Quốc gia",
+        "historical_period": "Năm 1864 (Thời cụ Phan Thanh Giản)",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/V%C4%83n_Th%C3%A1nh_Mi%E1%BA%BFu_V%C4%A9nh_Long.jpg/960px-V%C4%83n_Th%C3%A1nh_Mi%E1%BA%BFu_V%C4%A9nh_Long.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Văn Thánh Miếu Vĩnh Long & Vương quốc gốm đỏ gạch Mang Thít",
+        "wiki_title": "Văn Thánh Miếu Vĩnh Long",
+        "id": 59,
+        "name": "Vĩnh Long"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.9919,
+          10.0767
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Vinh Phuc",
+        "Note": null,
+        "name_vi": "Vĩnh Phúc",
+        "admin_unit": "Tỉnh/Thành phố Vĩnh Phúc",
+        "is_sovereignty": false,
+        "color": "#7c3aed",
+        "region": "Đất liền",
+        "cultural_landmark": "Khu danh thắng Tây Thiên & Tam Đảo",
+        "cultural_summary": "Miền đất Phật - Mẫu linh thiêng tựa lưng vào dãy Tam Đảo hùng vĩ, cái nôi Phật giáo nguyên sơ từ thời cổ đại thờ Quốc Mẫu Tây Thiên - vợ Vua Hùng Chiêu Vương.",
+        "cultural_category": "festival",
+        "cultural_category_label": "Di tích Lịch sử Danh thắng Quốc gia",
+        "historical_period": "Thờ Quốc Mẫu Lăng Thị Tiêu",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Nh%C3%A0_ga_%C4%91%E1%BA%BFn_C%C3%A1p_treo_T%C3%A2y_Thi%C3%AAn_-_panoramio.jpg/960px-Nh%C3%A0_ga_%C4%91%E1%BA%BFn_C%C3%A1p_treo_T%C3%A2y_Thi%C3%AAn_-_panoramio.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Khu Danh thắng Tây Thiên cổ tự & Thị trấn mây sương Tam Đảo",
+        "wiki_title": "Khu di tích và danh thắng Tây Thiên",
+        "id": 60,
+        "name": "Vĩnh Phúc"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          105.5745,
+          21.3542
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Yen Bai",
+        "Note": null,
+        "name_vi": "Yên Bái",
+        "admin_unit": "Tỉnh/Thành phố Yên Bái",
+        "is_sovereignty": false,
+        "color": "#0d9488",
+        "region": "Đất liền",
+        "cultural_landmark": "Di tích Quốc gia đặc biệt Ruộng bậc thang Mù Cang Chải",
+        "cultural_summary": "Kỳ quan nhân tạo tuyệt mỹ trên những sườn núi dốc đứng Hoàng Liên Sơn do bàn tay tài hoa của đồng bào H'Mông kiến tạo qua hàng thế kỷ, rực rỡ kỳ vĩ mùa nước đổ và mùa lúa chín.",
+        "cultural_category": "nature",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt",
+        "historical_period": "Văn hóa canh tác người Mông hàng trăm năm",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Mu_Cang_Chai_01.JPG/960px-Mu_Cang_Chai_01.JPG?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Danh thắng Quốc gia Đặc biệt Ruộng bậc thang Mù Cang Chải",
+        "wiki_title": "Mù Cang Chải (huyện)",
+        "id": 61,
+        "name": "Yên Bái"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          104.6192,
+          21.7222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Khanh Hoa",
+        "Note": "Truong Sa (Khanh Hoa)",
+        "name_vi": "Quần đảo Trường Sa",
+        "admin_unit": "Huyện đảo Trường Sa, Tỉnh Khánh Hòa",
+        "is_sovereignty": true,
+        "color": "#ef4444",
+        "region": "Biển Đảo",
+        "cultural_landmark": "Cột mốc Chủ quyền Đảo Trường Sa Lớn & Cụm đảo Song Tử Tây, Sinh Tồn",
+        "cultural_summary": "Phần máu thịt thiêng liêng tiền tiêu của Tổ quốc giữa muôn trùng sóng gió Biển Đông với các đảo nổi, đảo chìm, ngọn hải đăng và Nhà giàn DK1 kiên trung gìn giữ biển trời quê hương.",
+        "cultural_category": "history",
+        "cultural_category_label": "Chủ quyền Lãnh thổ Biển đảo Thiêng liêng",
+        "historical_period": "Quản lý và bảo vệ liên tục hàng trăm năm",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Truong_Sa_lon.JPG",
+        "image_caption": "Đảo Trường Sa Lớn - Cột mốc Chủ quyền Quốc gia kiên trung nơi đầu sóng ngọn gió",
+        "wiki_title": "Cột mốc Chủ quyền Đảo Trường Sa Lớn (Việt Nam)",
+        "id": 62,
+        "name": "Quần đảo Trường Sa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.3,
+          10
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Khanh Hoa",
+        "Note": null,
+        "name_vi": "Khánh Hòa",
+        "admin_unit": "Tỉnh/Thành phố Khánh Hòa",
+        "is_sovereignty": false,
+        "color": "#4f46e5",
+        "region": "Đất liền",
+        "cultural_landmark": "Tháp Bà Ponagar & Nghề khai thác Yến Sào truyền thống",
+        "cultural_summary": "Kiệt tác kiến trúc gạch nung Chăm Pa cổ đại uy nghiêm trên đồi Cù Lao thờ Mẹ Xứ Sở Thiên Y A Na; kết hợp nghề khai thác yến sào đảo yến truyền thống hàng trăm năm.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Lịch sử Kiến trúc Nghệ thuật Quốc gia",
+        "historical_period": "Thế kỷ 8 - 13",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Nha_Trang%2C_Kh%C3%A1nh_H%C3%B2a.png/960px-Nha_Trang%2C_Kh%C3%A1nh_H%C3%B2a.png?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Quần thể Tháp Bà Ponagar Nha Trang - Di sản kiến trúc Chămpa rực rỡ",
+        "wiki_title": "Khánh Hòa",
+        "id": 63,
+        "name": "Khánh Hòa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.9681,
+          12.2666
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Da Nang city",
+        "Note": "Hoang Sa (Da Nang city)",
+        "name_vi": "Quần đảo Hoàng Sa",
+        "admin_unit": "Huyện đảo Hoàng Sa, TP. Đà Nẵng",
+        "is_sovereignty": true,
+        "color": "#ef4444",
+        "region": "Biển Đảo",
+        "cultural_landmark": "Bia Chủ quyền Hoàng Sa & Nhà Trưng bày Tư liệu Hoàng Sa",
+        "cultural_summary": "Lãnh thổ thiêng liêng không thể tách rời của Tổ quốc Việt Nam trên Biển Đông. Nhà nước phong kiến Việt Nam đã liên tục thực thi chủ quyền hòa bình, hợp pháp qua Đội hùng binh Hoàng Sa.",
+        "cultural_category": "history",
+        "cultural_category_label": "Chủ quyền Lãnh thổ Biển đảo Thiêng liêng",
+        "historical_period": "Các chúa Nguyễn thực thi chủ quyền từ thế kỷ 17",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/f/f3/BiaChuQuyenHoangSaCuaVietNam.jpg",
+        "image_caption": "Bia Chủ quyền Hoàng Sa của Việt Nam - Khẳng định chủ quyền lịch sử bất khả xâm phạm trên Biển Đông",
+        "wiki_title": "Tượng đài Đội Hoàng Sa kiêm quản Bắc Hải",
+        "id": 64,
+        "name": "Quần đảo Hoàng Sa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          112,
+          16.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Name": "Da Nang city",
+        "Note": null,
+        "name_vi": "Đà Nẵng",
+        "admin_unit": "Tỉnh/Thành phố Đà Nẵng",
+        "is_sovereignty": false,
+        "color": "#059669",
+        "region": "Đất liền",
+        "cultural_landmark": "Danh thắng Ngũ Hành Sơn & Bảo tàng Điêu khắc Chăm",
+        "cultural_summary": "Năm ngọn núi Kim - Mộc - Thủy - Hỏa - Thổ kỳ vĩ chứa đựng nhiều hang động huyền bí và làng đá mỹ nghệ Non Nước; cùng bảo tàng lưu giữ bộ sưu tập điêu khắc Chăm Pa độc nhất vô nhị.",
+        "cultural_category": "history",
+        "cultural_category_label": "Di tích Quốc gia Đặc biệt & Bảo tàng Điêu khắc",
+        "historical_period": "Kiến tạo địa chất & Thế kỷ 7 - 15",
+        "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/ce/Ngu_hanh_son_toan_canh.jpg/960px-Ngu_hanh_son_toan_canh.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+        "image_caption": "Danh thắng Ngũ Hành Sơn & Bảo tàng Điêu khắc Chăm huyền bí",
+        "wiki_title": "Ngũ Hành Sơn",
+        "id": 65,
+        "name": "Đà Nẵng"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          108.0709,
+          16.0362
+        ]
+      }
+    }
+  ]
+}

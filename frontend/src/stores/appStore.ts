@@ -13,8 +13,8 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   currentProvince: null,
-  mapCenter: [107.5, 16.0], // Tâm địa lý Việt Nam bao trọn dải đất hình chữ S và biển đảo
-  mapZoom: 5.8,
+  mapCenter: [108.5, 15.5], // Tâm trung tâm bao trọn cả đất liền và 2 quần đảo Hoàng Sa - Trường Sa
+  mapZoom: 4.75,
   selectedCategory: 'all',
   setMapCenter: (mapCenter) => set({ mapCenter }),
   setMapZoom: (mapZoom) => set({ mapZoom }),

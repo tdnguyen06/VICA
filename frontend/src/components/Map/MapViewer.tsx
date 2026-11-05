@@ -1,64 +1,239 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as maplibregl from 'maplibre-gl';
+import maplibreglWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { useAppStore } from '../../stores/appStore';
-import { VIETNAM_CULTURAL_SITES } from '../../data/vietnamCulturalSites';
-import type { CulturalSite } from '../../data/vietnamCulturalSites';
-import { Layers, Compass, MapPin } from 'lucide-react';
+import { useCulturalSites } from '../../hooks/useCulturalSites';
+import { VIETNAM_MARITIME_TERRITORIES } from '../../data/vietnamMaritimeSovereignty';
+import type { MaritimeTerritory } from '../../data/vietnamMaritimeSovereignty';
+import { LandmarkVisualCard } from './LandmarkVisualCard';
+import {
+  Layers,
+  Compass,
+  ShieldCheck,
+  Sun,
+  Moon,
+  Eye,
+  Database,
+  Sparkles,
+  RefreshCw,
+  Landmark,
+  Box,
+  X,
+} from 'lucide-react';
+
+// Configure Web Worker URL for MapLibre GL JS under Vite
+if (typeof window !== 'undefined' && maplibregl.config) {
+  maplibregl.config.WORKER_URL = maplibreglWorkerUrl;
+}
 
 interface MapViewerProps {
   className?: string;
 }
 
-// OpenStreetMap Raster Style - 100% reliable, full Vietnamese place names & topology
-const OSM_STYLE: maplibregl.StyleSpecification = {
-  version: 8,
-  sources: {
-    'osm-tiles': {
-      type: 'raster',
-      tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
+interface SelectedProvinceInfo {
+  name: string;
+  adminUnit: string;
+  isSovereignty: boolean;
+  culturalLandmark?: string;
+  culturalSummary?: string;
+  culturalCategoryLabel?: string;
+  historicalPeriod?: string;
+  description?: string;
+}
+
+interface HoveredProvinceState {
+  name: string;
+  landmark?: string;
+  historicalPeriod?: string;
+}
+
+const MAP_STYLES = {
+  voyager: {
+    id: 'voyager',
+    name: 'Địa lý tự nhiên',
+    icon: Sun,
+    url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
   },
-  layers: [
-    {
-      id: 'osm-layer',
-      type: 'raster',
-      source: 'osm-tiles',
-      minzoom: 0,
-      maxzoom: 19,
-    },
-  ],
+  positron: {
+    id: 'positron',
+    name: 'Sáng tối giản',
+    icon: Eye,
+    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  },
+  dark: {
+    id: 'dark',
+    name: 'Đêm sang trọng',
+    icon: Moon,
+    url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  },
 };
 
-const CARTO_STYLE = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-
-export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[500px] w-full' }) => {
+export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-full' }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
-  const markersRef = useRef<maplibregl.Marker[]>([]);
+  const sovereigntyMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const { mapCenter, mapZoom, setMapCenter, setMapZoom, selectedCategory, setSelectedCategory } = useAppStore();
-  const [mapStyleType, setMapStyleType] = useState<'osm' | 'carto'>('osm');
-  const [activeSite, setActiveSite] = useState<CulturalSite | null>(null);
+  const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
+  const [is3DView, setIs3DView] = useState(false);
+  const [selectedTerritory, setSelectedTerritory] = useState<MaritimeTerritory | null>(null);
+  const [hoveredProvince, setHoveredProvince] = useState<HoveredProvinceState | null>(null);
+  
+  // Default selected province: Hà Nội (Hoàng thành Thăng Long) with interactive 3D model
+  const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>({
+    name: 'Hà Nội',
+    adminUnit: 'Thành phố Hà Nội',
+    isSovereignty: false,
+    culturalLandmark: 'Hoàng thành Thăng Long & Văn Miếu - Quốc Tử Giám',
+    culturalSummary: 'Kinh đô ngàn năm văn hiến với quần thể Di sản Thế giới Hoàng thành Thăng Long và Văn Miếu - Quốc Tử Giám (Trường đại học đầu tiên của Việt Nam).',
+    culturalCategoryLabel: 'Di sản Thế giới UNESCO',
+    historicalPeriod: 'Thời Lý - Trần - Lê (1010 - 1789)',
+  });
 
-  // Initialize Map
+  // Fetch real cultural sites count from PostgreSQL + PostGIS API
+  const { data: sites = [], isFetching } = useCulturalSites(selectedCategory);
+
+  // Helper to add 63 Vietnam Provinces & 2 Archipelagoes GeoJSON layers
+  const addProvincesGeoJsonLayer = (map: maplibregl.Map) => {
+    sanitizeBasemapLabels(map);
+    if (map.getSource('vietnam-provinces')) return;
+
+    map.addSource('vietnam-provinces', {
+      type: 'geojson',
+      data: '/data/vietnam_provinces.geojson',
+      generateId: true,
+    });
+
+    // 1. Province Fills (Distinct colorful mosaic across all 63 provinces + 2 archipelagoes)
+    map.addLayer({
+      id: 'provinces-fill',
+      type: 'fill',
+      source: 'vietnam-provinces',
+      paint: {
+        'fill-color': ['get', 'color'],
+        'fill-opacity': [
+          'case',
+          ['boolean', ['feature-state', 'hover'], false],
+          0.85,
+          ['==', ['get', 'is_sovereignty'], true],
+          0.80,
+          0.45,
+        ],
+      },
+    });
+
+    // 2. Crisp Provincial Borders
+    map.addLayer({
+      id: 'provinces-borders',
+      type: 'line',
+      source: 'vietnam-provinces',
+      paint: {
+        'line-color': [
+          'case',
+          ['==', ['get', 'is_sovereignty'], true],
+          '#ef4444',
+          ['boolean', ['feature-state', 'hover'], false],
+          '#f59e0b',
+          '#1e293b',
+        ],
+        'line-width': [
+          'case',
+          ['==', ['get', 'is_sovereignty'], true],
+          3.0,
+          ['boolean', ['feature-state', 'hover'], false],
+          2.5,
+          1.2,
+        ],
+        'line-opacity': 0.95,
+      },
+    });
+
+    // 3. Dashed Outline for Archipelagoes (Hoàng Sa & Trường Sa)
+    map.addLayer({
+      id: 'sovereignty-dashed-borders',
+      type: 'line',
+      source: 'vietnam-provinces',
+      filter: ['==', ['get', 'is_sovereignty'], true],
+      paint: {
+        'line-color': '#f59e0b',
+        'line-width': 2.5,
+        'line-dasharray': [3, 2],
+      },
+    });
+
+    // 4. Fixed Single-Point Province & Archipelago Labels (Exactly 1 clean label per province, zero repeating duplicates)
+    if (!map.getSource('vietnam-province-labels')) {
+      map.addSource('vietnam-province-labels', {
+        type: 'geojson',
+        data: '/data/vietnam_province_labels.geojson',
+      });
+    }
+
+    map.addLayer({
+      id: 'provinces-labels',
+      type: 'symbol',
+      source: 'vietnam-province-labels',
+      layout: {
+        'text-field': ['get', 'name_vi'],
+        'text-size': [
+          'interpolate',
+          ['linear'],
+          ['zoom'],
+          4, 7.5,
+          5, 8.5,
+          6, 10.0,
+          7, 11.5,
+          8, 13.0,
+          10, 15.0,
+        ],
+        'text-font': ['Open Sans Bold', 'Noto Sans Regular'],
+        'text-max-width': 4.5, // Tự động ngắt dòng thông minh để nằm gọn gàng bên trong tỉnh
+        'text-justify': 'center',
+        'text-anchor': 'center',
+        'symbol-placement': 'point',
+        'text-line-height': 1.1,
+        'text-allow-overlap': true,
+        'text-ignore-placement': true,
+      },
+      paint: {
+        'text-color': [
+          'case',
+          ['==', ['get', 'is_sovereignty'], true],
+          '#fef08a', // Hoàng Sa & Trường Sa nổi bật
+          '#ffffff', // 100% chữ trắng tinh khôi cho toàn bộ 63 tỉnh/thành phố
+        ],
+        'text-halo-color': '#020617',
+        'text-halo-width': 2.0,
+        'text-halo-blur': 0.5,
+      },
+    });
+  };
+
+  // Initialize MapLibre GL
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
-    const initialStyle = mapStyleType === 'osm' ? OSM_STYLE : CARTO_STYLE;
-
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
-      style: initialStyle,
+      style: MAP_STYLES[activeStyleKey].url,
       center: mapCenter,
       zoom: mapZoom,
-      maxBounds: [
-        [98.0, 6.0],   // Tây Nam (bao trọn vịnh Thái Lan & Cà Mau)
-        [118.0, 25.0], // Đông Bắc (bao trọn cực Bắc & 2 quần đảo Hoàng Sa, Trường Sa)
-      ],
+      minZoom: 3.5,
+      maxZoom: 18,
+      attributionControl: false,
+      scrollZoom: true,
+      dragPan: true,
+      doubleClickZoom: true,
+      touchZoomRotate: true,
     });
 
+    map.addControl(
+      new maplibregl.AttributionControl({
+        compact: true,
+        customAttribution: 'Vietnam Cultural Atlas &copy; CARTO &copy; OpenStreetMap &copy; PostGIS',
+      }),
+      'bottom-right'
+    );
     map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-right');
     map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
@@ -68,108 +243,315 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[500px] w-f
       setMapZoom(map.getZoom());
     });
 
+    let currentHoveredId: number | string | null = null;
+
+    map.on('load', () => {
+      map.resize();
+      addProvincesGeoJsonLayer(map);
+      renderSovereigntyOverlays(map);
+
+      // Setup Province Hover Interaction (STABLE: no text jumping / jittering)
+      map.on('mousemove', 'provinces-fill', (e) => {
+        if (!e.features || e.features.length === 0) return;
+
+        const feature = e.features[0];
+        const newId = feature.id ?? null;
+
+        // CRUCIAL FIX: Short-circuit if mouse moves within the same province
+        // Prevents 60fps re-rendering and animation jittering
+        if (newId === currentHoveredId) return;
+
+        if (currentHoveredId !== null) {
+          map.setFeatureState(
+            { source: 'vietnam-provinces', id: currentHoveredId },
+            { hover: false }
+          );
+        }
+        currentHoveredId = newId;
+        if (currentHoveredId !== null) {
+          map.setFeatureState(
+            { source: 'vietnam-provinces', id: currentHoveredId },
+            { hover: true }
+          );
+        }
+        map.getCanvas().style.cursor = 'pointer';
+        const props = feature.properties;
+        if (props && props.name_vi) {
+          setHoveredProvince({
+            name: props.name_vi,
+            landmark: props.cultural_landmark,
+            historicalPeriod: props.historical_period,
+          });
+        }
+      });
+
+      map.on('mouseleave', 'provinces-fill', () => {
+        if (currentHoveredId !== null) {
+          map.setFeatureState(
+            { source: 'vietnam-provinces', id: currentHoveredId },
+            { hover: false }
+          );
+        }
+        currentHoveredId = null;
+        map.getCanvas().style.cursor = '';
+        setHoveredProvince(null);
+      });
+
+      const selectProvinceFromProperties = (props: any) => {
+        if (!props) return;
+        setSelectedTerritory(null);
+        setSelectedProvinceInfo({
+          name: props.name_vi || props.name,
+          adminUnit: props.admin_unit || `Tỉnh/Thành phố ${props.name_vi || props.name}`,
+          isSovereignty: !!props.is_sovereignty,
+          culturalLandmark: props.cultural_landmark,
+          culturalSummary: props.cultural_summary,
+          culturalCategoryLabel: props.cultural_category_label,
+          historicalPeriod: props.historical_period,
+        });
+      };
+
+      map.on('click', 'provinces-fill', (e) => {
+        if (e.features && e.features.length > 0) {
+          selectProvinceFromProperties(e.features[0].properties);
+        }
+      });
+
+      map.on('click', 'provinces-labels', (e) => {
+        if (e.features && e.features.length > 0) {
+          selectProvinceFromProperties(e.features[0].properties);
+        }
+      });
+
+      map.on('mouseenter', 'provinces-labels', () => {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave', 'provinces-labels', () => {
+        map.getCanvas().style.cursor = '';
+      });
+    });
+
+    const resizeObserver = new ResizeObserver(() => {
+      map.resize();
+    });
+    if (mapContainerRef.current) {
+      resizeObserver.observe(mapContainerRef.current);
+    }
+
     mapInstanceRef.current = map;
 
     return () => {
+      resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
   }, []);
 
-  // Switch Map Style
-  const handleStyleChange = (style: 'osm' | 'carto') => {
+  // Handle Switch Basemap Style
+  const handleSwitchStyle = (key: keyof typeof MAP_STYLES) => {
     if (!mapInstanceRef.current) return;
-    setMapStyleType(style);
-    mapInstanceRef.current.setStyle(style === 'osm' ? OSM_STYLE : CARTO_STYLE);
+    setActiveStyleKey(key);
+    mapInstanceRef.current.setStyle(MAP_STYLES[key].url);
+
+    mapInstanceRef.current.once('styledata', () => {
+      if (mapInstanceRef.current) {
+        addProvincesGeoJsonLayer(mapInstanceRef.current);
+        renderSovereigntyOverlays(mapInstanceRef.current);
+      }
+    });
   };
 
-  // Render markers according to filter
-  useEffect(() => {
-    const map = mapInstanceRef.current;
-    if (!map) return;
+  // Toggle 3D Perspective Pitch / 2D Flat View
+  const toggle3DView = () => {
+    if (!mapInstanceRef.current) return;
+    const new3D = !is3DView;
+    setIs3DView(new3D);
+    if (new3D) {
+      mapInstanceRef.current.easeTo({
+        pitch: 55,
+        bearing: -15,
+        duration: 1200,
+      });
+    } else {
+      mapInstanceRef.current.easeTo({
+        pitch: 0,
+        bearing: 0,
+        duration: 1200,
+      });
+    }
+  };
 
-    // Clear existing markers
-    markersRef.current.forEach((m) => m.remove());
-    markersRef.current = [];
+  // Clean foreign/controversial water labels and hide Carto default place dots/black text
+  // so that ONLY our official 63 clean white Vietnam province labels are displayed
+  const sanitizeBasemapLabels = (map: maplibregl.Map) => {
+    try {
+      if (!map.isStyleLoaded()) return;
+      const style = map.getStyle();
+      if (!style || !style.layers) return;
 
-    const filteredSites =
-      selectedCategory === 'all'
-        ? VIETNAM_CULTURAL_SITES
-        : VIETNAM_CULTURAL_SITES.filter((s) => s.category === selectedCategory);
+      style.layers.forEach((layer) => {
+        const id = layer.id;
+        // 1. Hide foreign / controversial water names
+        if (['watername_ocean', 'watername_sea'].includes(id)) {
+          map.setLayoutProperty(id, 'visibility', 'none');
+        }
+        // 2. Hide basemap's internal OSM city/place/town dots and black labels
+        // This eliminates the conflicting black text and missing/unranked city clutter
+        if (
+          id.startsWith('place_') ||
+          id.startsWith('poi_') ||
+          id.includes('city_dot') ||
+          id.includes('capital_dot')
+        ) {
+          map.setLayoutProperty(id, 'visibility', 'none');
+        }
+      });
+    } catch {
+      // Safe guard
+    }
+  };
 
-    filteredSites.forEach((site) => {
-      // Custom HTML Marker element
+  // Render Vietnam Maritime Sovereignty Labels & Clean Minimalist Markers
+  const renderSovereigntyOverlays = (map: maplibregl.Map) => {
+    sanitizeBasemapLabels(map);
+
+    sovereigntyMarkersRef.current.forEach((m) => m.remove());
+    sovereigntyMarkersRef.current = [];
+
+    // Subtle Watermark: BIỂN ĐÔNG (Cartographic ocean label)
+    const bienDongEl = document.createElement('div');
+    bienDongEl.className = 'pointer-events-none select-none text-center';
+    bienDongEl.innerHTML = `
+      <div style="color: rgba(2, 132, 199, 0.45); font-weight: 800; font-size: 15px; letter-spacing: 0.35em; text-transform: uppercase;">
+        BIỂN ĐÔNG
+      </div>
+      <div style="color: rgba(2, 132, 199, 0.3); font-weight: 700; font-size: 10px; letter-spacing: 0.2em;">
+        (VIETNAM EAST SEA)
+      </div>
+    `;
+    const bienDongMarker = new maplibregl.Marker({ element: bienDongEl })
+      .setLngLat([112.5, 13.5])
+      .addTo(map);
+    sovereigntyMarkersRef.current.push(bienDongMarker);
+
+    // Clean Island Markers: Name only, details revealed strictly on hover
+    VIETNAM_MARITIME_TERRITORIES.forEach((territory) => {
+      const isSpecial = territory.id === 'hoang-sa' || territory.id === 'truong-sa';
+
+      // Short clean display name
+      const shortName =
+        territory.id === 'hoang-sa'
+          ? 'QĐ. Hoàng Sa'
+          : territory.id === 'truong-sa'
+          ? 'QĐ. Trường Sa'
+          : territory.id === 'con-dao'
+          ? 'Côn Đảo'
+          : territory.id === 'phu-quoc'
+          ? 'Phú Quốc'
+          : territory.id === 'ly-son'
+          ? 'Lý Sơn'
+          : territory.id === 'bach-long-vi'
+          ? 'Bạch Long Vĩ'
+          : territory.name;
+
       const el = document.createElement('div');
-      el.className = 'group cursor-pointer transform -translate-x-1/2 -translate-y-full transition-transform hover:scale-125';
+      el.className = 'cursor-pointer group relative select-none';
       el.innerHTML = `
-        <div style="background-color: ${site.color};" class="p-1.5 rounded-full shadow-lg border-2 border-white flex items-center justify-center">
-          <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-          </svg>
+        <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border ${
+          isSpecial ? 'border-amber-400/90 shadow-md shadow-amber-500/20' : 'border-slate-700/80'
+        } transition-all duration-150">
+          <span class="w-1.5 h-1.5 rounded-full ${isSpecial ? 'bg-red-500 ring-1 ring-amber-300' : 'bg-cyan-400'} shrink-0"></span>
+          <span class="text-[11px] font-bold ${isSpecial ? 'text-amber-200' : 'text-slate-200'} whitespace-nowrap">
+            ${shortName}
+          </span>
+        </div>
+
+        <!-- HOVER TOOLTIP: Revealed strictly on hover -->
+        <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 bg-slate-950/95 backdrop-blur-md p-3 rounded-xl border border-amber-400/80 shadow-2xl text-left text-slate-100">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-300 flex items-center">
+              <span class="mr-1">🇻🇳</span> ${territory.name}
+            </span>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-400/30">
+              Biển đảo
+            </span>
+          </div>
+          <p class="text-[10px] text-amber-200/90 font-medium mt-1">${territory.adminUnit}</p>
+          <p class="text-[10px] text-slate-300 mt-1 leading-relaxed line-clamp-3">${territory.description}</p>
+          <div class="mt-2 pt-1.5 border-t border-slate-800 flex items-center justify-between text-[9px] text-slate-400">
+            <span>Click để mở ảnh di tích</span>
+            <span class="text-amber-400 font-bold">Xem thêm →</span>
+          </div>
         </div>
       `;
 
-      // Popup with rich information
-      const popup = new maplibregl.Popup({ offset: 25, closeButton: false }).setHTML(`
-        <div style="color: #0f172a; padding: 4px; font-family: sans-serif; max-width: 240px;">
-          <div style="display: inline-block; background: ${site.color}15; color: ${site.color}; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; margin-bottom: 4px;">
-            ${site.categoryLabel}
-          </div>
-          <h4 style="margin: 0 0 4px 0; font-size: 14px; font-weight: 700; color: #0f172a;">${site.name}</h4>
-          <p style="margin: 0 0 6px 0; font-size: 11px; color: #475569; line-height: 1.4;">${site.description}</p>
-          <div style="font-size: 10px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 4px;">
-            📍 <b>${site.province}</b> ${site.yearRecognized ? `| UNESCO: ${site.yearRecognized}` : ''}
-          </div>
-        </div>
-      `);
+      el.addEventListener('mouseenter', () => {
+        setHoveredProvince({
+          name: territory.name,
+          landmark: territory.adminUnit,
+        });
+      });
 
-      el.addEventListener('click', () => {
-        setActiveSite(site);
+      el.addEventListener('mouseleave', () => {
+        setHoveredProvince(null);
+      });
+
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setSelectedProvinceInfo({
+          name: territory.name,
+          adminUnit: territory.adminUnit,
+          isSovereignty: true,
+          culturalLandmark: territory.culturalLandmark,
+          culturalSummary: territory.description,
+          culturalCategoryLabel: 'Chủ quyền Lãnh thổ Biển Đảo',
+          historicalPeriod: 'Thế kỷ 17 - Nay',
+        });
+        setSelectedTerritory(territory);
       });
 
       const marker = new maplibregl.Marker({ element: el })
-        .setLngLat([site.lng, site.lat])
-        .setPopup(popup)
+        .setLngLat([territory.lng, territory.lat])
         .addTo(map);
 
-      markersRef.current.push(marker);
+      sovereigntyMarkersRef.current.push(marker);
     });
-  }, [selectedCategory]);
+  };
 
-  // Quick Fly to region
-  const flyToRegion = (lng: number, lat: number, zoom: number) => {
+  // Smooth Fly-to
+  const flyTo = (lng: number, lat: number, zoom: number) => {
     mapInstanceRef.current?.flyTo({
       center: [lng, lat],
       zoom,
       essential: true,
-      duration: 1500,
+      duration: 1600,
     });
   };
 
   return (
     <div className="space-y-3">
-      {/* Quick Navigation & Filters Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 p-3 rounded-xl backdrop-blur-md">
+      {/* Sleek Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-slate-900/95 border border-slate-800 p-2.5 rounded-xl shadow-lg backdrop-blur-md">
         {/* Category Filters */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="text-slate-400 font-medium mr-1 flex items-center">
-            <Layers className="w-3.5 h-3.5 mr-1" /> Bộ lọc:
+        <div className="flex flex-wrap items-center gap-1 text-xs">
+          <span className="text-slate-400 font-semibold mr-1 flex items-center">
+            <Layers className="w-3.5 h-3.5 mr-1 text-amber-400" /> Di sản:
           </span>
           {[
-            { id: 'all', label: 'Tất cả' },
+            { id: 'all', label: 'Tất cả 65 điểm' },
             { id: 'unesco', label: 'Di sản UNESCO' },
             { id: 'history', label: 'Di tích Lịch sử' },
-            { id: 'festival', label: 'Lễ hội & Văn hóa' },
-            { id: 'nature', label: 'Thắng cảnh' },
+            { id: 'festival', label: 'Lễ hội & Cổ truyền' },
+            { id: 'nature', label: 'Danh thắng' },
           ].map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-2.5 py-1 rounded-lg font-medium transition ${
+              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition cursor-pointer ${
                 selectedCategory === cat.id
-                  ? 'bg-amber-500 text-slate-950 shadow-md font-semibold'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                  ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold shadow-md shadow-amber-500/20'
+                  : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700'
               }`}
             >
               {cat.label}
@@ -177,113 +559,250 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[500px] w-f
           ))}
         </div>
 
-        {/* Region Quick Jump */}
-        <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="text-slate-400 font-medium mr-1 flex items-center">
-            <Compass className="w-3.5 h-3.5 mr-1" /> Vùng:
+        {/* Region & Sovereignty Navigation Buttons */}
+        <div className="flex flex-wrap items-center gap-1 text-xs">
+          <span className="text-slate-400 font-semibold mr-1 flex items-center">
+            <Compass className="w-3.5 h-3.5 mr-1 text-rose-400" /> Tiêu điểm:
           </span>
           <button
-            onClick={() => flyToRegion(107.5, 16.0, 5.8)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition"
+            onClick={() => flyTo(108.5, 15.5, 4.75)}
+            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer font-medium"
           >
-            🇻🇳 Toàn quốc
+            🇻🇳 Toàn cảnh (63 Tỉnh)
           </button>
           <button
-            onClick={() => flyToRegion(105.8, 21.2, 7.5)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition"
+            onClick={() => flyTo(112.0, 16.5, 7.5)}
+            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition shadow-md border border-amber-400/50 cursor-pointer"
+          >
+            🇻🇳 QĐ Hoàng Sa
+          </button>
+          <button
+            onClick={() => flyTo(114.3, 10.0, 7.0)}
+            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition shadow-md border border-amber-400/50 cursor-pointer"
+          >
+            🇻🇳 QĐ Trường Sa
+          </button>
+          <button
+            onClick={() => flyTo(105.8, 21.2, 7.0)}
+            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
           >
             Miền Bắc
           </button>
           <button
-            onClick={() => flyToRegion(107.8, 16.2, 7.5)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition"
+            onClick={() => flyTo(107.8, 16.2, 7.0)}
+            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
           >
             Miền Trung
           </button>
           <button
-            onClick={() => flyToRegion(106.3, 10.3, 7.5)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition"
+            onClick={() => flyTo(106.6, 10.5, 7.0)}
+            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
           >
             Miền Nam
           </button>
-          <button
-            onClick={() => flyToRegion(113.2, 13.5, 6.0)}
-            className="px-2.5 py-1 bg-rose-950/60 border border-rose-800/80 hover:bg-rose-900/60 text-rose-300 rounded-lg transition"
-          >
-            🌊 Biển Đảo
-          </button>
         </div>
 
-        {/* Style Switcher */}
-        <div className="flex items-center gap-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800 text-xs">
+        {/* 3D Map Perspective Toggle & Style Switcher */}
+        <div className="flex items-center gap-2">
+          {/* 3D Tilt View Button */}
           <button
-            onClick={() => handleStyleChange('osm')}
-            className={`px-2 py-0.5 rounded ${
-              mapStyleType === 'osm' ? 'bg-amber-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
+            onClick={toggle3DView}
+            className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border ${
+              is3DView
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20'
+                : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-400/40'
             }`}
+            title="Bật/Tắt góc nhìn không gian 3D nghiêng"
           >
-            OSM Chuẩn
+            <Box className="w-3.5 h-3.5" />
+            <span>{is3DView ? 'Bản đồ 3D (Đang bật)' : 'Góc nhìn 3D'}</span>
           </button>
-          <button
-            onClick={() => handleStyleChange('carto')}
-            className={`px-2 py-0.5 rounded ${
-              mapStyleType === 'carto' ? 'bg-amber-500 text-slate-950 font-semibold' : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Tối giản
-          </button>
+
+          {/* Real PostGIS Indicator */}
+          <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-950/60 border border-emerald-800/80 text-[11px] text-emerald-400">
+            <Database className="w-3 h-3 animate-pulse" />
+            <span className="font-semibold">PostGIS API ({sites.length} điểm)</span>
+            {isFetching && <RefreshCw className="w-2.5 h-2.5 animate-spin ml-0.5" />}
+          </div>
+
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+            {(Object.keys(MAP_STYLES) as Array<keyof typeof MAP_STYLES>).map((key) => {
+              const style = MAP_STYLES[key];
+              const Icon = style.icon;
+              const isActive = activeStyleKey === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => handleSwitchStyle(key)}
+                  className={`flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
+                    isActive
+                      ? 'bg-amber-500 text-slate-950 font-bold shadow'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  <Icon className="w-3 h-3" />
+                  <span>{style.name}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Map Container */}
+      {/* Main Map Box */}
       <div className={`relative rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-950 ${className}`}>
         <div ref={mapContainerRef} className="w-full h-full" />
 
-        {/* Selected Site Detail Card Float */}
-        {activeSite && (
-          <div className="absolute top-4 left-4 z-10 max-w-sm bg-slate-900/95 backdrop-blur-md p-4 rounded-xl border border-slate-700 shadow-2xl animate-fade-in text-slate-100">
+        {/* STABLE TOP HUD BANNER (Fixed Position & Height: Zero Text Jumping / Jitter) */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none max-w-xl w-[90%]">
+          <div className="bg-slate-950/90 backdrop-blur-md border border-slate-700/80 rounded-xl px-4 py-2 shadow-2xl flex items-center justify-between text-xs text-slate-200 transition-all duration-150">
+            {hoveredProvince ? (
+              <div className="flex items-center space-x-2 truncate">
+                <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0 shadow-sm shadow-amber-400/80" />
+                <span className="font-extrabold text-amber-300 shrink-0">{hoveredProvince.name}</span>
+                <span className="text-slate-500">•</span>
+                <span className="text-white font-medium truncate flex items-center">
+                  <Landmark className="w-3 h-3 mr-1 text-amber-400 shrink-0 inline" />
+                  {hoveredProvince.landmark || 'Đặc trưng văn hóa'}
+                </span>
+                {hoveredProvince.historicalPeriod && (
+                  <>
+                    <span className="text-slate-500 hidden sm:inline">•</span>
+                    <span className="text-amber-200/80 text-[11px] hidden sm:inline truncate">{hoveredProvince.historicalPeriod}</span>
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2 text-slate-400">
+                <Compass className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <span>Di chuột qua tỉnh thành để xem di tích • Click để chiêm ngưỡng ảnh thật di sản</span>
+              </div>
+            )}
+            <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 border border-amber-400/30 text-amber-300 font-bold ml-2 shrink-0">
+              📸 65 Điểm Di tích Thực tế
+            </span>
+          </div>
+        </div>
+
+        {/* Selected Province Info Panel with Authentic Photography */}
+        {selectedProvinceInfo && (
+          <div className="absolute top-14 left-4 z-20 w-80 sm:w-96 max-h-[calc(100%-4.5rem)] overflow-y-auto bg-slate-900/98 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl text-slate-100 transition-all">
             <div className="flex items-start justify-between">
-              <span
-                style={{ backgroundColor: `${activeSite.color}20`, color: activeSite.color }}
-                className="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider mb-1 inline-block"
-              >
-                {activeSite.categoryLabel}
+              <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex items-center ${
+                selectedProvinceInfo.isSovereignty
+                  ? 'bg-red-600/30 text-red-300 border border-red-500/50'
+                  : 'bg-amber-500/20 text-amber-300 border border-amber-400/40'
+              }`}>
+                <Sparkles className="w-3 h-3 mr-1" />
+                {selectedProvinceInfo.culturalCategoryLabel || (selectedProvinceInfo.isSovereignty ? '🇻🇳 Lãnh thổ Biển Đảo' : 'Di sản Cổ truyền')}
               </span>
               <button
-                onClick={() => setActiveSite(null)}
-                className="text-slate-400 hover:text-white text-xs px-1"
+                onClick={() => setSelectedProvinceInfo(null)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer"
+                title="Đóng thẻ"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
-            <h4 className="font-bold text-base text-white mt-1">{activeSite.name}</h4>
-            <p className="text-xs text-slate-300 mt-1 leading-relaxed">{activeSite.description}</p>
-            <div className="mt-3 pt-2 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-              <span className="flex items-center">
-                <MapPin className="w-3.5 h-3.5 mr-1 text-amber-400" />
-                {activeSite.province}
-              </span>
-              <span className="font-mono text-[11px] text-slate-500">
-                {activeSite.lng.toFixed(2)}°E, {activeSite.lat.toFixed(2)}°N
-              </span>
+            
+            <div className="mt-2 flex items-center justify-between">
+              <div>
+                <h4 className="font-black text-lg text-white flex items-center space-x-1.5">
+                  <span>{selectedProvinceInfo.isSovereignty ? '🇻🇳' : '📍'}</span>
+                  <span>{selectedProvinceInfo.name}</span>
+                </h4>
+                <p className="text-xs text-slate-400 font-medium">{selectedProvinceInfo.adminUnit}</p>
+              </div>
+              <div className="px-2 py-0.5 bg-slate-950 rounded border border-amber-400/40 text-[10px] font-extrabold text-amber-400 flex items-center">
+                <Sparkles className="w-3 h-3 mr-1 text-amber-400" />
+                Di sản Quốc gia
+              </div>
+            </div>
+
+            {/* AUTHENTIC REAL PHOTOGRAPHY + 3D PARALLAX TILT + 3D DIGITAL SCAN LINK */}
+            <div className="mt-2.5">
+              <LandmarkVisualCard
+                provinceName={selectedProvinceInfo.name}
+                landmarkName={selectedProvinceInfo.culturalLandmark || selectedProvinceInfo.name}
+                categoryLabel={selectedProvinceInfo.culturalCategoryLabel}
+                historicalPeriod={selectedProvinceInfo.historicalPeriod}
+                isSovereignty={selectedProvinceInfo.isSovereignty}
+              />
+            </div>
+
+            <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+              {selectedProvinceInfo.culturalSummary || selectedProvinceInfo.description || (
+                selectedProvinceInfo.isSovereignty
+                  ? 'Phần lãnh thổ thiêng liêng không thể tách rời của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam trên Biển Đông.'
+                  : 'Vùng đất giàu truyền thống văn hóa dân tộc với di tích lịch sử ngàn đời.'
+              )}
+            </p>
+
+            {/* Quick Action Button */}
+            <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
+              <span className="text-[11px] text-slate-400">Mô hình tạo bởi Antigravity 3D Engine</span>
+              <button
+                onClick={() => {
+                  // Click any province to focus zoom
+                }}
+                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer"
+              >
+                Khám phá di sản →
+              </button>
             </div>
           </div>
         )}
 
-        {/* Live Coordinates Footer */}
-        <div className="absolute bottom-3 left-3 bg-slate-950/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-xs text-slate-300 flex items-center space-x-3">
+        {/* Sovereignty Info Panel (Special badge for Maritime Territories) */}
+        {selectedTerritory && (
+          <div className="absolute top-14 right-4 z-20 max-w-sm bg-slate-900/95 backdrop-blur-md p-4 rounded-xl border-2 border-red-500/80 shadow-2xl text-slate-100">
+            <div className="flex items-start justify-between">
+              <span className="flex items-center space-x-1 bg-red-600/20 text-red-400 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase border border-red-500/40">
+                <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+                Chủ quyền Lãnh thổ Việt Nam
+              </span>
+              <button
+                onClick={() => setSelectedTerritory(null)}
+                className="text-slate-400 hover:text-white text-xs px-1 cursor-pointer"
+              >
+                ✕
+              </button>
+            </div>
+            <h4 className="font-extrabold text-lg text-white mt-2 flex items-center space-x-1.5">
+              <span>🇻🇳</span>
+              <span>{selectedTerritory.name}</span>
+            </h4>
+            <p className="text-xs text-amber-400 font-semibold mt-0.5">{selectedTerritory.adminUnit}</p>
+            <p className="text-xs text-slate-300 mt-2 leading-relaxed">{selectedTerritory.description}</p>
+            <div className="mt-3 pt-2.5 border-t border-slate-800">
+              <span className="text-[11px] font-bold text-slate-400 block mb-1.5">Các đảo, bãi đá tiêu biểu:</span>
+              <div className="flex flex-wrap gap-1">
+                {selectedTerritory.islands.map((island) => (
+                  <span
+                    key={island}
+                    className="px-2 py-0.5 bg-slate-800/90 text-slate-200 text-[10px] rounded border border-slate-700"
+                  >
+                    {island}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Live Coordinates Footer Bottom Left */}
+        <div className="absolute bottom-3 left-3 bg-slate-950/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-xs text-slate-300 flex items-center space-x-3 pointer-events-none">
           <span>
-            📍 <b>Kinh độ:</b> {mapCenter[0].toFixed(4)}°E | <b>Vĩ độ:</b> {mapCenter[1].toFixed(4)}°N
+            📍 <b>Tọa độ:</b> {mapCenter[0].toFixed(3)}°E, {mapCenter[1].toFixed(3)}°N
           </span>
           <span className="text-slate-500">|</span>
           <span>
             🔍 <b>Thu phóng:</b> {mapZoom.toFixed(1)}x
           </span>
           <span className="text-slate-500">|</span>
-          <span className="text-amber-400 font-semibold">
-            {selectedCategory === 'all'
-              ? `${VIETNAM_CULTURAL_SITES.length} Điểm di sản`
-              : `${VIETNAM_CULTURAL_SITES.filter((s) => s.category === selectedCategory).length} Điểm lọc`}
+          <span className="text-emerald-400 font-semibold flex items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
+            65 Điểm Di tích Cổ truyền (63 Tỉnh Thành & 2 Quần Đảo)
           </span>
         </div>
       </div>

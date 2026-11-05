@@ -96,7 +96,7 @@ export const HomePage: React.FC = () => {
           </div>
           <span className="text-xs text-slate-400">Tọa độ mẫu: Hà Nội & TP. Hồ Chí Minh</span>
         </div>
-        <MapViewer className="h-[460px] w-full" />
+        <MapViewer className="h-[580px] w-full" />
       </div>
 
       {/* Architecture Foundations Status Grid */}
