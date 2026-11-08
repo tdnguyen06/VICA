@@ -6,6 +6,8 @@ import { useCulturalSites } from '../../hooks/useCulturalSites';
 import { VIETNAM_MARITIME_TERRITORIES } from '../../data/vietnamMaritimeSovereignty';
 import type { MaritimeTerritory } from '../../data/vietnamMaritimeSovereignty';
 import { LandmarkVisualCard } from './LandmarkVisualCard';
+import { fetchProvince, identifyProvince } from '../../api/geographicApi';
+import { provinceSlugFromProperties, provinceSlugFromTerritory, provinceSourceName } from '../../data/provinceRegistry';
 import {
   Layers,
   Compass,
@@ -72,23 +74,17 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<maplibregl.Map | null>(null);
   const sovereigntyMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const geographicRequestRef = useRef<AbortController | null>(null);
 
-  const { mapCenter, mapZoom, setMapCenter, setMapZoom, selectedCategory, setSelectedCategory } = useAppStore();
+  const { mapCenter, mapZoom, setMapCenter, setMapZoom, selectedCategory, setSelectedCategory, setCurrentProvince } = useAppStore();
+  const [geographicStatus, setGeographicStatus] = useState('');
+  const [geographicError, setGeographicError] = useState(false);
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
   const [is3DView, setIs3DView] = useState(false);
   const [selectedTerritory, setSelectedTerritory] = useState<MaritimeTerritory | null>(null);
   const [hoveredProvince, setHoveredProvince] = useState<HoveredProvinceState | null>(null);
   
-  // Default selected province: Hà Nội (Hoàng thành Thăng Long) with interactive 3D model
-  const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>({
-    name: 'Hà Nội',
-    adminUnit: 'Thành phố Hà Nội',
-    isSovereignty: false,
-    culturalLandmark: 'Hoàng thành Thăng Long & Văn Miếu - Quốc Tử Giám',
-    culturalSummary: 'Kinh đô ngàn năm văn hiến với quần thể Di sản Thế giới Hoàng thành Thăng Long và Văn Miếu - Quốc Tử Giám (Trường đại học đầu tiên của Việt Nam).',
-    culturalCategoryLabel: 'Di sản Thế giới UNESCO',
-    historicalPeriod: 'Thời Lý - Trần - Lê (1010 - 1789)',
-  });
+  const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>(null);
 
   // Fetch real cultural sites count from PostgreSQL + PostGIS API
   const { data: sites = [], isFetching } = useCulturalSites(selectedCategory);
@@ -148,7 +144,15 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       },
     });
 
-    // 3. Dashed Outline for Archipelagoes (Hoàng Sa & Trường Sa)
+    // Selected province follows the canonical slug shared with other modules.
+    map.addLayer({
+      id: 'selected-province-border',
+      type: 'line',
+      source: 'vietnam-provinces',
+      filter: ['==', ['get', 'Name'], provinceSourceName(useAppStore.getState().currentProvince)],
+      paint: { 'line-color': '#fbbf24', 'line-width': 4 },
+    });
+
     map.addLayer({
       id: 'sovereignty-dashed-borders',
       type: 'line',
@@ -297,29 +301,57 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         setHoveredProvince(null);
       });
 
-      const selectProvinceFromProperties = (props: any) => {
-        if (!props) return;
+      const selectProvince = async (props: Record<string, unknown> | null, point?: maplibregl.LngLat) => {
+        geographicRequestRef.current?.abort();
+        const controller = new AbortController();
+        geographicRequestRef.current = controller;
+        setGeographicStatus('Đang xác định địa phương…');
+        setGeographicError(false);
+        setCurrentProvince(null);
+        setSelectedProvinceInfo(null);
         setSelectedTerritory(null);
-        setSelectedProvinceInfo({
-          name: props.name_vi || props.name,
-          adminUnit: props.admin_unit || `Tỉnh/Thành phố ${props.name_vi || props.name}`,
-          isSovereignty: !!props.is_sovereignty,
-          culturalLandmark: props.cultural_landmark,
-          culturalSummary: props.cultural_summary,
-          culturalCategoryLabel: props.cultural_category_label,
-          historicalPeriod: props.historical_period,
-        });
+        const slug = props ? provinceSlugFromProperties(props) : null;
+        const isDisplayOnly = props?.is_sovereignty === true || props?.is_sovereignty === 'true';
+        try {
+          const province = point && !isDisplayOnly
+            ? await identifyProvince(point.lat, point.lng, controller.signal)
+            : slug ? await fetchProvince(slug, controller.signal) : null;
+          if (controller.signal.aborted) return;
+          if (!province) {
+            if (props && !point && !slug) throw new Error('Unmapped map feature');
+            setGeographicStatus('Không có địa phương trong vùng dữ liệu tại vị trí này.');
+            return;
+          }
+          setCurrentProvince(province.slug);
+          setGeographicStatus(`Đã chọn ${province.name}`);
+          // Retain existing cultural preview only when it belongs to the identified province.
+          const preview = props && slug === province.slug ? props : {};
+          const text = (key: string) => typeof preview[key] === 'string' ? preview[key] as string : undefined;
+          setSelectedProvinceInfo({
+            name: isDisplayOnly ? text('name_vi') ?? province.name : province.name,
+            adminUnit: province.adminUnit,
+            isSovereignty: isDisplayOnly,
+            culturalLandmark: text('cultural_landmark'),
+            culturalSummary: text('cultural_summary'),
+            culturalCategoryLabel: text('cultural_category_label'),
+            historicalPeriod: text('historical_period'),
+          });
+        } catch {
+          if (controller.signal.aborted) return;
+          setGeographicError(true);
+          setGeographicStatus('Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.');
+        }
       };
 
       map.on('click', 'provinces-fill', (e) => {
         if (e.features && e.features.length > 0) {
-          selectProvinceFromProperties(e.features[0].properties);
+          void selectProvince(e.features[0].properties, e.lngLat);
         }
       });
 
       map.on('click', 'provinces-labels', (e) => {
         if (e.features && e.features.length > 0) {
-          selectProvinceFromProperties(e.features[0].properties);
+          void selectProvince(e.features[0].properties);
         }
       });
 
@@ -329,6 +361,12 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
 
       map.on('mouseleave', 'provinces-labels', () => {
         map.getCanvas().style.cursor = '';
+      });
+
+      map.on('click', (e) => {
+        const layers = ['provinces-fill', 'provinces-labels'].filter(layer => map.getLayer(layer));
+        const features = layers.length ? map.queryRenderedFeatures(e.point, { layers }) : [];
+        if (!features.length) void selectProvince(null, e.lngLat);
       });
     });
 
@@ -340,8 +378,16 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
     }
 
     mapInstanceRef.current = map;
+    const unsubscribeProvince = useAppStore.subscribe((state, previous) => {
+      if (state.currentProvince !== previous.currentProvince && map.getLayer('selected-province-border')) {
+        map.setFilter('selected-province-border', ['==', ['get', 'Name'], provinceSourceName(state.currentProvince)]);
+      }
+    });
 
     return () => {
+      unsubscribeProvince();
+      geographicRequestRef.current?.abort();
+      useAppStore.getState().setCurrentProvince(null);
       resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
@@ -497,18 +543,38 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         setHoveredProvince(null);
       });
 
-      el.addEventListener('click', (e) => {
+      el.addEventListener('click', async (e) => {
         e.stopPropagation();
-        setSelectedProvinceInfo({
-          name: territory.name,
-          adminUnit: territory.adminUnit,
-          isSovereignty: true,
-          culturalLandmark: territory.culturalLandmark,
-          culturalSummary: territory.description,
-          culturalCategoryLabel: 'Chủ quyền Lãnh thổ Biển Đảo',
-          historicalPeriod: 'Thế kỷ 17 - Nay',
-        });
-        setSelectedTerritory(territory);
+        geographicRequestRef.current?.abort();
+        const controller = new AbortController();
+        geographicRequestRef.current = controller;
+        setCurrentProvince(null);
+        setSelectedProvinceInfo(null);
+        setSelectedTerritory(null);
+        setGeographicStatus('Đang tải địa phương…');
+        setGeographicError(false);
+        const slug = provinceSlugFromTerritory(territory.id);
+        try {
+          if (!slug) throw new Error('Unmapped territory');
+          const province = await fetchProvince(slug, controller.signal);
+          if (controller.signal.aborted) return;
+          setCurrentProvince(province.slug);
+          setGeographicStatus(`Đã chọn ${province.name}`);
+          setSelectedProvinceInfo({
+            name: territory.name,
+            adminUnit: territory.adminUnit,
+            isSovereignty: true,
+            culturalLandmark: territory.culturalLandmark,
+            culturalSummary: territory.description,
+            culturalCategoryLabel: 'Chủ quyền Lãnh thổ Biển Đảo',
+            historicalPeriod: 'Thế kỷ 17 - Nay',
+          });
+          setSelectedTerritory(territory);
+        } catch {
+          if (controller.signal.aborted) return;
+          setGeographicError(true);
+          setGeographicStatus('Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.');
+        }
       });
 
       const marker = new maplibregl.Marker({ element: el })
@@ -529,8 +595,22 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
     });
   };
 
+  const clearProvinceSelection = () => {
+    geographicRequestRef.current?.abort();
+    setSelectedProvinceInfo(null);
+    setSelectedTerritory(null);
+    setCurrentProvince(null);
+    setGeographicStatus('');
+  };
+
   return (
     <div className="space-y-3">
+      {geographicStatus && (
+        <p role={geographicError ? 'alert' : 'status'} aria-live="polite"
+          className={`px-3 py-2 rounded-lg text-sm ${geographicError ? 'bg-red-950 text-red-200' : 'bg-slate-900 text-slate-200'}`}>
+          {geographicStatus}
+        </p>
+      )}
       {/* Sleek Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 bg-slate-900/95 border border-slate-800 p-2.5 rounded-xl shadow-lg backdrop-blur-md">
         {/* Category Filters */}
@@ -697,7 +777,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                 {selectedProvinceInfo.culturalCategoryLabel || (selectedProvinceInfo.isSovereignty ? '🇻🇳 Lãnh thổ Biển Đảo' : 'Di sản Cổ truyền')}
               </span>
               <button
-                onClick={() => setSelectedProvinceInfo(null)}
+                onClick={clearProvinceSelection}
                 className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer"
                 title="Đóng thẻ"
               >
@@ -762,7 +842,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                 Chủ quyền Lãnh thổ Việt Nam
               </span>
               <button
-                onClick={() => setSelectedTerritory(null)}
+                onClick={clearProvinceSelection}
                 className="text-slate-400 hover:text-white text-xs px-1 cursor-pointer"
               >
                 ✕
