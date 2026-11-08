@@ -1,0 +1,462 @@
+{
+  "contractVersion": "1.0.0",
+  "datasetVersion": "vica-demo-63-v1",
+  "sourceCommit": "7a10ba97f4e246b5166033d9e41ce6fee18807da",
+  "sourceFile": "frontend/public/data/vietnam_provinces.geojson",
+  "sourceSha256": "e9d1ade5fe7349356eefceeec11687aa4ed31ed64ba33cb10de209285227cd92",
+  "provinces": [
+    {
+      "id": 1,
+      "slug": "an-giang",
+      "name": "An Giang",
+      "adminUnit": "Tỉnh An Giang",
+      "sourceName": "An Giang"
+    },
+    {
+      "id": 2,
+      "slug": "ba-ria-vung-tau",
+      "name": "Bà Rịa - Vũng Tàu",
+      "adminUnit": "Tỉnh Bà Rịa - Vũng Tàu",
+      "sourceName": "Ba Ria - Vung Tau"
+    },
+    {
+      "id": 3,
+      "slug": "bac-giang",
+      "name": "Bắc Giang",
+      "adminUnit": "Tỉnh Bắc Giang",
+      "sourceName": "Bac Giang"
+    },
+    {
+      "id": 4,
+      "slug": "bac-kan",
+      "name": "Bắc Kạn",
+      "adminUnit": "Tỉnh Bắc Kạn",
+      "sourceName": "Bac Kan"
+    },
+    {
+      "id": 5,
+      "slug": "bac-lieu",
+      "name": "Bạc Liêu",
+      "adminUnit": "Tỉnh Bạc Liêu",
+      "sourceName": "Bac Lieu"
+    },
+    {
+      "id": 6,
+      "slug": "bac-ninh",
+      "name": "Bắc Ninh",
+      "adminUnit": "Tỉnh Bắc Ninh",
+      "sourceName": "Bac Ninh"
+    },
+    {
+      "id": 7,
+      "slug": "ben-tre",
+      "name": "Bến Tre",
+      "adminUnit": "Tỉnh Bến Tre",
+      "sourceName": "Ben Tre"
+    },
+    {
+      "id": 8,
+      "slug": "binh-dinh",
+      "name": "Bình Định",
+      "adminUnit": "Tỉnh Bình Định",
+      "sourceName": "Binh Dinh"
+    },
+    {
+      "id": 9,
+      "slug": "binh-duong",
+      "name": "Bình Dương",
+      "adminUnit": "Tỉnh Bình Dương",
+      "sourceName": "Binh Duong"
+    },
+    {
+      "id": 10,
+      "slug": "binh-phuoc",
+      "name": "Bình Phước",
+      "adminUnit": "Tỉnh Bình Phước",
+      "sourceName": "Binh Phuoc"
+    },
+    {
+      "id": 11,
+      "slug": "binh-thuan",
+      "name": "Bình Thuận",
+      "adminUnit": "Tỉnh Bình Thuận",
+      "sourceName": "Binh Thuan"
+    },
+    {
+      "id": 12,
+      "slug": "ca-mau",
+      "name": "Cà Mau",
+      "adminUnit": "Tỉnh Cà Mau",
+      "sourceName": "Ca Mau"
+    },
+    {
+      "id": 13,
+      "slug": "can-tho",
+      "name": "Cần Thơ",
+      "adminUnit": "Thành phố Cần Thơ",
+      "sourceName": "Can Tho city"
+    },
+    {
+      "id": 14,
+      "slug": "cao-bang",
+      "name": "Cao Bằng",
+      "adminUnit": "Tỉnh Cao Bằng",
+      "sourceName": "Cao Bang"
+    },
+    {
+      "id": 15,
+      "slug": "da-nang",
+      "name": "Đà Nẵng",
+      "adminUnit": "Thành phố Đà Nẵng",
+      "sourceName": "Da Nang city"
+    },
+    {
+      "id": 16,
+      "slug": "dak-lak",
+      "name": "Đắk Lắk",
+      "adminUnit": "Tỉnh Đắk Lắk",
+      "sourceName": "Dak Lak"
+    },
+    {
+      "id": 17,
+      "slug": "dak-nong",
+      "name": "Đắk Nông",
+      "adminUnit": "Tỉnh Đắk Nông",
+      "sourceName": "Dak Nong"
+    },
+    {
+      "id": 18,
+      "slug": "dien-bien",
+      "name": "Điện Biên",
+      "adminUnit": "Tỉnh Điện Biên",
+      "sourceName": "Dien Bien"
+    },
+    {
+      "id": 19,
+      "slug": "dong-nai",
+      "name": "Đồng Nai",
+      "adminUnit": "Tỉnh Đồng Nai",
+      "sourceName": "Dong Nai"
+    },
+    {
+      "id": 20,
+      "slug": "dong-thap",
+      "name": "Đồng Tháp",
+      "adminUnit": "Tỉnh Đồng Tháp",
+      "sourceName": "Dong Thap"
+    },
+    {
+      "id": 21,
+      "slug": "gia-lai",
+      "name": "Gia Lai",
+      "adminUnit": "Tỉnh Gia Lai",
+      "sourceName": "Gia Lai"
+    },
+    {
+      "id": 22,
+      "slug": "ha-giang",
+      "name": "Hà Giang",
+      "adminUnit": "Tỉnh Hà Giang",
+      "sourceName": "Ha Giang"
+    },
+    {
+      "id": 23,
+      "slug": "ha-nam",
+      "name": "Hà Nam",
+      "adminUnit": "Tỉnh Hà Nam",
+      "sourceName": "Ha Nam"
+    },
+    {
+      "id": 24,
+      "slug": "ha-noi",
+      "name": "Hà Nội",
+      "adminUnit": "Thành phố Hà Nội",
+      "sourceName": "Ha Noi city"
+    },
+    {
+      "id": 25,
+      "slug": "ha-tinh",
+      "name": "Hà Tĩnh",
+      "adminUnit": "Tỉnh Hà Tĩnh",
+      "sourceName": "Ha Tinh"
+    },
+    {
+      "id": 26,
+      "slug": "hai-duong",
+      "name": "Hải Dương",
+      "adminUnit": "Tỉnh Hải Dương",
+      "sourceName": "Hai Duong"
+    },
+    {
+      "id": 27,
+      "slug": "hai-phong",
+      "name": "Hải Phòng",
+      "adminUnit": "Thành phố Hải Phòng",
+      "sourceName": "Hai Phong city"
+    },
+    {
+      "id": 28,
+      "slug": "hau-giang",
+      "name": "Hậu Giang",
+      "adminUnit": "Tỉnh Hậu Giang",
+      "sourceName": "Hau Giang"
+    },
+    {
+      "id": 29,
+      "slug": "ho-chi-minh",
+      "name": "Hồ Chí Minh",
+      "adminUnit": "Thành phố Hồ Chí Minh",
+      "sourceName": "Ho Chi Minh city"
+    },
+    {
+      "id": 30,
+      "slug": "hoa-binh",
+      "name": "Hòa Bình",
+      "adminUnit": "Tỉnh Hòa Bình",
+      "sourceName": "Hoa Binh"
+    },
+    {
+      "id": 31,
+      "slug": "hung-yen",
+      "name": "Hưng Yên",
+      "adminUnit": "Tỉnh Hưng Yên",
+      "sourceName": "Hung Yen"
+    },
+    {
+      "id": 32,
+      "slug": "khanh-hoa",
+      "name": "Khánh Hòa",
+      "adminUnit": "Tỉnh Khánh Hòa",
+      "sourceName": "Khanh Hoa"
+    },
+    {
+      "id": 33,
+      "slug": "kien-giang",
+      "name": "Kiên Giang",
+      "adminUnit": "Tỉnh Kiên Giang",
+      "sourceName": "Kien Giang"
+    },
+    {
+      "id": 34,
+      "slug": "kon-tum",
+      "name": "Kon Tum",
+      "adminUnit": "Tỉnh Kon Tum",
+      "sourceName": "Kon Tum"
+    },
+    {
+      "id": 35,
+      "slug": "lai-chau",
+      "name": "Lai Châu",
+      "adminUnit": "Tỉnh Lai Châu",
+      "sourceName": "Lai Chau"
+    },
+    {
+      "id": 36,
+      "slug": "lam-dong",
+      "name": "Lâm Đồng",
+      "adminUnit": "Tỉnh Lâm Đồng",
+      "sourceName": "Lam Dong"
+    },
+    {
+      "id": 37,
+      "slug": "lang-son",
+      "name": "Lạng Sơn",
+      "adminUnit": "Tỉnh Lạng Sơn",
+      "sourceName": "Lang Son"
+    },
+    {
+      "id": 38,
+      "slug": "lao-cai",
+      "name": "Lào Cai",
+      "adminUnit": "Tỉnh Lào Cai",
+      "sourceName": "Lao Cai"
+    },
+    {
+      "id": 39,
+      "slug": "long-an",
+      "name": "Long An",
+      "adminUnit": "Tỉnh Long An",
+      "sourceName": "Long An"
+    },
+    {
+      "id": 40,
+      "slug": "nam-dinh",
+      "name": "Nam Định",
+      "adminUnit": "Tỉnh Nam Định",
+      "sourceName": "Nam Dinh"
+    },
+    {
+      "id": 41,
+      "slug": "nghe-an",
+      "name": "Nghệ An",
+      "adminUnit": "Tỉnh Nghệ An",
+      "sourceName": "Nghe An"
+    },
+    {
+      "id": 42,
+      "slug": "ninh-binh",
+      "name": "Ninh Bình",
+      "adminUnit": "Tỉnh Ninh Bình",
+      "sourceName": "Ninh Binh"
+    },
+    {
+      "id": 43,
+      "slug": "ninh-thuan",
+      "name": "Ninh Thuận",
+      "adminUnit": "Tỉnh Ninh Thuận",
+      "sourceName": "Ninh Thuan"
+    },
+    {
+      "id": 44,
+      "slug": "phu-tho",
+      "name": "Phú Thọ",
+      "adminUnit": "Tỉnh Phú Thọ",
+      "sourceName": "Phu Tho"
+    },
+    {
+      "id": 45,
+      "slug": "phu-yen",
+      "name": "Phú Yên",
+      "adminUnit": "Tỉnh Phú Yên",
+      "sourceName": "Phu Yen"
+    },
+    {
+      "id": 46,
+      "slug": "quang-binh",
+      "name": "Quảng Bình",
+      "adminUnit": "Tỉnh Quảng Bình",
+      "sourceName": "Quang Binh"
+    },
+    {
+      "id": 47,
+      "slug": "quang-nam",
+      "name": "Quảng Nam",
+      "adminUnit": "Tỉnh Quảng Nam",
+      "sourceName": "Quang Nam"
+    },
+    {
+      "id": 48,
+      "slug": "quang-ngai",
+      "name": "Quảng Ngãi",
+      "adminUnit": "Tỉnh Quảng Ngãi",
+      "sourceName": "Quang Ngai"
+    },
+    {
+      "id": 49,
+      "slug": "quang-ninh",
+      "name": "Quảng Ninh",
+      "adminUnit": "Tỉnh Quảng Ninh",
+      "sourceName": "Quang Ninh"
+    },
+    {
+      "id": 50,
+      "slug": "quang-tri",
+      "name": "Quảng Trị",
+      "adminUnit": "Tỉnh Quảng Trị",
+      "sourceName": "Quang Tri"
+    },
+    {
+      "id": 51,
+      "slug": "soc-trang",
+      "name": "Sóc Trăng",
+      "adminUnit": "Tỉnh Sóc Trăng",
+      "sourceName": "Soc Trang"
+    },
+    {
+      "id": 52,
+      "slug": "son-la",
+      "name": "Sơn La",
+      "adminUnit": "Tỉnh Sơn La",
+      "sourceName": "Son La"
+    },
+    {
+      "id": 53,
+      "slug": "tay-ninh",
+      "name": "Tây Ninh",
+      "adminUnit": "Tỉnh Tây Ninh",
+      "sourceName": "Tay Ninh"
+    },
+    {
+      "id": 54,
+      "slug": "thai-binh",
+      "name": "Thái Bình",
+      "adminUnit": "Tỉnh Thái Bình",
+      "sourceName": "Thai Binh"
+    },
+    {
+      "id": 55,
+      "slug": "thai-nguyen",
+      "name": "Thái Nguyên",
+      "adminUnit": "Tỉnh Thái Nguyên",
+      "sourceName": "Thai Nguyen"
+    },
+    {
+      "id": 56,
+      "slug": "thanh-hoa",
+      "name": "Thanh Hóa",
+      "adminUnit": "Tỉnh Thanh Hóa",
+      "sourceName": "Thanh Hoa"
+    },
+    {
+      "id": 57,
+      "slug": "thua-thien-hue",
+      "name": "Thừa Thiên Huế",
+      "adminUnit": "Tỉnh Thừa Thiên Huế",
+      "sourceName": "Thua Thien - Hue"
+    },
+    {
+      "id": 58,
+      "slug": "tien-giang",
+      "name": "Tiền Giang",
+      "adminUnit": "Tỉnh Tiền Giang",
+      "sourceName": "Tien Giang"
+    },
+    {
+      "id": 59,
+      "slug": "tra-vinh",
+      "name": "Trà Vinh",
+      "adminUnit": "Tỉnh Trà Vinh",
+      "sourceName": "Tra Vinh"
+    },
+    {
+      "id": 60,
+      "slug": "tuyen-quang",
+      "name": "Tuyên Quang",
+      "adminUnit": "Tỉnh Tuyên Quang",
+      "sourceName": "Tuyen Quang"
+    },
+    {
+      "id": 61,
+      "slug": "vinh-long",
+      "name": "Vĩnh Long",
+      "adminUnit": "Tỉnh Vĩnh Long",
+      "sourceName": "Vinh Long"
+    },
+    {
+      "id": 62,
+      "slug": "vinh-phuc",
+      "name": "Vĩnh Phúc",
+      "adminUnit": "Tỉnh Vĩnh Phúc",
+      "sourceName": "Vinh Phuc"
+    },
+    {
+      "id": 63,
+      "slug": "yen-bai",
+      "name": "Yên Bái",
+      "adminUnit": "Tỉnh Yên Bái",
+      "sourceName": "Yen Bai"
+    }
+  ],
+  "displayOnlyFeatures": [
+    {
+      "note": "Truong Sa (Khanh Hoa)",
+      "provinceSlug": "khanh-hoa",
+      "useForIdentify": false
+    },
+    {
+      "note": "Hoang Sa (Da Nang city)",
+      "provinceSlug": "da-nang",
+      "useForIdentify": false
+    }
+  ]
+}
