@@ -1,6 +1,7 @@
 package com.culturalatlas.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +42,10 @@ public class SecurityConfig {
                     "/swagger-ui.html",
                     "/actuator/health"
                 ).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/cultures/**").permitAll()
+                .requestMatchers("/api/v1/admin/cultures/**").hasAnyRole("ADMIN", "RESEARCHER")  
                 .anyRequest().authenticated()
+                
             );
 
         return http.build();
