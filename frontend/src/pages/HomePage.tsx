@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapViewer } from '../components/Map/MapViewer';
+import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer';
 import { useHealth } from '../hooks/useHealth';
 import { formatDate } from '../utils/formatters';
 import { Server, Activity, CheckCircle2, XCircle, Database, Cpu, Globe } from 'lucide-react';
@@ -97,6 +98,7 @@ export const HomePage: React.FC = () => {
           <span className="text-xs text-slate-400">Tọa độ mẫu: Hà Nội & TP. Hồ Chí Minh</span>
         </div>
         <MapViewer className="h-[580px] w-full" />
+        <ProvinceDetailDrawer />        
       </div>
 
       {/* Architecture Foundations Status Grid */}
