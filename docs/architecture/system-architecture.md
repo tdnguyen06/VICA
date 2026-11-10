@@ -16,7 +16,7 @@ flowchart TB
         Nginx["Nginx Reverse Proxy (:80) / Local Dev Proxy (:5173)"]
     end
 
-    subgraph BackendMonolith ["Spring Boot 3.3.5 Backend (Java 21)"]
+    subgraph BackendMonolith ["Spring Boot 3.4.x Backend (Java 21)"]
         Security["Spring Security 6 + JWT"]
         HealthCtrl["Health & Common Endpoints"]
         

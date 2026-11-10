@@ -1,0 +1,45 @@
+list_sources:
+  - name: unesco_vietnam_heritage
+    url: https://vi.wikipedia.org/wiki/Danh_sách_Di_sản_thế_giới_tại_Việt_Nam
+    spider: unesco_heritage_spider
+    category: heritage
+    priority: high
+    
+  - name: cuisine_three_regions
+    url: https://vi.wikipedia.org/wiki/Ẩm_thực_Việt_Nam
+    spider: cuisine_spider
+    category: cuisine
+    sub_categories: [northern, central, southern]
+    priority: medium
+    
+  - name: national_festivals
+    url: https://vi.wikipedia.org/wiki/Lễ_hội_Việt_Nam
+    spider: festivals_spider
+    category: culture
+    priority: medium
+
+detail_sources:
+  wikipedia:
+    enabled: true
+    api_base: https://vi.wikipedia.org/w/api.php
+    rate_limit: 10/minute
+    fallback_to_en: true  # Nếu không có trang vi, thử trang en
+    
+  official_portals:
+    - name: dsvh_gov_vn
+      url: https://dsvh.gov.vn
+      spider: dsvh_gov_vn_spider
+      rate_limit: 2/second
+      
+    - name: provincial_portals
+      urls:
+        - https://dulich.hanoi.gov.vn
+        - https://dulich.thuathienhue.vn
+        - https://sodulich.hochiminhcity.gov.vn
+      spider: provincial_portal_spider
+      
+  news_sources:
+    - name: vnexpress_culture
+      url: https://vnexpress.net/van-hoa
+      spider: vnexpress_spider
+      enabled: false  # Chạy on-demand thôi

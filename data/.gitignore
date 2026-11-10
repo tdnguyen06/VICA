@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Scrapy
+.scrapy/
+
+# Logs
+logs/*.log
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+..evn
+
+# Data & Cache (Zero Local Storage policy)
+raw/
+processed/
+*.parquet
+*.json
+*.geojson
+*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+

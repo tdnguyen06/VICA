@@ -12,7 +12,7 @@ Báo cáo kết quả kiểm thử và xác minh thực tế 100% quá trình kh
 - **Node.js**: v24.15.0, npm: 11.12.1.
 - **Docker**: Docker CLI 20.10.22, Docker Compose v2.15.1, Docker Engine active.
 - **Dịch vụ Cổng mạng**:
-  - `8080`: Backend Spring Boot 3.3.5 (Active & Healthy)
+  - `8080`: Backend Spring Boot 3.4.x (Active & Healthy)
   - `5173`: Frontend Vite React Dev Server (Active & Healthy)
   - `5434 -> 5432`: PostgreSQL 16 tích hợp PostGIS 3.7.0 & pgvector 0.8.7 (Active)
   - `6379`: Redis 7 Alpine (Active, Ping -> PONG)
@@ -74,4 +74,4 @@ Báo cáo kết quả kiểm thử và xác minh thực tế 100% quá trình kh
 
 ## 4. Kết Luận
 
-Nền tảng kỹ thuật cho dự án **Vietnam Cultural Atlas** đã hoàn tất setup 100% với toàn bộ các thành phần công nghệ hiện đại nhất (Java 21, Spring Boot 3.3.5, React 19, TypeScript, Vite, Tailwind v4, MapLibre GL JS, PostgreSQL 16 + PostGIS 3.7 + pgvector 0.8.7, Redis 7, RabbitMQ 3). Toàn bộ hệ thống hiện đang chạy trực tiếp trên môi trường local.
+Nền tảng kỹ thuật cho dự án **Vietnam Cultural Atlas** đã hoàn tất setup 100% với toàn bộ các thành phần công nghệ hiện đại nhất (Java 21, Spring Boot 3.4.x, React 19, TypeScript, Vite, Tailwind v4, MapLibre GL JS, PostgreSQL 16 + PostGIS 3.7 + pgvector 0.8.7, Redis 7, RabbitMQ 3). Toàn bộ hệ thống hiện đang chạy trực tiếp trên môi trường local.

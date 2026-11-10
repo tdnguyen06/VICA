@@ -22,7 +22,7 @@ Nền tảng bản đồ số tương tác giúp người dùng khám phá văn 
 | :--- | :--- | :--- |
 | **Cần cài đặt trên máy Host** | Java 21 LTS, Node.js (v20+ hoặc v24+), Git, Docker Desktop | Công cụ nền tảng hệ điều hành |
 | **Chạy bằng Docker Containers** | PostgreSQL 16 (PostGIS 3.4 + pgvector), Redis 7, RabbitMQ 3 | Quản lý qua `docker compose` |
-| **Thư viện Backend** | Spring Boot 3.3.5, Spring Data JPA, Spring Security, JWT, Flyway, Spring AI core | Quản lý qua Maven Wrapper (`pom.xml`) |
+| **Thư viện Backend** | Spring Boot 3.4.x, Spring Data JPA, Hibernate Spatial, Spring Security, JWT, Flyway, Spring AI 1.1.x GA | Quản lý qua Maven Wrapper (`pom.xml`) |
 | **Thư viện Frontend** | React 19, TypeScript, Vite, Tailwind CSS v4, MapLibre GL JS, Zustand, TanStack Query, Axios | Quản lý qua npm (`package.json`) |
 | **Cần tài khoản / API Key** | Google Gemini API (hoặc OpenAI API), Cloudinary, Map Tiles Provider (Carto/MapTiler) | Cung cấp qua biến môi trường `.env` |
 
@@ -48,7 +48,7 @@ vietnam-cultural-atlas/
 │   ├── .env.example
 │   └── package.json
 │
-├── backend/                        # Modular Monolith (Java 21 + Spring Boot 3.3.5)
+├── backend/                        # Modular Monolith (Java 21 + Spring Boot 3.4.x)
 │   ├── src/main/java/com/culturalatlas/
 │   │   ├── config/                 # SecurityConfig, CorsConfig, OpenApiConfig, RedisConfig
 │   │   ├── common/                 # ApiResponse, GlobalExceptionHandler, HealthController
@@ -109,7 +109,7 @@ Mở ứng dụng Docker Desktop, sau đó chạy:
 docker compose up -d postgres redis rabbitmq
 ```
 
-### 3. Khởi động Backend (Spring Boot 3.3.5)
+### 3. Khởi động Backend (Spring Boot 3.4.x)
 ```bash
 cd backend
 # Chạy test xác minh
