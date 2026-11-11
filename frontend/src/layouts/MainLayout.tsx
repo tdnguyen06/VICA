@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Compass, Map, BookOpen, Layers } from 'lucide-react';
+import { UserMenu } from '../components/Auth/UserMenu';
 
 export const MainLayout: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ export const MainLayout: React.FC = () => {
               <Layers className="h-4 w-4" />
               <span>Lớp dữ liệu</span>
             </span>
+            <UserMenu />            
           </nav>
         </div>
       </header>
