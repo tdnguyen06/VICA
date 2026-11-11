@@ -56,6 +56,8 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<!-- Geographic uses JdbcTemplate + PostGIS SQL, not ORM geometry properties.
+		     hibernate-spatial is needed if JTS/Geolatte Geometry is mapped through Hibernate. -->
 		<!-- Database Driver & Migrations -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
