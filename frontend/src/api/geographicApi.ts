@@ -1,4 +1,5 @@
 import { apiClient } from '../services/apiClient';
+import type { ApiResponse } from '../types';
 
 export interface ProvinceDto {
   id: number;
@@ -7,24 +8,17 @@ export interface ProvinceDto {
   adminUnit: string;
 }
 
-interface GeographicResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-  timestamp: string;
-}
-
 export async function fetchProvinces(signal?: AbortSignal): Promise<ProvinceDto[]> {
-  const response = await apiClient.get<GeographicResponse<ProvinceDto[]>>('/geo/provinces', { signal });
+  const response = await apiClient.get<ApiResponse<ProvinceDto[]>>('/geo/provinces', { signal });
   return response.data.data;
 }
 
 export async function fetchProvince(slug: string, signal?: AbortSignal): Promise<ProvinceDto> {
-  const response = await apiClient.get<GeographicResponse<ProvinceDto>>(`/geo/provinces/${encodeURIComponent(slug)}`, { signal });
+  const response = await apiClient.get<ApiResponse<ProvinceDto>>(`/geo/provinces/${encodeURIComponent(slug)}`, { signal });
   return response.data.data;
 }
 
 export async function identifyProvince(latitude: number, longitude: number, signal?: AbortSignal): Promise<ProvinceDto | null> {
-  const response = await apiClient.post<GeographicResponse<ProvinceDto | null>>('/geo/identify', { latitude, longitude }, { signal });
+  const response = await apiClient.post<ApiResponse<ProvinceDto | null>>('/geo/identify', { latitude, longitude }, { signal });
   return response.data.data;
 }

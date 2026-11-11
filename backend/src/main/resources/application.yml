@@ -34,14 +34,6 @@ app:
   jwt:
     secret: ${JWT_SECRET:culturalAtlasSecretKeyForDevelopmentPhaseMustBeAtLeast32BytesLong!}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
-  ai:
-    provider: ${AI_PROVIDER:gemini}
-    api-key: ${AI_API_KEY:}
-    chat-model: ${AI_CHAT_MODEL:gemini-1.5-flash}
-    embedding-model: ${AI_EMBEDDING_MODEL:text-embedding-004}
-    enabled: ${AI_ENABLED:false}
-    top-k: ${AI_TOP_K:5}
-    similarity-threshold: ${AI_SIMILARITY_THRESHOLD:0.75}
 
 # Actuator Endpoints
 management:
