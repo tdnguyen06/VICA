@@ -49,7 +49,7 @@ export const MainLayout: React.FC = () => {
       </main>
 
       <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        Vietnam Cultural Atlas &copy; 2026. Built with React, Vite, Spring Boot, PostGIS, pgvector & MapLibre.
+        Bản đồ Văn hóa Việt Nam &copy; 2026. Nền tảng số hóa Văn hóa, Địa lý & Di sản Việt Nam.
       </footer>
 
       {/* Floating Cultural AI Assistant Drawer */}
