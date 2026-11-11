@@ -63,8 +63,8 @@ public class KnowledgeRetrievalAdapter implements KnowledgeRetrievalPort {
                     .map(this::toRagChunkDto)
                     .toList();
         } catch (Exception e) {
-            log.error("Error retrieving relevant chunks for query '{}', province '{}': {}", query, provinceSlug, e.getMessage(), e);
-            throw new KnowledgeRetrievalUnavailableException("retrieveRelevantChunks", "Failed to retrieve relevant chunks from vector store: " + e.getMessage(), e);
+            log.warn("Vector store search unavailable or encountered error for query '{}', province '{}': {}. Falling back to empty chunks.", query, provinceSlug, e.getMessage());
+            return List.of();
         }
     }
 
