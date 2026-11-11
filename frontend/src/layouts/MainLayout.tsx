@@ -36,9 +36,6 @@ export const MainLayout: React.FC = () => {
             >
               <Bot className="h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" />
               <span>Trợ lý AI</span>
-              <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
-                New
-              </span>
             </button>
           </nav>
         </div>

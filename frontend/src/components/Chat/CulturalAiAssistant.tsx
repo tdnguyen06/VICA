@@ -424,12 +424,7 @@ export const CulturalAiAssistant: React.FC = () => {
                 <Compass className="w-5 h-5" />
               </div>
               <div>
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-bold text-sm text-slate-100">VICA Cultural Assistant</h3>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                    AI 2.0
-                  </span>
-                </div>
+                <h3 className="font-bold text-sm text-slate-100">Trợ lý Văn hóa VICA</h3>
                 <p className="text-xs text-slate-400">Trợ lý Tri thức Văn hóa 63 Tỉnh Thành</p>
               </div>
             </div>

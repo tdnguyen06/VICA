@@ -3,13 +3,11 @@ import * as maplibregl from 'maplibre-gl';
 import maplibreglWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { useAppStore } from '../../stores/appStore';
 import { VIETNAM_MARITIME_TERRITORIES } from '../../data/vietnamMaritimeSovereignty';
-import type { MaritimeTerritory } from '../../data/vietnamMaritimeSovereignty';
 import { LandmarkVisualCard } from './LandmarkVisualCard';
 import { fetchProvince, identifyProvince } from '../../api/geographicApi';
 import { provinceSlugFromProperties, provinceSlugFromTerritory, provinceSourceName } from '../../data/provinceRegistry';
 import {
   Compass,
-  ShieldCheck,
   Sun,
   Moon,
   Eye,
@@ -70,7 +68,6 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const [geographicError, setGeographicError] = useState(false);
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
   const [is3DView, setIs3DView] = useState(false);
-  const [selectedTerritory, setSelectedTerritory] = useState<MaritimeTerritory | null>(null);
   const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>(null);
 
   // Helper to add 63 Vietnam Provinces & 2 Archipelagoes GeoJSON layers
@@ -284,7 +281,6 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         setGeographicError(false);
         setCurrentProvince(null);
         setSelectedProvinceInfo(null);
-        setSelectedTerritory(null);
         const slug = props ? provinceSlugFromProperties(props) : null;
         const isDisplayOnly = props?.is_sovereignty === true || props?.is_sovereignty === 'true';
         try {
@@ -465,22 +461,21 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         territory.id === 'hoang-sa'
           ? 'QĐ. Hoàng Sa'
           : territory.id === 'truong-sa'
-          ? 'QĐ. Trường Sa'
-          : territory.id === 'con-dao'
-          ? 'Côn Đảo'
-          : territory.id === 'phu-quoc'
-          ? 'Phú Quốc'
-          : territory.id === 'ly-son'
-          ? 'Lý Sơn'
-          : territory.id === 'bach-long-vi'
-          ? 'Bạch Long Vĩ'
-          : territory.name;
+            ? 'QĐ. Trường Sa'
+            : territory.id === 'con-dao'
+              ? 'Côn Đảo'
+              : territory.id === 'phu-quoc'
+                ? 'Phú Quốc'
+                : territory.id === 'ly-son'
+                  ? 'Lý Sơn'
+                  : territory.id === 'bach-long-vi'
+                    ? 'Bạch Long Vĩ'
+                    : territory.name;
 
       const el = document.createElement('div');
       el.className = 'cursor-pointer group relative select-none';
       el.innerHTML = `
-        <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border ${
-          isSpecial ? 'border-amber-400/90 shadow-md shadow-amber-500/20' : 'border-slate-700/80'
+        <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border ${isSpecial ? 'border-amber-400/90 shadow-md shadow-amber-500/20' : 'border-slate-700/80'
         } transition-all duration-150">
           <span class="w-1.5 h-1.5 rounded-full ${isSpecial ? 'bg-red-500 ring-1 ring-amber-300' : 'bg-cyan-400'} shrink-0"></span>
           <span class="text-[11px] font-bold ${isSpecial ? 'text-amber-200' : 'text-slate-200'} whitespace-nowrap">
@@ -514,7 +509,6 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         geographicRequestRef.current = controller;
         setCurrentProvince(null);
         setSelectedProvinceInfo(null);
-        setSelectedTerritory(null);
         setGeographicStatus('Đang tải địa phương…');
         setGeographicError(false);
         const slug = provinceSlugFromTerritory(territory.id);
@@ -533,7 +527,6 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             culturalCategoryLabel: 'Chủ quyền Lãnh thổ Biển Đảo',
             historicalPeriod: 'Thế kỷ 17 - Nay',
           });
-          setSelectedTerritory(territory);
         } catch {
           if (controller.signal.aborted) return;
           setGeographicError(true);
@@ -562,16 +555,15 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const clearProvinceSelection = () => {
     geographicRequestRef.current?.abort();
     setSelectedProvinceInfo(null);
-    setSelectedTerritory(null);
     setCurrentProvince(null);
     setGeographicStatus('');
   };
 
   return (
     <div className="space-y-3">
-      {geographicStatus && (
-        <p role={geographicError ? 'alert' : 'status'} aria-live="polite"
-          className={`px-3 py-2 rounded-lg text-sm ${geographicError ? 'bg-red-950 text-red-200' : 'bg-slate-900 text-slate-200'}`}>
+      {geographicError && (
+        <p role="alert" aria-live="polite"
+          className="px-3 py-2 rounded-lg text-sm bg-red-950 text-red-200">
           {geographicStatus}
         </p>
       )}
@@ -625,11 +617,10 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
           {/* 3D Tilt View Button */}
           <button
             onClick={toggle3DView}
-            className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border ${
-              is3DView
+            className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border ${is3DView
                 ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20'
                 : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-400/40'
-            }`}
+              }`}
             title="Bật/Tắt góc nhìn không gian 3D nghiêng"
           >
             <Box className="w-3.5 h-3.5" />
@@ -645,11 +636,10 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                 <button
                   key={key}
                   onClick={() => handleSwitchStyle(key)}
-                  className={`flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
-                    isActive
+                  className={`flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${isActive
                       ? 'bg-amber-500 text-slate-950 font-bold shadow'
                       : 'text-slate-400 hover:text-slate-200'
-                  }`}
+                    }`}
                 >
                   <Icon className="w-3 h-3" />
                   <span>{style.name}</span>
@@ -668,11 +658,10 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         {selectedProvinceInfo && (
           <div className="absolute top-4 left-4 z-20 w-80 sm:w-96 max-h-[calc(100%-2rem)] overflow-y-auto bg-slate-900/98 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl text-slate-100 transition-all">
             <div className="flex items-start justify-between">
-              <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex items-center ${
-                selectedProvinceInfo.isSovereignty
+              <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex items-center ${selectedProvinceInfo.isSovereignty
                   ? 'bg-red-600/30 text-red-300 border border-red-500/50'
                   : 'bg-amber-500/20 text-amber-300 border border-amber-400/40'
-              }`}>
+                }`}>
                 <Sparkles className="w-3 h-3 mr-1" />
                 {selectedProvinceInfo.culturalCategoryLabel || (selectedProvinceInfo.isSovereignty ? '🇻🇳 Lãnh thổ Biển Đảo' : 'Di sản Cổ truyền')}
               </span>
@@ -684,22 +673,16 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                 <X className="w-4 h-4" />
               </button>
             </div>
-            
-            <div className="mt-2 flex items-center justify-between">
-              <div>
-                <h4 className="font-black text-lg text-white flex items-center space-x-1.5">
-                  <span>{selectedProvinceInfo.isSovereignty ? '🇻🇳' : '📍'}</span>
-                  <span>{selectedProvinceInfo.name}</span>
-                </h4>
-                <p className="text-xs text-slate-400 font-medium">{selectedProvinceInfo.adminUnit}</p>
-              </div>
-              <div className="px-2 py-0.5 bg-slate-950 rounded border border-amber-400/40 text-[10px] font-extrabold text-amber-400 flex items-center">
-                <Sparkles className="w-3 h-3 mr-1 text-amber-400" />
-                Di sản Quốc gia
-              </div>
+
+            <div className="mt-2">
+              <h4 className="font-black text-lg text-white flex items-center space-x-1.5">
+                <span>{selectedProvinceInfo.isSovereignty ? '🇻🇳' : '📍'}</span>
+                <span>{selectedProvinceInfo.name}</span>
+              </h4>
+              <p className="text-xs text-slate-400 font-medium">{selectedProvinceInfo.adminUnit}</p>
             </div>
 
-            {/* AUTHENTIC REAL PHOTOGRAPHY + 3D PARALLAX TILT + 3D DIGITAL SCAN LINK */}
+            {/* Cultural Landmark Photo & Info */}
             <div className="mt-2.5">
               <LandmarkVisualCard
                 provinceName={selectedProvinceInfo.name}
@@ -720,7 +703,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
 
             {/* Quick Action Button */}
             <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <span className="text-[11px] text-slate-400">Di tích & thắng cảnh tiêu biểu</span>
+              <span className="text-[11px] text-slate-400">Di tích & thắng cảnh</span>
               <button
                 onClick={() => {
                   const state = useAppStore.getState();
@@ -738,76 +721,6 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             </div>
           </div>
         )}
-
-        {/* Sovereignty Info Panel (Special badge for Maritime Territories) */}
-        {selectedTerritory && (
-          <div className="absolute top-14 right-4 z-20 max-w-sm bg-slate-900/95 backdrop-blur-md p-4 rounded-xl border-2 border-red-500/80 shadow-2xl text-slate-100">
-            <div className="flex items-start justify-between">
-              <span className="flex items-center space-x-1 bg-red-600/20 text-red-400 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase border border-red-500/40">
-                <ShieldCheck className="w-3.5 h-3.5 mr-1" />
-                Chủ quyền Lãnh thổ Việt Nam
-              </span>
-              <button
-                onClick={clearProvinceSelection}
-                className="text-slate-400 hover:text-white text-xs px-1 cursor-pointer"
-              >
-                ✕
-              </button>
-            </div>
-            <h4 className="font-extrabold text-lg text-white mt-2 flex items-center space-x-1.5">
-              <span>🇻🇳</span>
-              <span>{selectedTerritory.name}</span>
-            </h4>
-            <p className="text-xs text-amber-400 font-semibold mt-0.5">{selectedTerritory.adminUnit}</p>
-            <p className="text-xs text-slate-300 mt-2 leading-relaxed">{selectedTerritory.description}</p>
-            <div className="mt-3 pt-2.5 border-t border-slate-800">
-              <span className="text-[11px] font-bold text-slate-400 block mb-1.5">Các đảo, bãi đá tiêu biểu:</span>
-              <div className="flex flex-wrap gap-1">
-                {selectedTerritory.islands.map((island) => (
-                  <span
-                    key={island}
-                    className="px-2 py-0.5 bg-slate-800/90 text-slate-200 text-[10px] rounded border border-slate-700"
-                  >
-                    {island}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* AI Assistant Quick Trigger for Sovereignty Territory */}
-            <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-xs">
-              <span className="text-[11px] text-slate-400">Chủ quyền & Lịch sử</span>
-              <button
-                onClick={() => {
-                  const state = useAppStore.getState();
-                  state.openAssistantWithPrompt(
-                    `Giới thiệu về lịch sử, chủ quyền thiêng liêng và ý nghĩa chiến lược của ${selectedTerritory.name}`
-                  );
-                }}
-                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Hỏi Trợ lý AI →</span>
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Live Coordinates Footer Bottom Left */}
-        <div className="absolute bottom-3 left-3 bg-slate-950/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800 text-xs text-slate-300 flex items-center space-x-3 pointer-events-none">
-          <span>
-            📍 <b>Tọa độ:</b> {mapCenter[0].toFixed(3)}°E, {mapCenter[1].toFixed(3)}°N
-          </span>
-          <span className="text-slate-500">|</span>
-          <span>
-            🔍 <b>Thu phóng:</b> {mapZoom.toFixed(1)}x
-          </span>
-          <span className="text-slate-500">|</span>
-          <span className="text-emerald-400 font-semibold flex items-center">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
-            65 Điểm Di tích Cổ truyền (63 Tỉnh Thành & 2 Quần Đảo)
-          </span>
-        </div>
       </div>
     </div>
   );
