@@ -42,6 +42,8 @@ interface GeographicFeedback {
   message: string;
 }
 
+const SUCCESS_FEEDBACK_DURATION_MS = 3500;
+
 const MAP_STYLES = {
   voyager: {
     id: 'voyager',
@@ -74,6 +76,16 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
   const [is3DView, setIs3DView] = useState(false);
   const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>(null);
+
+  useEffect(() => {
+    if (geographicFeedback?.kind !== 'success') return;
+
+    const timer = window.setTimeout(() => {
+      setGeographicFeedback(current => current === geographicFeedback ? null : current);
+    }, SUCCESS_FEEDBACK_DURATION_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [geographicFeedback]);
 
   // Helper to add 63 Vietnam Provinces & 2 Archipelagoes GeoJSON layers
   const addProvincesGeoJsonLayer = (map: maplibregl.Map) => {
