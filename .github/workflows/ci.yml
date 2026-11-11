@@ -28,6 +28,60 @@ jobs:
           chmod +x mvnw
           ./mvnw clean test
 
+  geographic-postgis:
+    name: Geographic PostGIS Integration (Java 21)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+          cache-dependency-path: backend/pom.xml
+      - name: Build the project database image (PostGIS and pgvector)
+        run: docker build -t vica-postgis-ci infrastructure/docker/postgres
+      - name: Start isolated integration database
+        run: |
+          docker run -d --name vica-geo-ci -e POSTGRES_PASSWORD=vica_geo_test_only -e POSTGRES_DB=vica_geo_test -p 127.0.0.1:5432:5432 vica-postgis-ci
+          for attempt in $(seq 1 30); do
+            if docker exec vica-geo-ci pg_isready -h 127.0.0.1 -U postgres -d vica_geo_test; then exit 0; fi
+            sleep 2
+          done
+          docker logs vica-geo-ci
+          exit 1
+      - name: Test real migrations, spatial queries and HTTP flow
+        working-directory: backend
+        env:
+          VICA_GEO_TEST_JDBC_URL: jdbc:postgresql://127.0.0.1:5432/vica_geo_test
+        run: |
+          chmod +x mvnw
+          ./mvnw -B clean test
+      - name: Require spatial suites to execute without skips
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          import xml.etree.ElementTree as ET
+          for name in ('ProvinceRepositoryPostgisTest', 'GeographicPostgisHttpTest'):
+              path = pathlib.Path('backend/target/surefire-reports') / f'TEST-com.culturalatlas.geography.{name}.xml'
+              suite = ET.parse(path).getroot()
+              assert int(suite.attrib['tests']) > 0, f'{name}: no tests executed'
+              for field in ('skipped', 'failures', 'errors'):
+                  assert int(suite.attrib.get(field, 0)) == 0, f'{name}: {field} != 0'
+              print(f"{name}: {suite.attrib['tests']} tests, no skips/failures/errors")
+          PY
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geographic-postgis-test-reports
+          path: backend/target/surefire-reports/
+      - name: Stop isolated integration database
+        if: always()
+        run: docker rm -f vica-geo-ci || true
+
   frontend-build:
     name: Frontend Build & Type Check (Node 20)
     runs-on: ubuntu-latest
