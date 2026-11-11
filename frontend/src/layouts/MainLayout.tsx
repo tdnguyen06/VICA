@@ -1,6 +1,8 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import { Compass, Map, BookOpen, Layers } from 'lucide-react';
+import { Compass, Map, Bot } from 'lucide-react';
+import { CulturalAiAssistant } from '../components/Chat/CulturalAiAssistant';
+import { useAppStore } from '../stores/appStore';
 
 export const MainLayout: React.FC = () => {
   return (
@@ -24,14 +26,20 @@ export const MainLayout: React.FC = () => {
               <Map className="h-4 w-4" />
               <span>Bản đồ</span>
             </Link>
-            <span className="flex items-center space-x-1.5 text-slate-500 cursor-not-allowed">
-              <BookOpen className="h-4 w-4" />
-              <span>Di sản (Phase 2)</span>
-            </span>
-            <span className="flex items-center space-x-1.5 text-slate-500 cursor-not-allowed">
-              <Layers className="h-4 w-4" />
-              <span>Lớp dữ liệu</span>
-            </span>
+            <button
+              type="button"
+              onClick={() => {
+                const state = useAppStore.getState();
+                state.setIsAssistantOpen(!state.isAssistantOpen);
+              }}
+              className="flex items-center space-x-1.5 text-slate-300 hover:text-amber-400 transition-colors cursor-pointer group"
+            >
+              <Bot className="h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" />
+              <span>Trợ lý AI</span>
+              <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                New
+              </span>
+            </button>
           </nav>
         </div>
       </header>
@@ -43,6 +51,9 @@ export const MainLayout: React.FC = () => {
       <footer className="border-t border-slate-900 bg-slate-950 py-4 text-center text-xs text-slate-500">
         Vietnam Cultural Atlas &copy; 2026. Built with React, Vite, Spring Boot, PostGIS, pgvector & MapLibre.
       </footer>
+
+      {/* Floating Cultural AI Assistant Drawer */}
+      <CulturalAiAssistant />
     </div>
   );
 };

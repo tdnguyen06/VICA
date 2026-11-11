@@ -820,14 +820,20 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
 
             {/* Quick Action Button */}
             <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <span className="text-[11px] text-slate-400">Mô hình tạo bởi Antigravity 3D Engine</span>
+              <span className="text-[11px] text-slate-400">Di tích & thắng cảnh tiêu biểu</span>
               <button
                 onClick={() => {
-                  // Click any province to focus zoom
+                  const state = useAppStore.getState();
+                  const slug = state.currentProvince;
+                  state.openAssistantWithPrompt(
+                    `Giới thiệu về văn hóa, lịch sử và di sản tiêu biểu của ${selectedProvinceInfo.name}`,
+                    slug || undefined
+                  );
                 }}
-                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer"
+                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition"
               >
-                Khám phá di sản →
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Hỏi Trợ lý AI →</span>
               </button>
             </div>
           </div>
@@ -866,6 +872,23 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                   </span>
                 ))}
               </div>
+            </div>
+
+            {/* AI Assistant Quick Trigger for Sovereignty Territory */}
+            <div className="mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between text-xs">
+              <span className="text-[11px] text-slate-400">Chủ quyền & Lịch sử</span>
+              <button
+                onClick={() => {
+                  const state = useAppStore.getState();
+                  state.openAssistantWithPrompt(
+                    `Giới thiệu về lịch sử, chủ quyền thiêng liêng và ý nghĩa chiến lược của ${selectedTerritory.name}`
+                  );
+                }}
+                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Hỏi Trợ lý AI →</span>
+              </button>
             </div>
           </div>
         )}
