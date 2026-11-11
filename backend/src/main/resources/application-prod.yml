@@ -36,6 +36,10 @@ spring:
       password: ${REDIS_PASSWORD}
       timeout: 5000ms
 
+  ai:
+    openai:
+      api-key: ${AI_API_KEY}
+
 app:
   jwt:
     secret: ${JWT_SECRET}

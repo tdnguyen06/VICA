@@ -15,7 +15,14 @@ spring:
     redis:
       host: localhost
       port: 6379
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioSpeechAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioTranscriptionAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiImageAutoConfiguration
   ai:
+    openai:
+      api-key: test-dummy-key-for-ci
     model:
       chat: none
     vectorstore:

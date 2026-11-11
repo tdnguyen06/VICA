@@ -5,10 +5,15 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   main:
     banner-mode: console
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioSpeechAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiAudioTranscriptionAutoConfiguration
+      - org.springframework.ai.model.openai.autoconfigure.OpenAiImageAutoConfiguration
   ai:
     openai:
       base-url: https://generativelanguage.googleapis.com/v1beta/openai/
-      api-key: ${AI_API_KEY:}
+      api-key: ${AI_API_KEY:test-dummy-key-for-bootstrap}
       chat:
         options:
           model: ${AI_CHAT_MODEL:gemini-2.5-flash}
