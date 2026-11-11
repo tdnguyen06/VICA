@@ -36,6 +36,7 @@ public class SecurityConfig {
                     "/api/v1/auth/**",
                     "/api/v1/cultural-sites/**",
                     "/api/v1/geo/**",
+                    "/api/v1/assistant/**",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
@@ -53,7 +54,7 @@ public class SecurityConfig {
         List<String> origins = Arrays.asList(allowedOrigins.split(","));
         configuration.setAllowedOrigins(origins);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "X-Guest-Token", "X-Guest-Session-Uuid"));
         configuration.setAllowCredentials(true);
         configuration.setMaxAge(3600L);
 
