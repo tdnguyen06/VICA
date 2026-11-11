@@ -5,6 +5,16 @@ spring:
     active: ${SPRING_PROFILES_ACTIVE:dev}
   main:
     banner-mode: console
+  ai:
+    openai:
+      base-url: https://generativelanguage.googleapis.com/v1beta/openai/
+      api-key: ${AI_API_KEY:}
+      chat:
+        options:
+          model: ${AI_CHAT_MODEL:gemini-2.5-flash}
+      embedding:
+        options:
+          model: ${AI_EMBEDDING_MODEL:text-embedding-004}
 
 server:
   port: ${SERVER_PORT:8080}

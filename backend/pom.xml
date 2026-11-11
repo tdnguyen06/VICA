@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.5</version>
+		<version>3.4.1</version>
 		<relativePath/>
 	</parent>
 	<groupId>com.culturalatlas</groupId>
@@ -18,7 +18,7 @@
 		<java.version>21</java.version>
 		<jjwt.version>0.12.6</jjwt.version>
 		<springdoc.version>2.6.0</springdoc.version>
-		<spring-ai.version>1.0.0-M3</spring-ai.version>
+		<spring-ai.version>1.0.0</spring-ai.version>
 	</properties>
 
 	<dependencyManagement>
@@ -70,6 +70,10 @@
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-spatial</artifactId>
+		</dependency>
 
 		<!-- Redis Starter (Prepared for caching and session management) -->
 		<dependency>
@@ -103,10 +107,14 @@
 			<version>${springdoc.version}</version>
 		</dependency>
 
-		<!-- Spring AI Foundation (Core abstractions ready for LLM/RAG integration) -->
+		<!-- Spring AI Starters (Gemini Chat via OpenAI-compatible API & PgVector for Semantic Retrieval) -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-core</artifactId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-vector-store-pgvector</artifactId>
 		</dependency>
 
 		<!-- Developer Tools -->
@@ -133,17 +141,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 	<build>
 		<plugins>
