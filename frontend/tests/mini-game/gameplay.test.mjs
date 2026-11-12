@@ -3,6 +3,7 @@ import test from 'node:test';
 import { createInitialState, transition, getCurrentResult } from '../../.mini-game-test-build/engine.js';
 import { buildJournal } from '../../.mini-game-test-build/journal.js';
 import { hanoiScenario as scenario } from '../../.mini-game-test-build/content/hanoi.js';
+import { hanoiVisuals } from '../../.mini-game-test-build/content/media.js';
 
 // These route expectations are the agreed product scope, not generated from the scene graph.
 const mornings = ['morning-walk', 'morning-story'];
@@ -105,7 +106,13 @@ for (const morning of mornings) {
         assert.deepEqual(journal.entries.map(entry => entry.sceneId), ['morning', 'lunch', detailScene]);
         assert.deepEqual(journal.entries.map(entry => entry.label), [labels[morning], labels[lunch], labels[detail]]);
         assert.deepEqual(journal.knowledge.map(note => note.id), [morning + '-note', lunch + '-note']);
-        assert.deepEqual(journal.imageRefs, []);
+        const imageByChoice = {
+          'morning-walk': 'hanoi-morning-walk', 'morning-story': 'hanoi-lake',
+          'lunch-bun-cha': 'hanoi-bun-cha', 'lunch-pho': 'hanoi-pho',
+          'pottery-geometric': 'cup-geometric', 'pottery-leaves': 'cup-leaves',
+          'cafe-street': 'hanoi-cafe', 'cafe-chat': 'hanoi-cafe',
+        };
+        assert.deepEqual(journal.imageRefs, [imageByChoice[morning], imageByChoice[lunch], imageByChoice[detail]]);
         assert.deepEqual(journal.sourceRefs, []);
         assert.ok(journal.ending.text.includes(labels[morning]));
         assert.ok(journal.ending.text.includes(labels[lunch]));
@@ -184,7 +191,7 @@ test('scenario identity/version mismatch is rejected, not silently migrated', ()
 
 test('content remains explicitly draft and all graph references resolve', () => {
   assert.equal(scenario.editorialStatus, 'development-placeholder');
-  assert.deepEqual(scenario.imageRefs, []);
+  assert.deepEqual(new Set(scenario.imageRefs), new Set(Object.keys(hanoiVisuals)));
   assert.deepEqual(scenario.sourceRefs, []);
   const ids = new Set();
   for (const [id, scene] of Object.entries(scenario.scenes)) {
@@ -194,7 +201,7 @@ test('content remains explicitly draft and all graph references resolve', () => 
       assert.equal(ids.has(choice.id), false, 'Choice IDs must be stable and unique');
       ids.add(choice.id);
       assert.ok(choice.nextSceneId === 'journal' || scenario.scenes[choice.nextSceneId]);
-      assert.equal(choice.result.imageRef, null);
+      assert.ok(hanoiVisuals[choice.result.imageRef]);
       choice.result.knowledgeIds.forEach(knowledgeId =>
         assert.ok(scenario.knowledge.some(note => note.id === knowledgeId)));
       choice.result.blocks.forEach(block => assert.equal(block.editorialStatus, 'draft'));

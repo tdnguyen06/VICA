@@ -33,6 +33,7 @@ export interface ScenarioChoice {
 export interface ChoiceScene {
   readonly id: ChoiceSceneId;
   readonly title: string;
+  readonly imageRef: string | null;
   readonly blocks: readonly NarrativeBlock[];
   readonly choices: readonly ScenarioChoice[];
 }
@@ -44,6 +45,7 @@ export interface Scenario {
   readonly provinceSlug: string;
   readonly editorialStatus: 'development-placeholder';
   readonly intro: readonly NarrativeBlock[];
+  readonly introImageRef: string | null;
   readonly firstSceneId: ChoiceSceneId;
   readonly scenes: Readonly<Record<ChoiceSceneId, ChoiceScene>>;
   readonly knowledge: readonly KnowledgeNote[];

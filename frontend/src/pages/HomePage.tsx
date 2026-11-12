@@ -28,7 +28,7 @@ export const HomePage: React.FC = () => {
             <p className="text-xs font-semibold uppercase tracking-widest text-amber-300">Hà Nội · Trải nghiệm kể chuyện</p>
             <h3 className="text-xl font-bold text-white">Một ngày làm người Hà Nội</h3>
             <p className="text-sm leading-6 text-slate-300">Dẫn một người bạn đi chơi, tự chọn hành trình và giữ lại nhật ký của riêng mình.</p>
-            <p className="text-xs text-amber-200/80">Bản thử nghiệm · nội dung và hình ảnh còn nháp</p>
+            <p className="text-xs text-amber-200/80">Bản thử nghiệm · nội dung còn nháp, ảnh có nguồn</p>
           </div>
           <span className="inline-flex min-h-12 shrink-0 items-center gap-2 font-semibold text-amber-300">Mở trải nghiệm <ArrowRight className="h-4 w-4" /></span>
         </Link>

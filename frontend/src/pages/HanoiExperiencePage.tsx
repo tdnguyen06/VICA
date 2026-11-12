@@ -49,7 +49,7 @@ export default function HanoiExperiencePage() {
       <span className="rounded-full border border-amber-500/30 px-3 py-1 text-amber-200">Bản thử nghiệm · nội dung nháp</span>
     </div>
     <h1 ref={heading} tabIndex={-1} className="scroll-mt-24 text-3xl font-bold tracking-tight text-white outline-none sm:text-4xl">{title}</h1>
-    <p className="text-sm leading-6 text-slate-400">Nhân vật và hội thoại hư cấu. Tư liệu văn hóa và ảnh chưa được xác minh; chưa phải bản demo nội dung hoàn chỉnh.</p>
+    <p className="text-sm leading-6 text-slate-400">Nhân vật và hội thoại hư cấu. Ảnh có nguồn và credit riêng; nội dung văn hóa vẫn đang biên tập, chưa phải bản demo hoàn chỉnh.</p>
 
     {issueText ? <div role="alert" className="space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm leading-6 text-amber-100">
       <p>{issueText}</p>
@@ -61,7 +61,7 @@ export default function HanoiExperiencePage() {
 
     <div className="space-y-6 rounded-3xl border border-slate-800 bg-slate-900/70 p-4 shadow-xl sm:p-7">
       {!playing ? <>
-        <StoryVisual theme="intro" />
+        <StoryVisual theme="intro" assetId={story.introImageRef} />
         <Narrative blocks={story.intro} />
         <p className="text-sm text-slate-400">Sáng ở Hồ Gươm → bữa trưa → một hoạt động buổi chiều → nhật ký. Không điểm số, không thắng thua.</p>
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -74,7 +74,7 @@ export default function HanoiExperiencePage() {
         <p className="inline-flex items-center gap-2 text-amber-300"><BookOpen className="h-5 w-5" /> Hành trình của riêng bạn</p>
         <ol className="space-y-6">{journal.entries.map((entry, index) => <li key={entry.choiceId} className="space-y-3">
           <h2 className="text-lg font-semibold">{index + 1}. {entry.label}</h2>
-          <StoryVisual theme={entry.sceneId} motif={entry.choiceId} />
+          <StoryVisual theme={entry.sceneId} motif={entry.choiceId} assetId={entry.result.imageRef} />
           <Narrative blocks={entry.result.blocks} />
         </li>)}</ol>
         <div className="rounded-2xl border border-amber-500/25 bg-amber-500/5 p-5 leading-7"><p>{journal.ending.text}</p></div>
@@ -82,7 +82,7 @@ export default function HanoiExperiencePage() {
           <h2 className="text-lg font-semibold">Ghi chú văn hóa và nguồn</h2>
           <p className="text-sm text-amber-200">Các ghi chú dưới đây còn là placeholder, chưa phải kiến thức đã kiểm chứng.</p>
           <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-300">{journal.knowledge.map(note => <li key={note.id}>{note.text}</li>)}</ul>
-          <p className="text-sm text-slate-400">Chưa có nguồn tham khảo hoặc ảnh tư liệu đã duyệt cho kịch bản này.</p>
+          <p className="text-sm text-slate-400">Nguồn ảnh nằm dưới từng hình minh họa. Nguồn tham khảo cho các ghi chú văn hóa vẫn chưa hoàn thiện.</p>
         </section>
         <div className="flex flex-wrap gap-3">
           <ActionButton className="inline-flex items-center gap-2 border border-slate-600" onClick={() => setDialog('restart')}><RotateCcw className="h-4 w-4" /> Chơi lại</ActionButton>
@@ -93,7 +93,7 @@ export default function HanoiExperiencePage() {
           <span>{game?.sceneId === 'morning' ? 'Buổi sáng' : game?.sceneId === 'lunch' ? 'Buổi trưa' : 'Buổi chiều'}</span>
           <span>{result ? 'Kết quả lựa chọn · đọc rồi tiếp tục' : 'Chọn một phương án'}</span>
         </div>
-        <StoryVisual theme={game?.sceneId ?? 'intro'} motif={game?.phase === 'result' ? game.choiceId : undefined} />
+        <StoryVisual theme={game?.sceneId ?? 'intro'} motif={game?.phase === 'result' ? game.choiceId : undefined} assetId={result?.imageRef ?? scene.imageRef} />
         <Narrative blocks={result?.blocks ?? scene.blocks} />
         {result ? <ActionButton disabled={blocked} className="w-full bg-amber-400 text-slate-950 hover:bg-amber-300" onClick={() => send('continue')}>{scene.id === 'pottery' || scene.id === 'cafe' ? 'Tiếp tục đến nhật ký' : 'Tiếp tục'}</ActionButton>
           : <div className="grid gap-3">{scene.choices.map(choice => <ActionButton key={choice.id} disabled={blocked} className="border border-slate-600 bg-slate-800 text-left text-slate-100 hover:border-amber-400 hover:bg-slate-800/70" onClick={() => send('choose', choice.id)}>{choice.label}</ActionButton>)}</div>}
