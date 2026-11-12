@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:mini-game": "tsc -p tsconfig.mini-game-tests.json && node --test tests/mini-game/gameplay.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.105.3",
