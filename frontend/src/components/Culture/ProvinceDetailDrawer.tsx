@@ -100,8 +100,11 @@ export const ProvinceDetailDrawer: React.FC = () => {
         </div>
       </header>
 
-      {/* Navigation tabs */}
-      <nav className="flex gap-1 overflow-x-auto border-b border-slate-800/80 px-2 py-1 bg-slate-900/40 scrollbar-none" aria-label="Loại nội dung">
+      {/* Navigation tabs: 3 cột x 2 hàng để luôn thấy đủ 6 tab */}
+      <nav
+        className="grid grid-cols-3 gap-1 border-b border-slate-800/80 bg-slate-900/40 p-2"
+        aria-label="Loại nội dung"
+      >
         {TABS.map((t) => {
           const count = t.key !== 'OVERVIEW' ? overview.data?.counts[t.key] : undefined;
           const active = tab === t.key;
@@ -112,16 +115,16 @@ export const ProvinceDetailDrawer: React.FC = () => {
               type="button"
               onClick={() => changeTab(t.key)}
               aria-current={active ? 'page' : undefined}
-              className={`flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-xs font-medium transition ${
+              className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition ${
                 active
-                  ? 'border-amber-400 font-bold text-amber-300 bg-amber-500/10 rounded-t-lg'
-                  : 'border-transparent text-slate-400 hover:text-slate-200'
+                  ? 'bg-amber-500/15 font-bold text-amber-300 ring-1 ring-amber-500/40'
+                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
               }`}
             >
-              <Icon className="h-3.5 w-3.5" />
-              <span>{t.label}</span>
+              <Icon className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">{t.label}</span>
               {count !== undefined && count > 0 && (
-                <span className="ml-0.5 rounded-full bg-slate-800 px-1.5 py-0.2 text-[10px] text-slate-400">
+                <span className="shrink-0 rounded-full bg-slate-800 px-1.5 text-[10px] text-slate-400">
                   {count}
                 </span>
               )}
