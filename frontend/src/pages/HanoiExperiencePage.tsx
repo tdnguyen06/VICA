@@ -8,10 +8,12 @@ import { buildJournal } from '../features/mini-game/journal';
 import { ActionButton, actionClass, ConfirmDialog, Narrative, StoryVisual } from '../features/mini-game/components/StoryCard';
 import type { GameEvent } from '../features/mini-game/state';
 import { CulturalReferences } from '../features/mini-game/components/CulturalReferences';
+import { GameAssistantPanel } from '../features/mini-game/components/GameAssistantPanel';
 
 export default function HanoiExperiencePage() {
   const { session, begin, dispatch, restart, reload, retry } = useMiniGame();
   const [params, setParams] = useSearchParams();
+  const [assistantOpen, setAssistantOpen] = useState(false);
   const [dialog, setDialog] = useState<'restart' | 'reload' | null>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   const game = session.game;
@@ -102,6 +104,7 @@ export default function HanoiExperiencePage() {
         <p className="text-xs leading-5 text-slate-500">Lựa chọn đã chốt không đổi trong lượt này. Muốn thử nhánh khác, hãy chơi lại sau hành trình.</p>
       </> : null}
     </div>
+    {playing && game ? <><ActionButton className="w-full border border-amber-500/40 bg-amber-500/10 text-amber-200" onClick={() => setAssistantOpen(true)}>Hỏi thêm về cảnh này</ActionButton><GameAssistantPanel key={game.runId} game={game} open={assistantOpen} onClose={() => setAssistantOpen(false)} /></> : null}
     {dialog ? <ConfirmDialog
       title={dialog === 'restart' ? 'Chơi lại từ đầu?' : 'Tải lại tiến trình đã lưu?'}
       confirmLabel={dialog === 'restart' ? 'Xác nhận chơi lại' : 'Xác nhận tải lại'}
