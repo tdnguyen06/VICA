@@ -57,6 +57,6 @@ export function buildJournal(scenario: Scenario, state: GameState) {
     knowledge,
     sourceRefs: scenario.sourceRefs.filter(id => usedSources.has(id)),
     imageRefs: entries.flatMap(entry => entry.result.imageRef ? [entry.result.imageRef] : []),
-    ending: renderNarrative(scenario, state, scenario.endingTemplate),
+    ending: renderNarrative(scenario, state, scenario.endingByChoice?.[state.choices.at(-1)?.choiceId ?? ''] ?? scenario.endingTemplate),
   };
 }

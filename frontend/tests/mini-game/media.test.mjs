@@ -5,7 +5,6 @@ import test from 'node:test';
 import { hanoiScenario } from '../../.mini-game-test-build/content/hanoi.js';
 import { hanoiVisuals } from '../../.mini-game-test-build/content/media.js';
 import { decodeGameSave } from '../../.mini-game-test-build/save-validation.js';
-import { getCurrentResult } from '../../.mini-game-test-build/engine.js';
 
 for (const asset of Object.values(hanoiVisuals).filter(asset => asset.kind === 'photo')) {
   test('bundled photo and attribution metadata: ' + asset.id, () => {
@@ -44,7 +43,7 @@ test('every intro, choice-scene and result image reference resolves to a local v
   assert.notEqual(hanoiVisuals['cup-geometric'].id, hanoiVisuals['cup-leaves'].id);
 });
 
-test('existing pre-image save still restores to its selected result', () => {
+test('older content version is rejected without silently migrating progress', () => {
   const oldSave = JSON.stringify({ schemaVersion: 1, state: {
     runId: 'pre-image-save', scenarioId: 'hanoi-one-day', scenarioVersion: '0.1.0-draft',
     revision: 4, choices: [
@@ -53,6 +52,6 @@ test('existing pre-image save still restores to its selected result', () => {
     ], phase: 'result', sceneId: 'lunch', choiceId: 'lunch-pho',
   } });
   const restored = decodeGameSave(hanoiScenario, oldSave);
-  assert.equal(restored.ok, true);
-  assert.equal(getCurrentResult(hanoiScenario, restored.state).imageRef, 'hanoi-pho');
+  assert.equal(restored.ok, false);
+  assert.equal(restored.reason, 'incompatible_scenario');
 });

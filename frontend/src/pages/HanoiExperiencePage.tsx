@@ -7,6 +7,7 @@ import { getCurrentResult } from '../features/mini-game/engine';
 import { buildJournal } from '../features/mini-game/journal';
 import { ActionButton, actionClass, ConfirmDialog, Narrative, StoryVisual } from '../features/mini-game/components/StoryCard';
 import type { GameEvent } from '../features/mini-game/state';
+import { CulturalReferences } from '../features/mini-game/components/CulturalReferences';
 
 export default function HanoiExperiencePage() {
   const { session, begin, dispatch, restart, reload, retry } = useMiniGame();
@@ -46,10 +47,10 @@ export default function HanoiExperiencePage() {
     </Link>
     <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
       <span className="inline-flex items-center gap-2 uppercase tracking-widest text-amber-300"><MapPin className="h-4 w-4" /> Hà Nội · Trải nghiệm kể chuyện</span>
-      <span className="rounded-full border border-amber-500/30 px-3 py-1 text-amber-200">Bản thử nghiệm · nội dung nháp</span>
+      <span className="rounded-full border border-amber-500/30 px-3 py-1 text-amber-200">Bản MVP · hội thoại hư cấu</span>
     </div>
     <h1 ref={heading} tabIndex={-1} className="scroll-mt-24 text-3xl font-bold tracking-tight text-white outline-none sm:text-4xl">{title}</h1>
-    <p className="text-sm leading-6 text-slate-400">Nhân vật và hội thoại hư cấu. Ảnh có nguồn và credit riêng; nội dung văn hóa vẫn đang biên tập, chưa phải bản demo hoàn chỉnh.</p>
+    <p className="text-sm leading-6 text-slate-400">Nhân vật, hội thoại và không gian trải nghiệm hư cấu. Ghi chú văn hóa có nguồn đối chiếu; ảnh có credit riêng. Một hành trình không đại diện cho tất cả người Hà Nội.</p>
 
     {issueText ? <div role="alert" className="space-y-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm leading-6 text-amber-100">
       <p>{issueText}</p>
@@ -80,9 +81,9 @@ export default function HanoiExperiencePage() {
         <div className="rounded-2xl border border-amber-500/25 bg-amber-500/5 p-5 leading-7"><p>{journal.ending.text}</p></div>
         <section className="space-y-3 border-t border-slate-700 pt-5">
           <h2 className="text-lg font-semibold">Ghi chú văn hóa và nguồn</h2>
-          <p className="text-sm text-amber-200">Các ghi chú dưới đây còn là placeholder, chưa phải kiến thức đã kiểm chứng.</p>
-          <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-300">{journal.knowledge.map(note => <li key={note.id}>{note.text}</li>)}</ul>
-          <p className="text-sm text-slate-400">Nguồn ảnh nằm dưới từng hình minh họa. Nguồn tham khảo cho các ghi chú văn hóa vẫn chưa hoàn thiện.</p>
+          <p className="text-sm text-amber-200">Chỉ gồm những ghi chú thuộc hành trình bạn đã chơi. Truyền thuyết được phân biệt với dữ kiện và khuyến nghị ứng xử.</p>
+          <ul className="list-disc space-y-2 pl-5 text-sm leading-6 text-slate-300">{journal.knowledge.map(note => <li key={note.id}><strong>{note.category === 'legend' ? 'Truyền thuyết' : note.category === 'practice' ? 'Ứng xử' : 'Dữ kiện'}: </strong>{note.text}</li>)}</ul>
+          <CulturalReferences sourceIds={journal.sourceRefs} /><p className="text-sm text-slate-400">Nguồn ảnh nằm dưới từng hình minh họa. Không có giá, giờ mở cửa hay cam kết dịch vụ trong trải nghiệm này.</p>
         </section>
         <div className="flex flex-wrap gap-3">
           <ActionButton className="inline-flex items-center gap-2 border border-slate-600" onClick={() => setDialog('restart')}><RotateCcw className="h-4 w-4" /> Chơi lại</ActionButton>
@@ -95,7 +96,8 @@ export default function HanoiExperiencePage() {
         </div>
         <StoryVisual theme={game?.sceneId ?? 'intro'} motif={game?.phase === 'result' ? game.choiceId : undefined} assetId={result?.imageRef ?? scene.imageRef} />
         <Narrative blocks={result?.blocks ?? scene.blocks} />
-        {result ? <ActionButton disabled={blocked} className="w-full bg-amber-400 text-slate-950 hover:bg-amber-300" onClick={() => send('continue')}>{scene.id === 'pottery' || scene.id === 'cafe' ? 'Tiếp tục đến nhật ký' : 'Tiếp tục'}</ActionButton>
+        {result ? <CulturalReferences sourceIds={story.knowledge.filter(note => result.knowledgeIds.includes(note.id)).flatMap(note => note.sourceIds)} /> : null}
+        {result ? <ActionButton disabled={blocked} className="w-full bg-amber-400 text-slate-950 hover:bg-amber-300" onClick={() => send('continue')}>{result.continueLabel ?? (scene.id === 'pottery' || scene.id === 'cafe' ? 'Tiếp tục đến nhật ký' : 'Tiếp tục')}</ActionButton>
           : <div className="grid gap-3">{scene.choices.map(choice => <ActionButton key={choice.id} disabled={blocked} className="border border-slate-600 bg-slate-800 text-left text-slate-100 hover:border-amber-400 hover:bg-slate-800/70" onClick={() => send('choose', choice.id)}>{choice.label}</ActionButton>)}</div>}
         <p className="text-xs leading-5 text-slate-500">Lựa chọn đã chốt không đổi trong lượt này. Muốn thử nhánh khác, hãy chơi lại sau hành trình.</p>
       </> : null}

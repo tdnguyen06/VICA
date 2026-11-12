@@ -4,6 +4,7 @@ import { createInitialState, transition, getCurrentResult } from '../../.mini-ga
 import { buildJournal } from '../../.mini-game-test-build/journal.js';
 import { hanoiScenario as scenario } from '../../.mini-game-test-build/content/hanoi.js';
 import { hanoiVisuals } from '../../.mini-game-test-build/content/media.js';
+import { culturalSources } from '../../.mini-game-test-build/content/sources.js';
 
 // These route expectations are the agreed product scope, not generated from the scene graph.
 const mornings = ['morning-walk', 'morning-story'];
@@ -105,7 +106,7 @@ for (const morning of mornings) {
         assert.deepEqual(journal.entries.map(entry => entry.choiceId), [morning, lunch, detail]);
         assert.deepEqual(journal.entries.map(entry => entry.sceneId), ['morning', 'lunch', detailScene]);
         assert.deepEqual(journal.entries.map(entry => entry.label), [labels[morning], labels[lunch], labels[detail]]);
-        assert.deepEqual(journal.knowledge.map(note => note.id), [morning + '-note', lunch + '-note']);
+        assert.deepEqual(journal.knowledge.map(note => note.id), [morning + '-note', ...(morning === 'morning-story' ? ['morning-history-note'] : []), lunch + '-note']);
         const imageByChoice = {
           'morning-walk': 'hanoi-morning-walk', 'morning-story': 'hanoi-lake',
           'lunch-bun-cha': 'hanoi-bun-cha', 'lunch-pho': 'hanoi-pho',
@@ -113,7 +114,7 @@ for (const morning of mornings) {
           'cafe-street': 'hanoi-cafe', 'cafe-chat': 'hanoi-cafe',
         };
         assert.deepEqual(journal.imageRefs, [imageByChoice[morning], imageByChoice[lunch], imageByChoice[detail]]);
-        assert.deepEqual(journal.sourceRefs, []);
+        assert.deepEqual(journal.sourceRefs, [morning === 'morning-story' ? 'heritage-hoan-kiem' : 'tourism-photo-etiquette', 'tourism-hanoi-food']);
         assert.ok(journal.ending.text.includes(labels[morning]));
         assert.ok(journal.ending.text.includes(labels[lunch]));
         assert.ok(journal.ending.text.includes(labels[detail]));
@@ -189,10 +190,10 @@ test('scenario identity/version mismatch is rejected, not silently migrated', ()
   }
 });
 
-test('content remains explicitly draft and all graph references resolve', () => {
-  assert.equal(scenario.editorialStatus, 'development-placeholder');
+test('authored content resolves all graph and cultural source references', () => {
+  assert.equal(scenario.editorialStatus, 'review-ready');
   assert.deepEqual(new Set(scenario.imageRefs), new Set(Object.keys(hanoiVisuals)));
-  assert.deepEqual(scenario.sourceRefs, []);
+  assert.deepEqual(new Set(scenario.sourceRefs), new Set(Object.keys(culturalSources)));
   const ids = new Set();
   for (const [id, scene] of Object.entries(scenario.scenes)) {
     assert.equal(scene.id, id);
@@ -204,12 +205,13 @@ test('content remains explicitly draft and all graph references resolve', () => 
       assert.ok(hanoiVisuals[choice.result.imageRef]);
       choice.result.knowledgeIds.forEach(knowledgeId =>
         assert.ok(scenario.knowledge.some(note => note.id === knowledgeId)));
-      choice.result.blocks.forEach(block => assert.equal(block.editorialStatus, 'draft'));
+      choice.result.blocks.forEach(block => assert.equal(block.editorialStatus, block.kind === 'culture' ? 'source-reviewed' : 'authored'));
     }
   }
   scenario.knowledge.forEach(note => {
-    assert.equal(note.verification, 'unverified-placeholder');
-    assert.deepEqual(note.sourceIds, []);
+    assert.equal(note.verification, 'source-reviewed');
+    assert.ok(note.sourceIds.length);
+    note.sourceIds.forEach(id => assert.ok(culturalSources[id]));
   });
 });
 
@@ -246,7 +248,7 @@ test('journal filters image and source references to the played route', () => {
     'fixture-image-morning-story', 'fixture-image-lunch-pho', 'fixture-image-cafe-chat',
   ]);
   assert.deepEqual(journal.sourceRefs, [
-    'fixture-source-morning-story-note', 'fixture-source-lunch-pho-note',
+    'fixture-source-morning-story-note', 'fixture-source-morning-history-note', 'fixture-source-lunch-pho-note',
   ]);
   assert.equal(JSON.stringify(journal).includes('fixture-image-pottery'), false);
   assert.equal(JSON.stringify(journal).includes('fixture-source-lunch-bun-cha'), false);
