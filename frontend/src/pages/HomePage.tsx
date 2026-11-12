@@ -1,6 +1,7 @@
 import React from 'react';
 import { MapViewer } from '../components/Map/MapViewer';
-import { Globe } from 'lucide-react';
+import { Globe, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const HomePage: React.FC = () => {
   return (
@@ -19,6 +20,19 @@ export const HomePage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      <section aria-labelledby="explore-heading" className="space-y-3">
+        <h2 id="explore-heading" className="text-xl font-bold text-slate-100">Khám phá</h2>
+        <Link to="/experiences/ha-noi" className="flex flex-col gap-4 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-slate-900 to-slate-800 p-5 transition-colors hover:border-amber-400 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-widest text-amber-300">Hà Nội · Trải nghiệm kể chuyện</p>
+            <h3 className="text-xl font-bold text-white">Một ngày làm người Hà Nội</h3>
+            <p className="text-sm leading-6 text-slate-300">Dẫn một người bạn đi chơi, tự chọn hành trình và giữ lại nhật ký của riêng mình.</p>
+            <p className="text-xs text-amber-200/80">Bản thử nghiệm · nội dung và hình ảnh còn nháp</p>
+          </div>
+          <span className="inline-flex min-h-12 shrink-0 items-center gap-2 font-semibold text-amber-300">Mở trải nghiệm <ArrowRight className="h-4 w-4" /></span>
+        </Link>
+      </section>
 
       {/* Map Section */}
       <div className="space-y-3">

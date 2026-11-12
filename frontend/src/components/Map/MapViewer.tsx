@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import * as maplibregl from 'maplibre-gl';
 import maplibreglWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { useAppStore } from '../../stores/appStore';
@@ -71,7 +72,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const sovereigntyMarkersRef = useRef<maplibregl.Marker[]>([]);
   const geographicRequestRef = useRef<AbortController | null>(null);
 
-  const { mapCenter, mapZoom, setMapCenter, setMapZoom, setCurrentProvince } = useAppStore();
+  const { currentProvince, mapCenter, mapZoom, setMapCenter, setMapZoom, setCurrentProvince } = useAppStore();
   const [geographicFeedback, setGeographicFeedback] = useState<GeographicFeedback | null>(null);
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
   const [is3DView, setIs3DView] = useState(false);
@@ -725,6 +726,12 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                   : 'Vùng đất giàu truyền thống văn hóa dân tộc với di tích lịch sử ngàn đời.'
               )}
             </p>
+
+            {currentProvince === 'ha-noi' && !selectedProvinceInfo.isSovereignty ? (
+              <Link to="/experiences/ha-noi" className="mt-4 flex min-h-12 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400">
+                Trải nghiệm một ngày
+              </Link>
+            ) : null}
 
             {/* Quick Action Button */}
             <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">

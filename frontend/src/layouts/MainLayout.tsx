@@ -1,10 +1,11 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Compass, Map, Bot } from 'lucide-react';
 import { CulturalAiAssistant } from '../components/Chat/CulturalAiAssistant';
 import { useAppStore } from '../stores/appStore';
 
 export const MainLayout: React.FC = () => {
+  const inExperience = useLocation().pathname === '/experiences/ha-noi';
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
@@ -14,10 +15,10 @@ export const MainLayout: React.FC = () => {
               <Compass className="h-6 w-6" />
             </span>
             <div>
-              <h1 className="font-bold text-lg tracking-tight bg-gradient-to-r from-amber-400 via-rose-400 to-red-500 bg-clip-text text-transparent">
+              <h1 className="font-bold text-sm sm:text-lg tracking-tight bg-gradient-to-r from-amber-400 via-rose-400 to-red-500 bg-clip-text text-transparent">
                 Vietnam Cultural Atlas
               </h1>
-              <p className="text-xs text-slate-400">Nền tảng Bản đồ Văn hóa & AI</p>
+              <p className="hidden sm:block text-xs text-slate-400">Nền tảng Bản đồ Văn hóa & AI</p>
             </div>
           </Link>
 
@@ -26,7 +27,7 @@ export const MainLayout: React.FC = () => {
               <Map className="h-4 w-4" />
               <span>Bản đồ</span>
             </Link>
-            <button
+            {!inExperience ? <button
               type="button"
               onClick={() => {
                 const state = useAppStore.getState();
@@ -36,7 +37,7 @@ export const MainLayout: React.FC = () => {
             >
               <Bot className="h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" />
               <span>Trợ lý AI</span>
-            </button>
+            </button> : null}
           </nav>
         </div>
       </header>
@@ -50,7 +51,7 @@ export const MainLayout: React.FC = () => {
       </footer>
 
       {/* Floating Cultural AI Assistant Drawer */}
-      <CulturalAiAssistant />
+      {!inExperience ? <CulturalAiAssistant /> : null}
     </div>
   );
 };
