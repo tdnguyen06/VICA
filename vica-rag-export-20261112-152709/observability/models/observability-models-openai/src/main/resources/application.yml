@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: observability-models-openai
+  ai:
+    chat:
+      observations:
+        log-completion: true
+        log-prompt: true
+    image:
+      observations:
+        log-prompt: true
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+          model: gpt-4o-mini
+          temperature: 0.7
+      embedding:
+          model: text-embedding-3-small
+      image:
+          model: dall-e-3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

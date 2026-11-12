@@ -1,0 +1,9 @@
+spring:
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+        chat:
+          include: false
+      embedding:
+          model: granite-embedding:30m

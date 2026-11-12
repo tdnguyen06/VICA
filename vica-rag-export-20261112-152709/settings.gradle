@@ -1,0 +1,74 @@
+plugins {
+    id "org.gradle.toolchains.foojay-resolver-convention" version '1.0.0'
+}
+
+rootProject.name = 'llm-apps-java-spring-ai'
+
+include 'data-ingestion:document-readers:document-readers-json-ollama'
+include 'data-ingestion:document-readers:document-readers-markdown-ollama'
+include 'data-ingestion:document-readers:document-readers-pdf-ollama'
+include 'data-ingestion:document-readers:document-readers-text-ollama'
+include 'data-ingestion:document-readers:document-readers-tika-ollama'
+include 'data-ingestion:document-transformers:document-transformers-metadata-ollama'
+include 'data-ingestion:document-transformers:document-transformers-splitters-ollama'
+
+include 'models:chat:chat-mistral-ai'
+include 'models:chat:chat-multiple-providers'
+include 'models:chat:chat-ollama'
+include 'models:chat:chat-openai'
+
+include 'models:decision:decision-ollama'
+
+include 'models:embedding:embedding-mistral-ai'
+include 'models:embedding:embedding-ollama'
+include 'models:embedding:embedding-openai'
+include 'models:embedding:embedding-transformers'
+
+include 'models:image:image-openai'
+
+include 'models:audio:speech-to-text-openai'
+include 'models:audio:text-to-speech-openai'
+
+include 'observability:models:observability-models-mistral-ai'
+include 'observability:models:observability-models-ollama'
+include 'observability:models:observability-models-openai'
+include 'observability:vector-stores:observability-vector-stores-pgvector'
+
+include 'patterns:guardrails:guardrails-input'
+include 'patterns:guardrails:guardrails-output'
+
+include 'patterns:memory:memory-basics'
+include 'patterns:memory:memory-jdbc'
+include 'patterns:memory:memory-spring-security'
+include 'patterns:memory:memory-vector-store'
+
+include 'patterns:prompts:prompts-basics-ollama'
+include 'patterns:prompts:prompts-basics-openai'
+include 'patterns:prompts:prompts-messages-ollama'
+include 'patterns:prompts:prompts-messages-openai'
+include 'patterns:prompts:prompts-templates-ollama'
+include 'patterns:prompts:prompts-templates-openai'
+
+include 'patterns:structured-output:structured-output-ollama'
+include 'patterns:structured-output:structured-output-openai'
+
+include 'patterns:multimodality:multimodality-mistral-ai'
+include 'patterns:multimodality:multimodality-ollama'
+include 'patterns:multimodality:multimodality-openai'
+
+include 'patterns:tool-calling:tool-calling-mistral-ai'
+include 'patterns:tool-calling:tool-calling-ollama'
+include 'patterns:tool-calling:tool-calling-openai'
+
+include 'rag:rag-branching'
+include 'rag:rag-conditional'
+include 'rag:rag-sequential:rag-advanced'
+include 'rag:rag-sequential:rag-naive'
+
+include 'mcp:mcp-clients:mcp-brave'
+
+include 'use-cases:chatbot'
+include 'use-cases:question-answering'
+include 'use-cases:semantic-search'
+include 'use-cases:structured-data-extraction'
+include 'use-cases:text-classification'

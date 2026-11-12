@@ -1,0 +1,8 @@
+spring:
+  ai:
+    embedding:
+      transformer:
+        onnx:
+          model-uri: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx
+        tokenizer:
+          uri: https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/raw/main/tokenizer.json

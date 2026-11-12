@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: observability-vector-stores-pgvector
+  ai:
+    chat:
+      client:
+        observations:
+          log-prompt: true
+      observations:
+        log-completion: true
+        log-prompt: true
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+      chat:
+          model: granite3.3:2b
+          temperature: 0.7
+      embedding:
+          model: granite-embedding:278m
+    vectorstore:
+      observations:
+        log-query-response: true
+      pgvector:
+        initialize-schema: true
+        dimensions: 768
+        index-type: hnsw
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+arconia:
+  otel:
+    metrics:
+      exporter:
+        interval: 5s

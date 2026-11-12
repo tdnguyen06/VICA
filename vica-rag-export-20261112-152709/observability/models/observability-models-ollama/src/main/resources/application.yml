@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: observability-models-ollama
+  ai:
+    chat:
+      observations:
+        log-completion: true
+        log-prompt: true
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+      chat:
+          model: granite3.3:2b
+          temperature: 0.7
+      embedding:
+          model: granite-embedding:30m
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+arconia:
+  otel:
+    metrics:
+      exporter:
+        interval: 5s

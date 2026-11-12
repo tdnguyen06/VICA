@@ -1,0 +1,13 @@
+spring:
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+        chat:
+          additional-models:
+            - hf.co/HuggingFaceTB/SmolLM2-360M-Instruct-GGUF
+        embedding:
+          include: false
+      chat:
+          model: granite3.3:2b
+          temperature: 0.7

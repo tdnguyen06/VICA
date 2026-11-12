@@ -1,0 +1,15 @@
+# SITE_ADDRESS=:80                  -> plain HTTP on the public IP
+# SITE_ADDRESS=api.yourdomain.com   -> automatic HTTPS (Let's Encrypt)
+{$SITE_ADDRESS} {
+	encode gzip
+
+	# Only expose what the web needs. Everything else (actuator, etc.) is blocked.
+	@api path /rag/* /actuator/health /actuator/health/*
+	handle @api {
+		reverse_proxy app:8080
+	}
+
+	handle {
+		respond "Not found" 404
+	}
+}

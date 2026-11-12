@@ -1,0 +1,12 @@
+spring:
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+        embedding:
+          include: false
+      chat:
+        model: granite4.2:3b
+        temperature: 0.0
+      decision:
+        model: d1-omni:600m

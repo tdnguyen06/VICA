@@ -1,0 +1,14 @@
+spring:
+  ai:
+    ollama:
+      init:
+        pull-model-strategy: when_missing
+        chat:
+          include: false
+      embedding:
+          model: granite-embedding:278m
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        dimensions: 768
+        index-type: hnsw

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: observability-models-mistral-ai
+  ai:
+    chat:
+      observations:
+        log-completion: true
+        log-prompt: true
+    mistralai:
+      api-key: ${MISTRAL_AI_API_KEY}
+      chat:
+          model: mistral-small-latest
+          temperature: 0.7
+      embedding:
+          model: mistral-embed
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -1,0 +1,19 @@
+plugins {
+    id 'groovy-gradle-plugin'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    set("springBootVersion", '4.2.0-RC2')
+    set("dependencyManagementVersion", '1.1.7')
+    set("graalvmVersion", '1.1.14')
+}
+
+dependencies {
+    implementation "io.spring.gradle:dependency-management-plugin:${dependencyManagementVersion}"
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    implementation "org.graalvm.buildtools:native-gradle-plugin:${graalvmVersion}"
+}

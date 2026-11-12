@@ -1,0 +1,115 @@
+# LLM Observability: Mistral AI
+
+LLM Observability for Mistral AI.
+
+## Mistral AI
+
+The application consumes models from the [Mistral AI](https://mistral.ai) platform.
+
+### Create an account
+
+Visit [console.mistral.ai](https://console.mistral.ai) and sign up for a new account.
+You can choose the "Experiment" plan, which gives you access to the Mistral APIs for free.
+
+### Configure API Key
+
+In the Mistral AI console, navigate to _API Keys_ and generate a new API key.
+Copy and securely store your API key on your machine as an environment variable.
+The application will use it to access the Mistral AI API.
+
+```shell
+export MISTRAL_AI_API_KEY=<YOUR-API-KEY>
+```
+
+## Running the application
+
+Run the application as follows:
+
+```shell
+./gradlew bootRun
+```
+
+Under the hood, the Arconia framework will automatically spin up a [Grafana LGTM](https://arconia.io/docs/arconia/latest/dev-services/lgtm/) observability platform. See [Arconia Dev Services](https://arconia.io/docs/arconia/latest/dev-services/) for more information.
+
+The application will be accessible at http://localhost:8080.
+
+## Observability Platform
+
+The application logs will show you the URL where you can access the Grafana observability platform and start exploring your application’s telemetry data.
+
+```logs
+...o.t.grafana.LgtmStackContainer: Access to the Grafana dashboard: http://localhost:<port>
+```
+
+By default, logs, metrics, and traces are exported via OTLP using the HTTP/Protobuf format.
+
+In Grafana, you can query the telemetry from the "Drilldown" and "Explore" sections.
+
+## Calling the application
+
+> [!NOTE]
+> These examples use the [httpie](https://httpie.io) CLI to send HTTP requests.
+
+### Chat
+
+Call the application that will use a chat model to answer your question.
+
+```shell
+http :8080/chat question=="What is the capital of Italy?" -b
+```
+
+The next request is configured with generic portable options.
+
+```shell
+http :8080/chat/generic-options question=="Why is a raven like a writing desk? Give a short answer." -b
+```
+
+The next request is configured with the provider's specific options.
+
+```shell
+http :8080/chat/provider-options question=="What can you see beyond what you can see? Give a short answer." -b
+```
+
+The next request returns the model's answer as a stream.
+
+```shell
+http --stream :8080/chat/stream question=="Why is a raven like a writing desk? Answer in 3 paragraphs." -b
+```
+
+Finally, try a request which uses function calling.
+
+```shell
+http :8080/chat/functions authorName=="Philip Pullman" -b
+```
+
+And tools.
+
+```shell
+http :8080/chat/tools authorName=="Philip Pullman" -b
+```
+
+### Embedding
+
+Call the application that will use an embedding model to generate embeddings for your query.
+
+```shell
+http :8080/embed query=="The capital of Italy is Rome"
+```
+
+The next request is configured with generic portable options.
+
+```shell
+http :8080/embed/generic-options query=="The capital of Italy is Rome" -b
+```
+
+The next request is configured with the provider's specific options.
+
+```shell
+http :8080/embed/provider-options query=="The capital of Italy is Rome" -b
+```
+
+Let's try now generating embeddings for multiple queries.
+
+```shell
+http :8080/embed/multiple-queries query1=="The capital of Italy is Rome" query2=="The capital of Denmark is Copenhagen" -b
+```

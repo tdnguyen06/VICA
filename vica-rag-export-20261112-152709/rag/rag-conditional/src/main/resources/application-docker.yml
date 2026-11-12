@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  ai:
+    chat:
+      observations:
+        log-completion: false           # don't write user prompts/answers to logs in prod
+        log-prompt: false
+    vectorstore:
+      observations:
+        log-query-response: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info            # base application.yml exposes "*" (env, heapdump, ...)
+
+logging:
+  level:
+    org.springframework.ai.rag: info
+
