@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Compass, Map, Bot } from 'lucide-react';
 import { CulturalAiAssistant } from '../components/Chat/CulturalAiAssistant';
+import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer';
 import { useAppStore } from '../stores/appStore';
 
 export const MainLayout: React.FC = () => {
@@ -51,6 +52,9 @@ export const MainLayout: React.FC = () => {
 
       {/* Floating Cultural AI Assistant Drawer */}
       <CulturalAiAssistant />
+
+      {/* Cultural Exploration Drawer (Người 2 - Cultural Overview) */}
+      <ProvinceDetailDrawer />
     </div>
   );
 };

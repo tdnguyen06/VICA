@@ -56,9 +56,9 @@ export const VIETNAM_MARITIME_TERRITORIES: MaritimeTerritory[] = [
     adminUnit: 'Huyện đảo Lý Sơn, Tỉnh Quảng Ngãi, Việt Nam',
     lng: 109.12,
     lat: 15.38,
-    description: 'Quê hương của Đội hùng binh Hoàng Sa kiêm quản Trường Sa năm xưa, nơi lưu giữ nhiều bằng chứng lịch sử và di sản văn hóa Lễ khao lề thế lính Hoàng Sa.',
-    culturalLandmark: 'Di tích Âm Linh Tự & Đội Hoàng Sa kiêm quản Bắc Hải',
-    islands: ['Đảo Lớn (Cù Lao Ré)', 'Đảo Bé (Cù Lao Bờ Bãi)'],
+    description: 'Quê hương của Đội hùng binh Hoàng Sa kiêm quản Trường Sa năm xưa, nơi lưu giữ nhiều bằng chứng lịch sử và Di sản văn hóa phi vật thể quốc gia: Lễ khao lề thế lính Hoàng Sa (nghi lễ tri ân và tế hình nhân thế mạng cho các binh phu vượt biển cắm mốc chủ quyền).',
+    culturalLandmark: 'Di tích Âm Linh Tự & Nhà trưng bày Đội Hoàng Sa kiêm quản Bắc Hải',
+    islands: ['Đảo Lớn (Cù Lao Ré)', 'Đảo Bé (Cù Lao Bờ Bãi)', 'Hòn Mù Cu'],
   },
   {
     id: 'bach-long-vi',

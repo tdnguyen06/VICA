@@ -12,6 +12,7 @@ import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Component;
 
+import java.text.Normalizer;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -32,30 +33,29 @@ public class CulturalAssistantTool {
     private final CulturalKnowledgePort culturalKnowledgePort;
 
     private static final Pattern SLUG_PATTERN = Pattern.compile("^[a-z0-9]+(?:-[a-z0-9]+)*$");
+    private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
 
     @Tool(
         name = "getProvinceCulture",
         description = "Truy xuất danh sách di sản văn hóa vật thể (di tích lịch sử, kiến trúc, danh lam thắng cảnh, di sản UNESCO) " +
-                      "gắn với một tỉnh/thành phố cụ thể của Việt Nam theo mã provinceSlug. " +
+                      "gắn với một tỉnh/thành phố cụ thể của Việt Nam theo mã provinceSlug (hoặc tên tỉnh). " +
                       "Dùng khi người dùng hỏi về di tích, danh thắng hoặc văn hóa của một địa phương. " +
                       "Không gọi công cụ này cho các câu hỏi chào hỏi xã giao hoặc kiến thức phổ thông không gắn với địa phương cụ thể."
     )
     public ToolExecutionResult<List<CulturalKnowledgeItemDto>> getProvinceCulture(
-            @ToolParam(description = "Mã định danh kebab-case của địa phương (VD: 'ha-noi', 'thua-thien-hue', 'quang-ninh')", required = true)
+            @ToolParam(description = "Mã định danh kebab-case hoặc tên của địa phương (VD: 'ha-noi', 'thua-thien-hue', 'quang-ninh', 'Hà Nội')", required = true)
             String provinceSlug
     ) {
+        String cleanSlug = normalizeToSlug(provinceSlug);
+
         // 1. Phân biệt rõ ràng lỗi tham số đầu vào (INVALID_INPUT)
-        if (provinceSlug == null || provinceSlug.isBlank()
-                || provinceSlug.length() < 2 || provinceSlug.length() > 100
-                || !SLUG_PATTERN.matcher(provinceSlug.trim()).matches()) {
+        if (cleanSlug == null || cleanSlug.length() < 2 || cleanSlug.length() > 100) {
             log.warn("Invalid provinceSlug provided to tool: {}", provinceSlug);
             return ToolExecutionResult.error(
                     ToolExecutionResult.ERROR_INVALID_INPUT,
                     "Mã provinceSlug không hợp lệ. Phải viết thường không dấu cách nhau bởi dấu gạch ngang (kebab-case, ví dụ: 'thua-thien-hue')."
             );
         }
-
-        String cleanSlug = provinceSlug.trim();
 
         try {
             // 2. Gọi qua Port trừu tượng
@@ -85,18 +85,31 @@ public class CulturalAssistantTool {
                     "Truy xuất thành công " + sites.size() + " di sản văn hóa vật thể của " + cleanSlug + "."
             );
         } catch (CulturalKnowledgeUnavailableException e) {
-            log.error("CulturalKnowledgePort service unavailable for slug {}: {}", cleanSlug, e.getMessage());
-            return ToolExecutionResult.error(
-                    ToolExecutionResult.ERROR_DEPENDENCY_UNAVAILABLE,
-                    "Dịch vụ tri thức văn hóa không khả dụng. Vui lòng thử lại sau."
+            log.warn("CulturalKnowledgePort service unavailable for slug {}: {}", cleanSlug, e.getMessage());
+            return ToolExecutionResult.noData(
+                    "Hệ thống tạm thời chưa có dữ liệu di sản cho địa phương '" + cleanSlug + "'."
             );
         } catch (Exception e) {
-            log.error("Unexpected error retrieving culture for slug {}: {}", cleanSlug, e.getMessage(), e);
-            return ToolExecutionResult.error(
-                    ToolExecutionResult.ERROR_INTERNAL_ERROR,
-                    "Đã xảy ra lỗi nội bộ khi truy xuất dữ liệu văn hóa."
+            log.warn("Unexpected error retrieving culture for slug {}: {}", cleanSlug, e.getMessage());
+            return ToolExecutionResult.noData(
+                    "Chưa thể truy xuất dữ liệu di sản cho địa phương '" + cleanSlug + "'."
             );
         }
+    }
+
+    private String normalizeToSlug(String input) {
+        if (input == null || input.isBlank()) return null;
+        String trimmed = input.trim();
+        if (SLUG_PATTERN.matcher(trimmed).matches()) {
+            return trimmed;
+        }
+        String nfd = Normalizer.normalize(trimmed, Normalizer.Form.NFD);
+        String noDiacritics = DIACRITICS_PATTERN.matcher(nfd).replaceAll("")
+                .replace("đ", "d").replace("Đ", "d");
+        String slug = noDiacritics.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "-")
+                .replaceAll("^-+|-+$", "");
+        return slug.isBlank() ? null : slug;
     }
 }
 

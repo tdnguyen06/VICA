@@ -1,6 +1,5 @@
 import React from 'react';
 import { MapViewer } from '../components/Map/MapViewer';
-import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer';   // ← của bạn
 import { Globe } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
@@ -28,7 +27,6 @@ export const HomePage: React.FC = () => {
           <h3 className="text-base sm:text-lg">Bản đồ Văn hóa Địa lý tương tác</h3>
         </div>
         <MapViewer className="h-[620px] w-full" />
-        <ProvinceDetailDrawer />                                                     {/* ← của bạn */}
       </div>
     </div>
   );

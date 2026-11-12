@@ -14,6 +14,8 @@ import {
   Sparkles,
   Box,
   X,
+  LoaderCircle,
+  Shuffle,
 } from 'lucide-react';
 
 // Configure Web Worker URL for MapLibre GL JS under Vite
@@ -35,6 +37,13 @@ interface SelectedProvinceInfo {
   historicalPeriod?: string;
   description?: string;
 }
+
+interface GeographicFeedback {
+  kind: 'loading' | 'success' | 'empty' | 'error';
+  message: string;
+}
+
+const SUCCESS_FEEDBACK_DURATION_MS = 3500;
 
 const MAP_STYLES = {
   voyager: {
@@ -64,11 +73,65 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   const geographicRequestRef = useRef<AbortController | null>(null);
 
   const { mapCenter, mapZoom, setMapCenter, setMapZoom, setCurrentProvince } = useAppStore();
-  const [geographicStatus, setGeographicStatus] = useState('');
-  const [geographicError, setGeographicError] = useState(false);
+  const [geographicFeedback, setGeographicFeedback] = useState<GeographicFeedback | null>(null);
   const [activeStyleKey, setActiveStyleKey] = useState<keyof typeof MAP_STYLES>('voyager');
   const [is3DView, setIs3DView] = useState(false);
   const [selectedProvinceInfo, setSelectedProvinceInfo] = useState<SelectedProvinceInfo | null>(null);
+
+  const selectProvince = async (
+    props: Record<string, unknown> | null,
+    point?: maplibregl.LngLat | { lng: number; lat: number }
+  ) => {
+    geographicRequestRef.current?.abort();
+    const controller = new AbortController();
+    geographicRequestRef.current = controller;
+    setGeographicFeedback({ kind: 'loading', message: 'Đang xác định địa phương…' });
+    setCurrentProvince(null);
+    setSelectedProvinceInfo(null);
+    const slug = props ? provinceSlugFromProperties(props) : null;
+    const isDisplayOnly = props?.is_sovereignty === true || props?.is_sovereignty === 'true';
+    try {
+      const province = point && !isDisplayOnly
+        ? await identifyProvince(point.lat, point.lng, controller.signal)
+        : slug ? await fetchProvince(slug, controller.signal) : null;
+      if (controller.signal.aborted) return;
+      if (!province) {
+        if (props && !point && !slug) throw new Error('Unmapped map feature');
+        setGeographicFeedback({ kind: 'empty', message: 'Không có địa phương trong vùng dữ liệu tại vị trí này.' });
+        return;
+      }
+      setCurrentProvince(province.slug);
+      setGeographicFeedback({ kind: 'success', message: `Đã chọn ${province.name}` });
+      // Retain existing cultural preview only when it belongs to the identified province.
+      const preview = props && slug === province.slug ? props : {};
+      const text = (key: string) => typeof preview[key] === 'string' ? preview[key] as string : undefined;
+      setSelectedProvinceInfo({
+        name: isDisplayOnly ? text('name_vi') ?? province.name : province.name,
+        adminUnit: province.adminUnit,
+        isSovereignty: isDisplayOnly,
+        culturalLandmark: text('cultural_landmark'),
+        culturalSummary: text('cultural_summary'),
+        culturalCategoryLabel: text('cultural_category_label'),
+        historicalPeriod: text('historical_period'),
+      });
+    } catch {
+      if (controller.signal.aborted) return;
+      setGeographicFeedback({ kind: 'error', message: 'Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.' });
+    }
+  };
+
+  const selectProvinceRef = useRef(selectProvince);
+  selectProvinceRef.current = selectProvince;
+
+  useEffect(() => {
+    if (geographicFeedback?.kind !== 'success') return;
+
+    const timer = window.setTimeout(() => {
+      setGeographicFeedback(current => current === geographicFeedback ? null : current);
+    }, SUCCESS_FEEDBACK_DURATION_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [geographicFeedback]);
 
   // Helper to add 63 Vietnam Provinces & 2 Archipelagoes GeoJSON layers
   const addProvincesGeoJsonLayer = (map: maplibregl.Map) => {
@@ -158,6 +221,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       id: 'provinces-labels',
       type: 'symbol',
       source: 'vietnam-province-labels',
+      filter: ['!=', ['get', 'is_sovereignty'], true],
       layout: {
         'text-field': ['get', 'name_vi'],
         'text-size': [
@@ -205,6 +269,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       zoom: mapZoom,
       minZoom: 3.5,
       maxZoom: 18,
+      renderWorldCopies: false,
       attributionControl: false,
       scrollZoom: true,
       dragPan: true,
@@ -273,56 +338,15 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         map.getCanvas().style.cursor = '';
       });
 
-      const selectProvince = async (props: Record<string, unknown> | null, point?: maplibregl.LngLat) => {
-        geographicRequestRef.current?.abort();
-        const controller = new AbortController();
-        geographicRequestRef.current = controller;
-        setGeographicStatus('Đang xác định địa phương…');
-        setGeographicError(false);
-        setCurrentProvince(null);
-        setSelectedProvinceInfo(null);
-        const slug = props ? provinceSlugFromProperties(props) : null;
-        const isDisplayOnly = props?.is_sovereignty === true || props?.is_sovereignty === 'true';
-        try {
-          const province = point && !isDisplayOnly
-            ? await identifyProvince(point.lat, point.lng, controller.signal)
-            : slug ? await fetchProvince(slug, controller.signal) : null;
-          if (controller.signal.aborted) return;
-          if (!province) {
-            if (props && !point && !slug) throw new Error('Unmapped map feature');
-            setGeographicStatus('Không có địa phương trong vùng dữ liệu tại vị trí này.');
-            return;
-          }
-          setCurrentProvince(province.slug);
-          setGeographicStatus(`Đã chọn ${province.name}`);
-          // Retain existing cultural preview only when it belongs to the identified province.
-          const preview = props && slug === province.slug ? props : {};
-          const text = (key: string) => typeof preview[key] === 'string' ? preview[key] as string : undefined;
-          setSelectedProvinceInfo({
-            name: isDisplayOnly ? text('name_vi') ?? province.name : province.name,
-            adminUnit: province.adminUnit,
-            isSovereignty: isDisplayOnly,
-            culturalLandmark: text('cultural_landmark'),
-            culturalSummary: text('cultural_summary'),
-            culturalCategoryLabel: text('cultural_category_label'),
-            historicalPeriod: text('historical_period'),
-          });
-        } catch {
-          if (controller.signal.aborted) return;
-          setGeographicError(true);
-          setGeographicStatus('Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.');
-        }
-      };
-
       map.on('click', 'provinces-fill', (e) => {
         if (e.features && e.features.length > 0) {
-          void selectProvince(e.features[0].properties, e.lngLat);
+          void selectProvinceRef.current(e.features[0].properties, e.lngLat);
         }
       });
 
       map.on('click', 'provinces-labels', (e) => {
         if (e.features && e.features.length > 0) {
-          void selectProvince(e.features[0].properties);
+          void selectProvinceRef.current(e.features[0].properties);
         }
       });
 
@@ -337,7 +361,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       map.on('click', (e) => {
         const layers = ['provinces-fill', 'provinces-labels'].filter(layer => map.getLayer(layer));
         const features = layers.length ? map.queryRenderedFeatures(e.point, { layers }) : [];
-        if (!features.length) void selectProvince(null, e.lngLat);
+        if (!features.length) void selectProvinceRef.current(null, e.lngLat);
       });
     });
 
@@ -413,13 +437,19 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         if (['watername_ocean', 'watername_sea'].includes(id)) {
           map.setLayoutProperty(id, 'visibility', 'none');
         }
-        // 2. Hide basemap's internal OSM city/place/town dots and black labels
-        // This eliminates the conflicting black text and missing/unranked city clutter
+        // 2. Hide basemap's internal OSM city/place/town/state labels and dots
+        // This completely eliminates any conflicting black text or double province labels
         if (
           id.startsWith('place_') ||
+          id.startsWith('place-') ||
           id.startsWith('poi_') ||
           id.includes('city_dot') ||
-          id.includes('capital_dot')
+          id.includes('capital_dot') ||
+          id.includes('place_state') ||
+          id.includes('place_town') ||
+          id.includes('place_village') ||
+          id.includes('place_suburbs') ||
+          id.includes('place_hamlet')
         ) {
           map.setLayoutProperty(id, 'visibility', 'none');
         }
@@ -509,15 +539,14 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
         geographicRequestRef.current = controller;
         setCurrentProvince(null);
         setSelectedProvinceInfo(null);
-        setGeographicStatus('Đang tải địa phương…');
-        setGeographicError(false);
+        setGeographicFeedback({ kind: 'loading', message: 'Đang tải địa phương…' });
         const slug = provinceSlugFromTerritory(territory.id);
         try {
           if (!slug) throw new Error('Unmapped territory');
           const province = await fetchProvince(slug, controller.signal);
           if (controller.signal.aborted) return;
           setCurrentProvince(province.slug);
-          setGeographicStatus(`Đã chọn ${province.name}`);
+          setGeographicFeedback({ kind: 'success', message: `Đã chọn ${province.name}` });
           setSelectedProvinceInfo({
             name: territory.name,
             adminUnit: territory.adminUnit,
@@ -529,8 +558,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
           });
         } catch {
           if (controller.signal.aborted) return;
-          setGeographicError(true);
-          setGeographicStatus('Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.');
+          setGeographicFeedback({ kind: 'error', message: 'Không thể tải địa phương. Hãy kiểm tra kết nối API rồi chọn lại.' });
         }
       });
 
@@ -552,21 +580,36 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
     });
   };
 
+  // Khám phá ngẫu nhiên một tỉnh thành
+  const handleRandomProvince = async () => {
+    try {
+      const response = await fetch('/data/vietnam_province_labels.geojson');
+      const data = await response.json();
+      if (!data.features || data.features.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * data.features.length);
+      const feature = data.features[randomIndex];
+      const coords = feature.geometry.coordinates as [number, number];
+
+      flyTo(coords[0], coords[1], 7.8);
+      void selectProvince(feature.properties, { lng: coords[0], lat: coords[1] });
+      setGeographicFeedback({
+        kind: 'success',
+        message: `Khám phá ngẫu nhiên: ${feature.properties.name_vi || feature.properties.Name}`,
+      });
+    } catch {
+      flyTo(105.8407, 21.0344, 7.8);
+    }
+  };
+
   const clearProvinceSelection = () => {
     geographicRequestRef.current?.abort();
     setSelectedProvinceInfo(null);
     setCurrentProvince(null);
-    setGeographicStatus('');
+    setGeographicFeedback(null);
   };
 
   return (
     <div className="space-y-3">
-      {geographicError && (
-        <p role="alert" aria-live="polite"
-          className="px-3 py-2 rounded-lg text-sm bg-red-950 text-red-200">
-          {geographicStatus}
-        </p>
-      )}
       {/* Sleek Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-2.5 bg-slate-900/95 border border-slate-800 p-2.5 rounded-xl shadow-lg backdrop-blur-md">
         {/* Region & Sovereignty Navigation Buttons */}
@@ -614,6 +657,17 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
 
         {/* 3D Map Perspective Toggle & Style Switcher */}
         <div className="flex items-center gap-2">
+          {/* Random Province Explorer Button */}
+          <button
+            type="button"
+            onClick={handleRandomProvince}
+            title="Khám phá ngẫu nhiên một tỉnh/thành phố hoặc hải đảo Việt Nam"
+            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm"
+          >
+            <Shuffle className="w-3.5 h-3.5 text-amber-400" />
+            <span>Khám phá ngẫu nhiên</span>
+          </button>
+
           {/* 3D Tilt View Button */}
           <button
             onClick={toggle3DView}
@@ -654,9 +708,27 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       <div className={`relative rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-950 ${className}`}>
         <div ref={mapContainerRef} className="w-full h-full" />
 
+        {/* Keep feedback in the map without shifting it or intercepting map gestures. */}
+        {geographicFeedback && (
+          <p role={geographicFeedback.kind === 'error' ? 'alert' : 'status'}
+            aria-atomic="true"
+            className={`absolute top-4 left-4 right-14 z-30 max-w-md pointer-events-none flex items-start gap-2 px-3 py-2 rounded-lg border text-sm shadow-lg ${
+              geographicFeedback.kind === 'error'
+                ? 'bg-red-950 text-red-200 border-red-900'
+                : geographicFeedback.kind === 'empty'
+                  ? 'bg-amber-950 text-amber-200 border-amber-900'
+                  : 'bg-slate-900 text-slate-200 border-slate-700'
+            }`}>
+            {geographicFeedback.kind === 'loading' && (
+              <LoaderCircle aria-hidden="true" className="w-4 h-4 mt-0.5 shrink-0 animate-spin" />
+            )}
+            <span>{geographicFeedback.message}</span>
+          </p>
+        )}
+
         {/* Selected Province Info Panel with Authentic Photography */}
         {selectedProvinceInfo && (
-          <div className="absolute top-4 left-4 z-20 w-80 sm:w-96 max-h-[calc(100%-2rem)] overflow-y-auto bg-slate-900/98 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl text-slate-100 transition-all">
+          <div className="absolute top-28 sm:top-20 left-4 z-20 w-[calc(100%-2rem)] sm:w-96 max-h-[calc(100%-8rem)] sm:max-h-[calc(100%-6rem)] overflow-y-auto bg-slate-900/98 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl text-slate-100 transition-all">
             <div className="flex items-start justify-between">
               <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex items-center ${selectedProvinceInfo.isSovereignty
                   ? 'bg-red-600/30 text-red-300 border border-red-500/50'
@@ -701,23 +773,39 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
               )}
             </p>
 
-            {/* Quick Action Button */}
-            <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-xs">
-              <span className="text-[11px] text-slate-400">Di tích & thắng cảnh</span>
+            {/* Quick Action Buttons */}
+            <div className="mt-3.5 pt-2.5 border-t border-slate-800/80 flex flex-col gap-2">
               <button
+                type="button"
                 onClick={() => {
                   const state = useAppStore.getState();
-                  const slug = state.currentProvince;
-                  state.openAssistantWithPrompt(
-                    `Giới thiệu về văn hóa, lịch sử và di sản tiêu biểu của ${selectedProvinceInfo.name}`,
-                    slug || undefined
-                  );
+                  if (state.currentProvince) {
+                    state.openCultureDrawerForProvince(state.currentProvince);
+                  }
                 }}
-                className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 transition"
+                className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20 transition cursor-pointer group"
               >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Hỏi Trợ lý AI →</span>
+                <Compass className="w-4 h-4 text-slate-950 group-hover:rotate-45 transition-transform" />
+                <span>Khám phá Văn hóa {selectedProvinceInfo.name}</span>
               </button>
+              <div className="flex items-center justify-between text-xs pt-0.5">
+                <span className="text-[11px] text-slate-400">Đàm thoại thông minh</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const state = useAppStore.getState();
+                    const slug = state.currentProvince;
+                    state.openAssistantWithPrompt(
+                      `Giới thiệu về nét đẹp văn hóa, lịch sử, ẩm thực và phong tục tập quán của ${selectedProvinceInfo.name}`,
+                      slug || undefined
+                    );
+                  }}
+                  className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/30 transition"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Hỏi Trợ lý AI →</span>
+                </button>
+              </div>
             </div>
           </div>
         )}

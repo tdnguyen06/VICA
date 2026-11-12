@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Loader2,
   AlertTriangle,
+  Shuffle,
 } from 'lucide-react';
 import { useAppStore } from '../../stores/appStore';
 import {
@@ -29,11 +30,30 @@ import type {
 import { SourceCitationList } from './SourceCitationList';
 import { ComparisonModal } from './ComparisonModal';
 
-const STARTER_PROMPTS = [
+const ALL_PROMPTS_POOL = [
   'Giới thiệu các di sản văn hóa thế giới UNESCO tại Việt Nam',
   'Ẩm thực Hà Nội có những nét tinh hoa nào đặc trưng?',
+  'Ý nghĩa thiêng liêng của Lễ khao lề thế lính Hoàng Sa tại Đảo Lý Sơn?',
   'Kể về truyền thuyết Hồ Gươm và Rùa Vàng Thần Kim Quy',
-  'Nhã nhạc Cung đình Huế có giá trị lịch sử như thế nào?',
+  'Nhã nhạc Cung đình Huế có giá trị lịch sử và nghệ thuật thế nào?',
+  'Sự độc đáo của Không gian văn hóa Cồng chiêng Tây Nguyên',
+  'Bí ẩn kiến trúc không mạch vữa của Quần thể Đền tháp Mỹ Sơn',
+  'Hội Gióng ở Đền Phù Đổng và Đền Sóc diễn ra như thế nào?',
+  'Cơm tấm và nét hào sảng trong văn hóa ẩm thực Sài Gòn',
+  'Văn hóa Sa Huỳnh và táng thức mộ chum có từ bao giờ?',
+  'Phong tục hát Quan họ Bắc Ninh và nét văn hóa giao duyên',
+  'Đờn ca tài tử Nam Bộ - Di sản văn hóa phi vật thể nhân loại',
+  'Lễ hội Đền Hùng và Tín ngưỡng thờ cúng Hùng Vương',
+  'Phố cổ Hội An - Thương cảng đèn lồng bên dòng sông Hoài',
+  'Kiến trúc kỳ vĩ và lịch sử hào hùng của Địa đạo Củ Chi',
+  'Bánh mì Việt Nam - Hành trình trở thành di sản ẩm thực đường phố toàn cầu',
+];
+
+const DEFAULT_FOLLOW_UP_PROMPTS = [
+  'Món ăn đặc sản địa phương có gì nổi tiếng?',
+  'Lễ hội truyền thống và phong tục tập quán ở đây?',
+  'Các di tích lịch sử và danh lam thắng cảnh tiêu biểu?',
+  'Kể truyền thuyết và huyền tích dân gian gắn với nơi này',
 ];
 
 export const CulturalAiAssistant: React.FC = () => {
@@ -50,6 +70,11 @@ export const CulturalAiAssistant: React.FC = () => {
   const [activeProvinceSlug, setActiveProvinceSlug] = useState<string | null>(null);
   const [highlightedCitation, setHighlightedCitation] = useState<number | null>(null);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState<boolean>(false);
+  const [starterIndex, setStarterIndex] = useState<number>(0);
+
+  const shuffleStarterPrompts = () => {
+    setStarterIndex((prev) => (prev + 4) % ALL_PROMPTS_POOL.length);
+  };
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -490,15 +515,25 @@ export const CulturalAiAssistant: React.FC = () => {
                 </div>
 
                 <div className="space-y-2 text-left pt-2">
-                  <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block px-1">
-                    Gợi ý câu hỏi bắt đầu:
-                  </span>
-                  {STARTER_PROMPTS.map((prompt, i) => (
+                  <div className="flex items-center justify-between px-1">
+                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                      Gợi ý câu hỏi bắt đầu:
+                    </span>
+                    <button
+                      type="button"
+                      onClick={shuffleStarterPrompts}
+                      className="text-[11px] text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1 transition cursor-pointer"
+                    >
+                      <Shuffle className="w-3 h-3" />
+                      <span>Đổi gợi ý khác</span>
+                    </button>
+                  </div>
+                  {ALL_PROMPTS_POOL.slice(starterIndex, starterIndex + 4).map((prompt, i) => (
                     <button
                       key={i}
                       type="button"
                       onClick={() => handleSendMessage(prompt)}
-                      className="w-full text-left p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-amber-500/40 text-xs text-slate-300 hover:text-amber-300 transition flex items-center justify-between group"
+                      className="w-full text-left p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-amber-500/40 text-xs text-slate-300 hover:text-amber-300 transition flex items-center justify-between group cursor-pointer"
                     >
                       <span>{prompt}</span>
                       <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 shrink-0 ml-2 transition" />
@@ -547,21 +582,26 @@ export const CulturalAiAssistant: React.FC = () => {
                       />
                     )}
 
-                    {/* Suggested questions */}
-                    {msg.suggestedQuestions && msg.suggestedQuestions.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-slate-800/60 space-y-1.5">
-                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
-                          Câu hỏi gợi ý mở rộng:
+                    {/* Suggested questions / Next prompts */}
+                    {msg.role === 'ASSISTANT' && (
+                      <div className="mt-3 pt-3 border-t border-slate-800/60 space-y-2">
+                        <span className="text-[10px] font-bold text-amber-400/90 uppercase tracking-wider flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-amber-400" />
+                          Câu hỏi gợi ý tiếp theo:
                         </span>
                         <div className="flex flex-wrap gap-1.5">
-                          {msg.suggestedQuestions.map((q, idx) => (
+                          {(msg.suggestedQuestions && msg.suggestedQuestions.length > 0
+                            ? msg.suggestedQuestions.map((q) => q.question)
+                            : DEFAULT_FOLLOW_UP_PROMPTS
+                          ).map((promptText, idx) => (
                             <button
                               key={idx}
                               type="button"
-                              onClick={() => handleSendMessage(q.question)}
-                              className="text-left text-[11px] px-2.5 py-1 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-amber-500/50 text-slate-300 hover:text-amber-300 transition"
+                              onClick={() => handleSendMessage(promptText)}
+                              className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/60 text-slate-200 hover:text-amber-300 transition flex items-center gap-1 cursor-pointer shadow-sm group"
                             >
-                              {q.question}
+                              <span>{promptText}</span>
+                              <ArrowRight className="w-3 h-3 text-slate-500 group-hover:text-amber-400 transition" />
                             </button>
                           ))}
                         </div>

@@ -7,12 +7,15 @@ interface AppState {
   selectedCategory: string;
   isAssistantOpen: boolean;
   assistantInitialPrompt: string | null;
+  isCultureDrawerOpen: boolean;
   setMapCenter: (center: [number, number]) => void;
   setMapZoom: (zoom: number) => void;
   setCurrentProvince: (province: string | null) => void;
   setSelectedCategory: (category: string) => void;
   setIsAssistantOpen: (open: boolean) => void;
+  setIsCultureDrawerOpen: (open: boolean) => void;
   openAssistantWithPrompt: (prompt?: string, provinceSlug?: string) => void;
+  openCultureDrawerForProvince: (provinceSlug: string) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -22,15 +25,22 @@ export const useAppStore = create<AppState>((set) => ({
   selectedCategory: 'all',
   isAssistantOpen: false,
   assistantInitialPrompt: null,
+  isCultureDrawerOpen: false,
   setMapCenter: (mapCenter) => set({ mapCenter }),
   setMapZoom: (mapZoom) => set({ mapZoom }),
   setCurrentProvince: (currentProvince) => set({ currentProvince }),
   setSelectedCategory: (selectedCategory) => set({ selectedCategory }),
   setIsAssistantOpen: (isAssistantOpen) => set({ isAssistantOpen }),
+  setIsCultureDrawerOpen: (isCultureDrawerOpen) => set({ isCultureDrawerOpen }),
   openAssistantWithPrompt: (prompt, provinceSlug) =>
     set((state) => ({
       isAssistantOpen: true,
       currentProvince: provinceSlug !== undefined ? provinceSlug : state.currentProvince,
       assistantInitialPrompt: prompt || null,
     })),
+  openCultureDrawerForProvince: (provinceSlug) =>
+    set({
+      currentProvince: provinceSlug,
+      isCultureDrawerOpen: true,
+    }),
 }));

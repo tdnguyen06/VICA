@@ -231,7 +231,7 @@ export const LANDMARK_IMAGES: Record<string, { url: string; caption: string; wik
   },
   "Quảng Ngãi": {
     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg/960px-C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "caption": "Đảo Lý Sơn - Nơi gìn giữ Lễ Khao lề thế lính Hoàng Sa & Văn hóa Sa Huỳnh",
+    "caption": "Đảo Lý Sơn - Nơi gìn giữ Lễ Khao lề thế lính Hoàng Sa (Lễ tri ân đội hùng binh Hoàng Sa) & Văn hóa Sa Huỳnh",
     "wikiTitle": "Lý Sơn"
   },
   "Quảng Ninh": {
@@ -361,7 +361,7 @@ export const LANDMARK_IMAGES: Record<string, { url: string; caption: string; wik
   },
   "Lý Sơn": {
     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dd/C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg/960px-C%E1%BB%95ng_ch%C3%A0o_tr%C3%AAn_Huy%E1%BB%87n_%C4%90%E1%BA%A3o_L%C3%BD_S%C6%A1n_-_Qu%E1%BA%A3ng_Ng%C3%A3i.jpg?utm_source=vi.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
-    "caption": "Đảo Lý Sơn - Nơi gìn giữ Lễ Khao lề thế lính Hoàng Sa & Văn hóa Sa Huỳnh",
+    "caption": "Đảo Lý Sơn - Nơi gìn giữ Lễ Khao lề thế lính Hoàng Sa (Lễ tri ân đội hùng binh Hoàng Sa) & Văn hóa Sa Huỳnh",
     "wikiTitle": "Lý Sơn"
   }
 };
