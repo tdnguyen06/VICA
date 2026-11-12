@@ -4,8 +4,10 @@
 .env.*.local
 *.env
 
-# Java & Maven
+# Java & Maven & Gradle
 target/
+.gradle/
+build/
 *.class
 *.jar
 *.war
@@ -18,6 +20,17 @@ hs_err_pid*
 replay_pid*
 .mvn/wrapper/maven-wrapper.jar
 
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
 # Node & Frontend
 node_modules/
 dist/
@@ -28,6 +41,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 oxlint-output/
+data/output
 
 # IDE & Editors
 .idea/
