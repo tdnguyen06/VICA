@@ -81,7 +81,7 @@ erDiagram
 
 Ràng buộc DB chính: `(entry_id, source_id)` duy nhất; xóa entry kéo theo xóa liên kết nguồn và media;
 tọa độ phải có đủ cặp; PLACE bắt buộc có tọa độ; HERITAGE bắt buộc có category TANGIBLE hoặc INTANGIBLE.
-Migration: `V6__create_culture_schema.sql`, `V7__seed_culture_ha_noi.sql`.
+Migration: `V6__create_culture_schema.sql`, `V8__seed_culture_ha_noi.sql`.
 
 ## 3. Phân loại
 
@@ -195,6 +195,6 @@ Dùng `ErrorResponse` hiện có: `status`, `error`, `message`, `path`, `timesta
 
 ## 8. Migration và phiên bản
 
-- Cultural dùng Flyway V6, V7. Migration mới của các module bắt đầu từ V8, báo nhóm trước khi tạo.
+- Cultural dùng Flyway V6, V8. Migration mới của các module bắt đầu từ V9, báo nhóm trước khi tạo.
 - Thêm trường optional được phép trong v1.x. Đổi tên/xóa trường, đổi ý nghĩa enum hoặc slug là breaking change:
   phải báo Người 3, Người 4 và chờ xác nhận.
