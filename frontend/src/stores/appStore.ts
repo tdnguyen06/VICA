@@ -35,6 +35,7 @@ export const useAppStore = create<AppState>((set) => ({
   openAssistantWithPrompt: (prompt, provinceSlug) =>
     set((state) => ({
       isAssistantOpen: true,
+      isCultureDrawerOpen: false, // đóng drawer văn hoá để không che khung Trợ lý AI
       currentProvince: provinceSlug !== undefined ? provinceSlug : state.currentProvince,
       assistantInitialPrompt: prompt || null,
     })),
