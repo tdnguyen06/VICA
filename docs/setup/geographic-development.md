@@ -67,7 +67,11 @@ Tại thư mục backend với JDK 21:
 
 Test mặc định kiểm tra validation, HTTP, security public access, 404 và lỗi DB giả
 lập. `ProvinceRepositoryPostgisTest` tự bỏ qua nếu không có biến môi trường bên dưới;
-H2 không được dùng thay PostGIS để xác minh ST_Covers.
+H2 không được dùng thay PostGIS để xác minh ST_Covers. `GeographicPostgisHttpTest`
+cũng dùng cùng biến môi trường để kiểm tra HTTP server, Flyway và PostGIS thật.
+Xem `docs/api/geographic-implementation-review.md` về lựa chọn JDBC và phạm vi
+cần Hibernate Spatial. Job CI `Geographic PostGIS Integration (Java 21)` sẽ cấp
+database riêng và bắt buộc hai spatial suite chạy, không được skip.
 
 Để kiểm tra spatial, tạo container tạm riêng từ image PostGIS + pgvector của dự án:
 
@@ -91,7 +95,8 @@ geometry, Hà Nội, ngoài vùng, biên chung, tie-break và kế hoạch truy 
 
 ## Phạm vi đã kiểm tra trong lần triển khai
 
-- Toàn bộ backend: 33 test pass, gồm 4 test PostGIS thật trong container riêng.
+- Toàn bộ backend sau bổ sung kiểm chứng GIS: 37 test pass, gồm 8 test repository/HTTP
+  chạy với PostGIS thật trong container riêng, không skipped.
 - Audit 63 geometry: tất cả ST_IsValid=true; không sửa geometry nguồn.
 - Frontend: TypeScript và build production; chọn địa phương, highlight và ngoài vùng
   được kiểm tra trong browser với backend/database thử nghiệm.
