@@ -4,6 +4,7 @@ import { Compass, Map, Bot } from 'lucide-react';
 import { CulturalAiAssistant } from '../components/Chat/CulturalAiAssistant';
 import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer';
 import { useAppStore } from '../stores/appStore';
+import { UserMenu } from '../components/Auth/UserMenu';
 
 export const MainLayout: React.FC = () => {
   const inExperience = useLocation().pathname.startsWith('/experiences/');
@@ -39,6 +40,7 @@ export const MainLayout: React.FC = () => {
               <Bot className="h-4 w-4 text-amber-400 group-hover:rotate-12 transition-transform" />
               <span>Trợ lý AI</span>
             </button> : null}
+            <UserMenu />
           </nav>
         </div>
       </header>

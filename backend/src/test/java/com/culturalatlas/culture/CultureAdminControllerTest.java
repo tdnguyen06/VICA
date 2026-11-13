@@ -55,8 +55,8 @@ class CultureAdminControllerTest {
     }
 
     @Test
-    void anonymousAndPlainUsersAreForbidden() throws Exception {
-        mvc.perform(json(post(ENTRIES), VALID_BODY)).andExpect(status().isForbidden());
+    void anonymousIs401AndPlainUserIs403() throws Exception {
+        mvc.perform(json(post(ENTRIES), VALID_BODY)).andExpect(status().isUnauthorized());
         mvc.perform(json(post(ENTRIES), VALID_BODY).with(user("u").roles("USER"))).andExpect(status().isForbidden());
         verifyNoInteractions(service);
     }
