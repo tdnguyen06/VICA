@@ -60,6 +60,7 @@ public class SecurityConfig {
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/cultures/**").permitAll()
                 .requestMatchers("/api/v1/admin/cultures/**").hasAnyRole("ADMIN", "RESEARCHER")
+                .requestMatchers("/api/v1/admin/users/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             // Not logged in -> 401; logged in without the needed role -> 403 (Spring default).

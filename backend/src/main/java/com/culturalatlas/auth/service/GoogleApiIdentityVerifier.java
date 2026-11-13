@@ -46,6 +46,6 @@ public class GoogleApiIdentityVerifier implements GoogleIdentityVerifier {
         }
         GoogleIdToken.Payload payload = token.getPayload();
         return new GoogleIdentity(payload.getEmail(), (String) payload.get("name"),
-                Boolean.TRUE.equals(payload.getEmailVerified()));
+                Boolean.TRUE.equals(payload.getEmailVerified()), (String) payload.get("picture"));
     }
 }

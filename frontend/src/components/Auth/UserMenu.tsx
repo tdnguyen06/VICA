@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LogIn, LogOut, UserRound } from 'lucide-react';
+import { LogIn, LogOut, Shield, UserRound } from 'lucide-react';
 import { logoutRequest } from '../../api/authApi';
 import { getRefreshToken, ROLE_LABEL, useAuthStore } from '../../stores/authStore';
 
@@ -30,8 +30,17 @@ export const UserMenu: React.FC = () => {
 
   return (
     <div className="flex items-center gap-3">
+      {user.role === 'ROLE_ADMIN' && (
+        <Link to="/admin" className="flex items-center gap-1 text-slate-300 hover:text-amber-300">
+          <Shield className="h-4 w-4 text-amber-400" /> <span>Quản trị</span>
+        </Link>
+      )}
       <Link to="/profile" className="flex items-center gap-1.5 text-slate-200 hover:text-amber-300" title={user.email}>
-        <UserRound className="h-4 w-4 text-amber-400" />
+        {user.avatarUrl ? (
+          <img src={user.avatarUrl} alt="" referrerPolicy="no-referrer" className="h-6 w-6 rounded-full object-cover" />
+        ) : (
+          <UserRound className="h-4 w-4 text-amber-400" />
+        )}
         <span>{user.fullName || user.username}</span>
         <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">{ROLE_LABEL[user.role]}</span>
       </Link>

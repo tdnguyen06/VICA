@@ -19,7 +19,7 @@ import java.util.List;
 
 /** Error policy of /api/v1/auth only. Messages never reveal whether a username exists. */
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@RestControllerAdvice(assignableTypes = AuthController.class)
+@RestControllerAdvice(assignableTypes = {AuthController.class, com.culturalatlas.admin.AdminUserController.class})
 public class AuthExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(AuthExceptionHandler.class);
 

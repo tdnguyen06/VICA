@@ -7,6 +7,7 @@ export interface AuthUser {
   email: string;
   fullName: string | null;
   role: Role;
+  avatarUrl?: string | null;
 }
 
 interface AuthState {
@@ -44,8 +45,8 @@ export function getRefreshToken(): string | null {
 
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: readUser(),
-  signIn: ({ username, email, fullName, role, accessToken, refreshToken }) => {
-    const user: AuthUser = { username, email, fullName, role };
+  signIn: ({ username, email, fullName, role, avatarUrl, accessToken, refreshToken }) => {
+    const user: AuthUser = { username, email, fullName, role, avatarUrl };
     try {
       localStorage.setItem(ACCESS_KEY, accessToken);
       localStorage.setItem(REFRESH_KEY, refreshToken);

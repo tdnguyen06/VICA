@@ -33,6 +33,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthService {
     private static final String BAD_CREDENTIALS = "Sai tên đăng nhập hoặc mật khẩu";
+    private static final String GOOGLE_ONLY = "Tài khoản này dùng Google. Hãy bấm \"Đăng nhập bằng Google\", hoặc dùng \"Quên mật khẩu\" để tạo mật khẩu.";    
     private static final String BAD_CODE = "Mã không hợp lệ hoặc đã hết hạn";
 
     private final UserRepository users;
@@ -42,6 +43,7 @@ public class AuthService {
     private final GoogleIdentityVerifier googleVerifier;
     private final VerificationService verificationService;
     private final EmailService emailService;
+    private final com.culturalatlas.auth.AdminEmails adminEmails;
 
     // ---------- sign up / sign in ----------
 
@@ -54,9 +56,11 @@ public class AuthService {
         if (users.existsByUsername(username)) {
             throw new AuthException(HttpStatus.CONFLICT, "Tên đăng nhập đã tồn tại");
         }
-        if (users.existsByEmail(email)) {
-            throw new AuthException(HttpStatus.CONFLICT, "Email đã được sử dụng");
-        }
+        users.findByEmail(email).ifPresent(existing -> {
+            throw new AuthException(HttpStatus.CONFLICT, existing.isGoogleLinked()
+                    ? "Email này đã đăng nhập bằng Google. Hãy bấm \"Đăng nhập bằng Google\"."
+                    : "Email đã được sử dụng");
+        });
         if (phone != null && users.existsByPhone(phone)) {
             throw new AuthException(HttpStatus.CONFLICT, "Số điện thoại đã được sử dụng");
         }
@@ -77,10 +81,15 @@ public class AuthService {
         return RegisterResponse.of(user);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public LoginResponse login(LoginRequest request) {
-        User user = users.findByUsername(request.username().trim())
+        String id = request.username().trim();
+        User user = users.findByUsername(id)
+                .or(() -> users.findByEmail(normalizeEmail(id)))
                 .orElseThrow(() -> new AuthException(HttpStatus.UNAUTHORIZED, BAD_CREDENTIALS));
+        if (!user.isHasPassword()) {
+            throw new AuthException(HttpStatus.UNAUTHORIZED, GOOGLE_ONLY);
+        }
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new AuthException(HttpStatus.UNAUTHORIZED, BAD_CREDENTIALS);
         }
@@ -96,8 +105,13 @@ public class AuthService {
         }
         String email = normalizeEmail(identity.email());
         User user = users.findByEmail(email).orElseGet(() -> users.save(newGoogleUser(email, identity.name())));
-        if (!user.isEmailVerified()) {
-            user.setEmailVerified(true); // Google has verified this address
+        if (user.getDeletedAt() != null) {
+            throw new AuthException(HttpStatus.FORBIDDEN, "Tài khoản đã bị xoá");
+        }
+        user.setEmailVerified(true); // Google has verified this address
+        user.setGoogleLinked(true);
+        if (identity.picture() != null) {
+            user.setAvatarUrl(identity.picture());
         }
         return issueTokens(user);
     }
@@ -151,6 +165,7 @@ public class AuthService {
             throw new AuthException(HttpStatus.BAD_REQUEST, "Mật khẩu mới phải khác mật khẩu hiện tại");
         }
         user.setPassword(passwordEncoder.encode(request.newPassword()));
+        user.setHasPassword(true);
         users.save(user);
     }
 
@@ -197,6 +212,7 @@ public class AuthService {
             throw new AuthException(HttpStatus.BAD_REQUEST, BAD_CODE);
         }
         user.setPassword(passwordEncoder.encode(request.newPassword()));
+        user.setHasPassword(true);
         users.save(user);
     }
 
@@ -205,6 +221,9 @@ public class AuthService {
     private LoginResponse issueTokens(User user) {
         if (!user.isEnabled()) {
             throw new AuthException(HttpStatus.FORBIDDEN, "Tài khoản đã bị khóa");
+        }
+        if (adminEmails.contains(user.getEmail()) && user.getRole() != Role.ROLE_ADMIN) {
+            user.setRole(Role.ROLE_ADMIN);
         }
         String access = jwtService.generateAccessToken(user.getUsername(), user.getRole().name());
         String refresh = jwtService.generateRefreshToken(user.getUsername());
@@ -236,6 +255,8 @@ public class AuthService {
                 .role(Role.ROLE_USER)
                 .enabled(true)
                 .emailVerified(true)
+                .googleLinked(true)
+                .hasPassword(false)
                 .build();
     }
 

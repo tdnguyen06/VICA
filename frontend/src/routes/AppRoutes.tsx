@@ -5,6 +5,7 @@ import { HomePage } from '../pages/HomePage';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
 import { VerifyEmailPage } from '../pages/VerifyEmailPage';
+import { AdminUsersPage } from '../pages/AdminUsersPage';
 import { ForgotPasswordPage } from '../pages/ForgotPasswordPage';
 import { ProfilePage } from '../pages/ProfilePage';
 
@@ -18,6 +19,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="verify-email" element={<VerifyEmailPage />} />
         <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="admin" element={<AdminUsersPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

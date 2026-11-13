@@ -83,8 +83,15 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <AuthCard title="Hồ sơ cá nhân" wide>
-      <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-slate-300">
+      <div className="mt-4 mb-5 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+        {profile.avatarUrl && (
+          <img src={profile.avatarUrl} alt="Ảnh đại diện" referrerPolicy="no-referrer"
+               className="h-12 w-12 rounded-full object-cover ring-2 ring-amber-500/40" />
+        )}
         <span className="font-semibold text-white">{profile.username}</span>
+        {profile.googleLinked && (
+          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-sky-300">Google</span>
+        )}
         <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[11px]">{ROLE_LABEL[profile.role]}</span>
         <span className="text-slate-400">{profile.email}</span>
         {profile.emailVerified ? (

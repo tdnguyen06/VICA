@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -54,5 +55,19 @@ public class User extends BaseEntity {
     @Column(name = "email_verified", nullable = false)
     @Builder.Default
     private boolean emailVerified = false;
+
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
+    @Builder.Default
+    @Column(name = "google_linked", nullable = false)
+    private boolean googleLinked = false;
+
+    @Builder.Default
+    @Column(name = "has_password", nullable = false)
+    private boolean hasPassword = true;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
 

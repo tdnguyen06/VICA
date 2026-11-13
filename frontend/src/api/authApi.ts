@@ -12,6 +12,7 @@ export interface LoginResult {
   accessToken: string;
   refreshToken: string;
   expiresInMs: number;
+  avatarUrl: string | null;
 }
 
 export interface Profile {
@@ -25,6 +26,8 @@ export interface Profile {
   dateOfBirth: string | null; // yyyy-MM-dd
   role: Role;
   emailVerified: boolean;
+  avatarUrl: string | null;
+  googleLinked: boolean;
 }
 
 export interface RegisterInput {

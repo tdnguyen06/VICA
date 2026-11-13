@@ -43,6 +43,7 @@ app:
     from: ${MAIL_FROM:no-reply@vica.local}
   verification:
     ttl-minutes: ${VERIFICATION_TTL_MINUTES:10}
+  admin-emails: ${ADMIN_EMAILS:}   # email admin, cach nhau bang dau phay; duoc nang ROLE_ADMIN khi dang nhap
 
 # Actuator Endpoints
 management:

@@ -264,7 +264,7 @@ class AuthControllerTest {
 
     @Test
     void firstGoogleLoginCreatesAVerifiedPlainUserThenReusesIt() throws Exception {
-        when(google.verify("g-token")).thenReturn(new GoogleIdentity("New.Person@Gmail.com", "New Person", true));
+        when(google.verify("g-token")).thenReturn(new GoogleIdentity("New.Person@Gmail.com", "New Person", true, null));
 
         mvc.perform(googleLogin("g-token")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.role").value("ROLE_USER"))
@@ -279,7 +279,7 @@ class AuthControllerTest {
 
     @Test
     void googleLoginMatchesExistingAccountByEmailKeepingItsRole() throws Exception {
-        when(google.verify("g-admin")).thenReturn(new GoogleIdentity("admin@test.local", "Admin", true));
+        when(google.verify("g-admin")).thenReturn(new GoogleIdentity("admin@test.local", "Admin", true, null));
         mvc.perform(googleLogin("g-admin")).andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.role").value("ROLE_ADMIN"))
                 .andExpect(jsonPath("$.data.username").value("admin"));
@@ -287,7 +287,7 @@ class AuthControllerTest {
 
     @Test
     void googleRejectsUnverifiedEmailAndReportsMissingConfiguration() throws Exception {
-        when(google.verify("unverified")).thenReturn(new GoogleIdentity("x@gmail.com", "X", false));
+        when(google.verify("unverified")).thenReturn(new GoogleIdentity("x@gmail.com", "X", false, null));
         when(google.verify("no-config")).thenThrow(new AuthException(HttpStatus.SERVICE_UNAVAILABLE, "not configured"));
 
         mvc.perform(googleLogin("unverified")).andExpect(status().isUnauthorized());
