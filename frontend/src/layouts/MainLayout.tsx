@@ -11,7 +11,7 @@ export const MainLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-16 flex flex-wrap items-center justify-between gap-y-2 py-3">
           <Link to="/" className="flex items-center space-x-3">
             <span className="p-2 bg-gradient-to-tr from-amber-500 to-red-600 rounded-lg text-white shadow-lg shadow-red-500/20">
               <Compass className="h-6 w-6" />
@@ -24,7 +24,7 @@ export const MainLayout: React.FC = () => {
             </div>
           </Link>
 
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="flex w-full flex-wrap items-center gap-3 text-sm font-medium lg:w-auto lg:gap-6">
             <Link to="/" className="flex items-center space-x-1.5 text-slate-300 hover:text-amber-400 transition-colors">
               <Map className="h-4 w-4" />
               <span>Bản đồ</span>
