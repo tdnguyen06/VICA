@@ -6,7 +6,7 @@ import csv
 import hashlib
 import re
 import unicodedata
-
+from pathlib import Path 
 import config as C
 
 NULL_TEXT = "Chưa có dữ liệu"
@@ -167,22 +167,43 @@ def load_locality_mapping(path: str) -> dict:
 
 
 _PROV_PREFIX = re.compile(
-    r"^(tỉnh|thành phố|tp\.?|tx\.?|huyện|quận|xã|phường|thị xã)\s+", re.IGNORECASE)
+    r"^(tỉnh|tình|thành phố|tp\.?|tx\.?|huyện|quận|xã|phường|thị xã)\s+", re.IGNORECASE)
 
+# Ranh giới tỉnh bị nghiền: chèn tách TRƯỚC mỗi 'Tỉnh '/'Thành phố ' không ở đầu chuỗi.
+# Đây là lưới an toàn khi HTML nguồn không có <br>/<p> để đánh dấu.
+_PROV_BOUNDARY = re.compile(r"(?<!^)(?=\b(?:Tỉnh|Thành\s+phố|TP\.?)\s)", re.IGNORECASE)
 
 def locality_parts(raw: str | None) -> list[str]:
-    """Ô nhiều tỉnh -> list. FIX: trước đây bị nghiền thành 1 chuỗi."""
+    """Ô nhiều tỉnh -> list. Xử lý CẢ trường hợp bị nghiền không dấu ngăn."""
     if not raw:
         return []
-    parts = [re.sub(r"\s+", " ", p).strip() for p in re.split(r"[\n;]+", raw)]
-    return [p for p in parts if p]
-
+    out = []
+    for chunk in re.split(r"[\n;]+", nfc(raw)):
+        chunk = re.sub(r"\s+", " ", chunk).strip()
+        if not chunk:
+            continue
+        pieces = [p.strip() for p in _PROV_BOUNDARY.split(chunk) if p.strip()]
+        out.extend(pieces if len(pieces) > 1 else [chunk])
+    seen, res = set(), []
+    for p in out:
+        k = p.lower()
+        if k not in seen:
+            seen.add(k)
+            res.append(p)
+    return res
 
 def locality_key(raw: str | None) -> str:
-    """Khoá so khớp đa trị, bỏ tiền tố hành chính. Chỉ để nhóm, KHÔNG hiển thị."""
+    """Khoá so khớp đa trị, bỏ tiền tố hành chính. Chỉ để nhóm/ băm ID, KHÔNG hiển thị."""
     keys = [_PROV_PREFIX.sub("", p.lower()).strip() for p in locality_parts(raw)]
-    return "|".join(sorted(re.sub(r"\s+", " ", k) for k in keys))   # sort: không phụ thuộc thứ tự ô
+    return "|".join(sorted(re.sub(r"\s+", " ", k) for k in keys if k))
 
+def _legacy_locality_key(raw: str | None) -> str:
+    """Logic CŨ (nghiền) — CHỈ để sinh _id_migration.csv. Không dùng cho ID mới."""
+    if not raw:
+        return ""
+    parts = [re.sub(r"\s+", " ", p).strip() for p in re.split(r"[\n;]+", raw)]
+    keys = [_PROV_PREFIX.sub("", p.lower()).strip() for p in parts if p]
+    return "|".join(sorted(re.sub(r"\s+", " ", k) for k in keys))
 
 def map_locality_current(raw: str | None, mapping: dict) -> tuple[str | None, list[str]]:
     """Trả về (chuỗi hiện hành, danh sách phần chưa映射 được)."""
@@ -197,6 +218,81 @@ def map_locality_current(raw: str | None, mapping: dict) -> tuple[str | None, li
             missing.append(p)
     return (C.MULTIVALUE_SEP.join(out) if out else None), missing
 
+# ================= PHASE 0: CHUẨN HOÁ TỈNH =================
+
+# Hai cách đặt dấu thanh tiếng Việt: 'Hoà Bình' vs 'Hòa Bình'
+_TONE_PAIRS = [
+    ("òa","oà"),("óa","oá"),("ỏa","oả"),("õa","oã"),("ọa","oạ"),
+    ("òe","oè"),("óe","oé"),("ỏe","oẻ"),("õe","oẽ"),("ọe","oẹ"),
+    ("ùy","uỳ"),("úy","uý"),("ủy","uỷ"),("ũy","uỹ"),("ụy","uỵ"),
+]
+_SUB_PREFIX = re.compile(r"^(tt|x|p|q|h|tx|tp)\.?\s+", re.IGNORECASE)
+
+
+def province_key(raw: str | None) -> str:
+    """Khoá tra bảng tỉnh: bỏ tiền tố hành chính, gộp dấu gạch, chuẩn hoá vị trí dấu thanh."""
+    s = nfc(raw).strip().lower()
+    s = _PROV_PREFIX.sub("", s)
+    s = _SUB_PREFIX.sub("", s)
+    s = re.sub(r"\s*-\s*", " ", s)
+    s = re.sub(r"\s+", " ", s).strip()
+    for a, b in _TONE_PAIRS:
+        s = s.replace(a, b)
+    return s
+
+
+def _ascii_key(raw: str | None) -> str:
+    s = province_key(raw)
+    return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+
+
+def load_province_maps(prov_path: str, dist_path: str) -> dict:
+    """Trả về {'prov': {key: new}, 'prov_ascii': {...}, 'dist': {key: new}}."""
+    out = {"prov": {}, "prov_ascii": {}, "dist": {}}
+    if prov_path and Path(prov_path).exists():
+        with open(prov_path, encoding="utf-8-sig", newline="") as f:
+            for row in csv.DictReader(f):
+                old, cur = nfc(row.get("old", "")).strip(), nfc(row.get("current", "")).strip()
+                if old and cur:
+                    out["prov"][province_key(old)] = cur
+                    out["prov_ascii"][_ascii_key(old)] = cur
+    if dist_path and Path(dist_path).exists():
+        with open(dist_path, encoding="utf-8-sig", newline="") as f:
+            for row in csv.DictReader(f):
+                d, cur = nfc(row.get("district", "")).strip(), nfc(row.get("province_current", "")).strip()
+                if d and cur:
+                    out["dist"][province_key(d)] = cur
+                    out["dist"][_ascii_key(d)] = cur
+    return out
+
+
+def map_province_current(raw: str | None, maps: dict) -> tuple[list[str], list[str]]:
+    """-> (danh sách tỉnh hiện hành đã khử trùng, danh sách phần chưa ánh xạ)."""
+    if not raw or not maps.get("prov"):
+        return [], locality_parts(raw)
+    hit, miss = [], []
+    for part in locality_parts(raw):
+        k, ak = province_key(part), _ascii_key(part)
+        new = maps["prov"].get(k) or maps["prov_ascii"].get(ak)
+        if not new:
+            # địa chỉ cấp huyện/xã: thử từng khoang cách dấu phẩy
+            for sub in reversed(part.split(",")):
+                sk, sak = province_key(sub), _ascii_key(sub)
+                new = maps["dist"].get(sk) or maps["dist"].get(sak)
+                if new:
+                    break
+        if new:
+            if new not in hit:
+                hit.append(new)
+        else:
+            miss.append(part)
+    return sorted(hit), miss
+
+
+def content_tier(word_count: int) -> str:
+    if word_count <= 0:
+        return "stub"
+    return "rich" if word_count >= getattr(C, "CONTENT_TIER_RICH_WORDS", 200) else "thin"
 
 def name_key(raw: str) -> str:
     s = nfc(raw).strip().lower()
@@ -232,10 +328,16 @@ def _is_ethnic(ent: dict) -> bool:
 
 
 def _compatible(cands: list[dict], r: dict) -> list[dict]:
-    lk = locality_key(r.get("province_raw"))
-    return [e for e in cands
-            if not lk or lk == locality_key(e.get("province_decision"))]
-
+    r_parts = {province_key(p) for p in locality_parts(r.get("province_raw"))}
+    r_parts.discard("")
+    if not r_parts:
+        return cands
+    out = []
+    for e in cands:
+        e_parts = {province_key(p) for p in locality_parts(e.get("province_decision"))}
+        if not e_parts or (r_parts & e_parts):
+            out.append(e)
+    return out
 
 def build_entities(records: list[dict]) -> tuple[list[dict], list[str]]:
     """
@@ -279,6 +381,7 @@ def build_entities(records: list[dict]) -> tuple[list[dict], list[str]]:
     for ent in list(anchors.values()):
         index(ent)
 
+    wiki_only.sort(key=lambda r: 0 if r.get("province_raw") else 1)
     min_tok = getattr(C, "SUBSTRING_MERGE_MIN_TOKENS", 2)
     for r in wiki_only:
         nk = name_key(r["name"])
@@ -313,7 +416,32 @@ def build_entities(records: list[dict]) -> tuple[list[dict], list[str]]:
             anchors[key] = ent
             index(ent)
 
-    return list(anchors.values()), notes
+    # Đồng bộ lại entity_id theo province_decision cuối cùng để luôn tái tạo được
+    final_by_id: dict[str, dict] = {}
+    for ent in anchors.values():
+        new_id = make_entity_id(name_key(ent["official_name"]),
+                                locality_key(ent.get("province_decision")))
+        ent["entity_id"] = new_id
+        if new_id not in final_by_id:
+            final_by_id[new_id] = ent
+        else:
+            dst = final_by_id[new_id]
+            dst["sources"] += [s for s in ent["sources"] if s not in dst["sources"]]
+            dst["raw_tables"] += ent["raw_tables"]
+            for sc in ent["source_categories"]:
+                if sc not in dst["source_categories"]:
+                    dst["source_categories"].append(sc)
+            for t in ent.get("wiki_titles", []):
+                if t not in dst["wiki_titles"]:
+                    dst["wiki_titles"].append(t)
+            known = {a["alias"].lower() for a in dst["alias_entries"]}
+            for a in ent["alias_entries"]:
+                if a["alias"].lower() not in known:
+                    dst["alias_entries"].append(a)
+                    known.add(a["alias"].lower())
+            dst["has_official"] = dst["has_official"] or ent["has_official"]
+
+    return list(final_by_id.values()), notes
 
 
 def _source_bits(r: dict) -> dict:
@@ -331,7 +459,7 @@ def _new_entity(r: dict) -> dict:
     bits = _source_bits(r)
     return {
         "entity_id": make_entity_id(nk, lk),
-        "official_name": nfc(r["name"]).strip(),
+        "official_name": re.sub(r"\s+", " ", nfc(r["name"])).strip(),
         "loai_hinh_raw": r.get("loai_hinh_raw"),
         "province_decision": r.get("province_raw"),
         "residence": r.get("residence_raw"),

@@ -27,12 +27,10 @@ SKIP_HEADINGS = {
 # Dòng ngữ cảnh: tối đa bao nhiêu địa phương hiển thị (phần còn lại ghi "+N").
 CONTEXT_MAX_PROVINCES = 3
 
-# ================= ĐỊA PHƯƠNG (spec D) =================
-# "" = chưa có bảng => địa phương hiện hành = null toàn corpus + báo cáo.
-# CSV 2 cột: old,current
-LOCALITY_MAPPING_CSV = ""
-MULTIVALUE_SEP = "; "          # hiển thị ô nhiều giá trị (nhiều tỉnh)
-
+# ============ ĐỊA PHƯƠNG (spec D) — Phase 0 ============
+LOCALITY_MAPPING_CSV = "province_map.csv"     # 63 tỉnh cũ + 4 tỉnh tiền 1991 -> 34 mới
+DISTRICT_MAPPING_CSV = "district_map.csv"     # huyện/xã cũ -> tỉnh mới (cấp huyện đã bỏ)
+MULTIVALUE_SEP = "; "
 # ================= ENUM LOẠI HÌNH =================
 # Khớp NGUYÊN VĂN sau chuẩn hoá khoảng trắng. Ngoài enum -> null + báo cáo.
 LOAI_HINH_ENUM = [
@@ -168,16 +166,75 @@ VERIFY_LEAD_CHARS = 1500
 VERIFY_EXTRA_MIN_RATIO = 0.5    # tỉ lệ token "thừa" phải có mặt (khi không có địa phương)
 SUBSTRING_MERGE_MIN_TOKENS = 2  # gộp wiki->official theo chứa chuỗi con
 
-# ================= ĐỘ PHỦ (khoá theo MÃ nguồn) =================
+# ============ ĐỘ PHỦ (khoá theo MÃ nguồn) ============
 COVERAGE_EXPECT = {
     "dsvh_intangible": 485,
-    "dsvh_special": 148,
-    "dsvh_national": 3621,
+    "dsvh_special":    153,   # 19 đợt xếp hạng (đợt 19 năm 2026), không còn 148
+    "dsvh_national":   6,     # trang nguồn CHỈ đăng 6 — xem COVERAGE_NOTES
     "chinhphu_ethnic": 54,
+}
+
+COVERAGE_NOTES = {
+    "dsvh_national": (
+        "Trang dsvh.gov.vn/danh-muc-di-tich-quoc-gia-1753 chỉ đăng 6 bản ghi, "
+        "có dòng 'Tổng số | 06 di tích'. Con số 3.621 di tích quốc gia toàn quốc "
+        "KHÔNG nằm trên trang này. Đây KHÔNG phải lỗi crawler — phải đổi nguồn "
+        "(Wikidata P1435 / danh sách theo tỉnh). Đừng sửa phân trang cho nguồn này."
+    ),
 }
 
 # ================= ĐỊNH DANH =================
 SLUG_MAXLEN = 60                # cắt ở ranh giới từ, không cắt giữa số
+
+# ============ PHASE 0: 34 TỈNH HIỆN HÀNH ============
+PROVINCE_CURRENT_ENUM = [
+    "Tỉnh Cao Bằng", "Tỉnh Điện Biên", "Tỉnh Hà Tĩnh", "Tỉnh Lai Châu",
+    "Tỉnh Lạng Sơn", "Tỉnh Nghệ An", "Tỉnh Quảng Ninh", "Tỉnh Thanh Hóa",
+    "Tỉnh Sơn La", "Thành phố Hà Nội", "Thành phố Huế",
+    "Tỉnh Tuyên Quang", "Tỉnh Lào Cai", "Tỉnh Thái Nguyên", "Tỉnh Phú Thọ",
+    "Tỉnh Bắc Ninh", "Tỉnh Hưng Yên", "Thành phố Hải Phòng", "Tỉnh Ninh Bình",
+    "Tỉnh Quảng Trị", "Thành phố Đà Nẵng", "Tỉnh Quảng Ngãi", "Tỉnh Gia Lai",
+    "Tỉnh Khánh Hòa", "Tỉnh Lâm Đồng", "Tỉnh Đắk Lắk", "Thành phố Hồ Chí Minh",
+    "Tỉnh Đồng Nai", "Tỉnh Tây Ninh", "Thành phố Cần Thơ", "Tỉnh Vĩnh Long",
+    "Tỉnh Đồng Tháp", "Tỉnh Cà Mau", "Tỉnh An Giang",
+]
+
+# ============ PHASE 2: HAI TẦNG THỰC THỂ ============
+# rich >= 200 từ | thin 1..199 | stub 0 từ.
+# CHỈ stub bị loại khỏi _embed_manifest.csv (không đưa vào pgvector).
+CONTENT_TIER_RICH_WORDS = 200
+
+# Mục tiêu kép — chỉ để BÁO CÁO, không tự cắt dữ liệu
+TARGET_PER_PROVINCE      = 100   # coverage
+TARGET_RICH_PER_PROVINCE = 30    # usability
+
+# ============ NGUỒN BỔ SUNG (Phase 1) ============
+DSVH_TREASURES_URL = f"{DSVH_BASE}/bao-vat-quoc-gia-1758"
+# Bảo tàng: điền URL thật lấy từ nav dsvh.gov.vn, KHÔNG đoán
+DSVH_MUSEUM_URLS: list[str] = []
+
+# ============ WIKIDATA (Phase 2) ============
+WIKIDATA_SPARQL = "https://query.wikidata.org/sparql"
+WIKIDATA_LIMIT  = 20000
+USE_WIKIDATA            = os.getenv("VICA_USE_WIKIDATA", "1") == "1"
+USE_WIKI_MONUMENT_LISTS = os.getenv("VICA_USE_WIKI_MONUMENT_LISTS", "1") == "1"
+USE_WIKI_PROVINCE_CATS  = os.getenv("VICA_USE_WIKI_PROVINCE_CATS", "1") == "1"
+
+DOMAIN_BY_SOURCE_CATEGORY.update({
+    "Bảo vật quốc gia":                    ["lịch sử", "văn hoá"],
+    "Bảo tàng":                            ["lịch sử", "văn hoá"],
+    "Di tích (Wikidata)":                  ["lịch sử", "văn hoá"],
+    "Di tích & Địa danh (Wikidata)":       ["lịch sử", "văn hoá"],
+    "Lịch sử Việt Nam (Wikidata)":         ["lịch sử"],
+    "Lễ hội (Wikidata)":                   ["văn hoá", "lịch sử"],
+    "Ẩm thực (Wikidata)":                  ["ẩm thực", "văn hoá"],
+    "Danh sách di tích (Wikipedia)":       ["lịch sử", "văn hoá"],
+    "Di tích - Lịch sử theo tỉnh (Wiki)":  ["lịch sử", "văn hoá"],
+    "Văn hóa - Tôn giáo theo tỉnh (Wiki)": ["văn hoá", "lịch sử"],
+    "Lễ hội - Làng nghề theo tỉnh (Wiki)": ["văn hoá", "lịch sử"],
+    "Ẩm thực theo tỉnh (Wiki)":            ["ẩm thực", "văn hoá"],
+    "Di tích - Văn hóa theo địa phương (Wiki)": ["văn hoá", "lịch sử"],
+})
 
 # ================= S3 =================
 S3_BUCKET = os.getenv("AWS_S3_BUCKET", "")
