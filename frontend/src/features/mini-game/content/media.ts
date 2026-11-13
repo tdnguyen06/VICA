@@ -111,16 +111,77 @@ const photos: readonly PhotoAsset[] = [
     "height": 853,
     "reviewedOn": "2026-11-12",
     "changes": "Bản thu nhỏ 1280 px từ Wikimedia Commons; hiển thị cắt khung bằng CSS, không sửa file ảnh."
+  },
+  {
+    "id": "cup-blank",
+    "kind": "photo",
+    "src": "/mini-game/hanoi/cup-blank.jpg",
+    "author": "Ethan8808",
+    "caption": "Các cốc gốm trắng đã hoàn thiện — ảnh tham khảo hình dáng, không phải phôi cốc chưa nung hoặc sản phẩm của An–Linh.",
+    "alt": "Các cốc gốm trắng đã hoàn thiện — ảnh tham khảo hình dáng, không phải phôi cốc chưa nung hoặc sản phẩm của An–Linh.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ceramic_mug_Antiksy_ceramic_mug.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "sha256": "fe954c0f362c2e608349ad373f05e613fe0f9b10a99e0aa703b761f45ecc7595",
+    "objectPosition": "50% 50%",
+    "width": 960,
+    "height": 570,
+    "reviewedOn": "2026-11-13",
+    "changes": "Bản thu nhỏ từ Wikimedia Commons; hiển thị cắt khung bằng CSS, không chỉnh sửa ảnh."
+  },
+  {
+    "id": "cup-geometric",
+    "kind": "photo",
+    "src": "/mini-game/hanoi/cup-geometric.jpg",
+    "author": "Crown Lynn Potteries Ltd (nhà sản xuất); ảnh: Auckland Museum",
+    "caption": "Cốc họa tiết hình học, mẫu sản xuất tại New Zealand trong bộ sưu tập Auckland Museum. Ảnh tham khảo hướng trang trí, không phải gốm Hà Nội hoặc thành phẩm của An–Linh.",
+    "alt": "Cốc họa tiết hình học, mẫu sản xuất tại New Zealand trong bộ sưu tập Auckland Museum. Ảnh tham khảo hướng trang trí, không phải gốm Hà Nội hoặc thành phẩm của An–Linh.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mug_(AM_2014.19.16-1).jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "sha256": "df87399fc37c78def6a8b2ffb689373f9dc20994f18a3266d1dc2a84b206141f",
+    "objectPosition": "50% 50%",
+    "width": 960,
+    "height": 1440,
+    "reviewedOn": "2026-11-13",
+    "changes": "Bản thu nhỏ từ Wikimedia Commons; hiển thị cắt khung bằng CSS, không chỉnh sửa ảnh."
+  },
+  {
+    "id": "cup-leaves",
+    "kind": "photo",
+    "src": "/mini-game/hanoi/cup-leaves.jpg",
+    "author": "Crown Lynn Potteries Ltd (nhà sản xuất); ảnh: Auckland Museum",
+    "caption": "Cốc họa tiết hoa lá, mẫu sản xuất tại New Zealand trong bộ sưu tập Auckland Museum. Ảnh tham khảo hướng trang trí, không phải gốm Hà Nội hoặc thành phẩm của An–Linh.",
+    "alt": "Cốc họa tiết hoa lá, mẫu sản xuất tại New Zealand trong bộ sưu tập Auckland Museum. Ảnh tham khảo hướng trang trí, không phải gốm Hà Nội hoặc thành phẩm của An–Linh.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mug_(AM_2014.19.40-1).jpg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "sha256": "accb0e84b949710e589301695b71a8422af02750604b000e80a408d2a8a79fb6",
+    "objectPosition": "50% 50%",
+    "width": 960,
+    "height": 1440,
+    "reviewedOn": "2026-11-13",
+    "changes": "Bản thu nhỏ từ Wikimedia Commons; hiển thị cắt khung bằng CSS, không chỉnh sửa ảnh."
+  },
+  {
+    "id": "lunch-table",
+    "kind": "photo",
+    "src": "/mini-game/hanoi/hanoi-bun-cha.jpg",
+    "author": "Weetjesman",
+    "caption": "Ảnh gợi ý bữa trưa với bún chả; chưa ghi nhận món ăn vào hành trình. Bạn vẫn có thể chọn phở.",
+    "alt": "Bàn bún chả minh họa trước khi lựa chọn món trưa.",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bun_cha_Hanoi.jpg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sha256": "92e18a431fff36f48e3d1dc44111c7cd94cfe61dd367adfe18675c017efaf61e",
+    "objectPosition": "50% 50%",
+    "width": 1280,
+    "height": 721,
+    "reviewedOn": "2026-11-12",
+    "changes": "Bản thu nhỏ 1280 px từ Wikimedia Commons; hiển thị cắt khung bằng CSS, không sửa file ảnh."
   }
 ];
 
-const illustrations: readonly IllustrationAsset[] = [
-  { id: 'cup-blank', kind: 'svg', caption: 'Minh họa SVG: cốc đã tạo hình, chờ trang trí.', alt: 'Minh họa chiếc cốc trơn chưa có họa tiết.' },
-  { id: 'cup-geometric', kind: 'svg', caption: 'Minh họa SVG: họa tiết hình học; không phải sản phẩm thực tế.', alt: 'Cốc minh họa với họa tiết hình học.' },
-  { id: 'cup-leaves', kind: 'svg', caption: 'Minh họa SVG: họa tiết cây lá; không phải sản phẩm thực tế.', alt: 'Cốc minh họa với họa tiết cây lá.' },
-  { id: 'lunch-table', kind: 'svg', caption: 'Minh họa SVG: bàn ăn trước khi chọn món.', alt: 'Bàn ăn minh họa với bát và đũa.' },
-];
-
 export const hanoiVisuals: Readonly<Record<string, VisualAsset>> = Object.fromEntries(
-  [...photos, ...illustrations].map(asset => [asset.id, asset]),
+  photos.map(asset => [asset.id, asset]),
 );

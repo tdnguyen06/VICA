@@ -6,7 +6,7 @@ import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer
 import { useAppStore } from '../stores/appStore';
 
 export const MainLayout: React.FC = () => {
-  const inExperience = useLocation().pathname === '/experiences/ha-noi';
+  const inExperience = useLocation().pathname.startsWith('/experiences/');
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
       <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">

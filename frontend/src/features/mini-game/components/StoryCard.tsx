@@ -13,11 +13,18 @@ export function ActionButton({ children, className = '', onClick, onKeyDown, ...
   </button>;
 }
 
-export function Narrative({ blocks }: { blocks: readonly NarrativeBlock[] }) {
+export function Narrative({ blocks, guideName = 'An' }: { blocks: readonly NarrativeBlock[]; guideName?: string }) {
+  // Blocks without dialogue retain the plain paragraph layout.
+  if (!blocks.some(block => block.speaker)) return <div className="space-y-4 leading-7 text-slate-200">
+    {blocks.map((block, index) => <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-200' : ''}>{block.text}</p>)}
+  </div>;
   return <div className="space-y-4 leading-7 text-slate-200">
-    {blocks.map((block, index) => <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-200' : ''}>
-      {block.text}
-    </p>)}
+    {blocks.map((block, index) => block.speaker ? <div key={index} className={'rounded-2xl border-l-2 px-4 py-3 ' + (block.speaker === guideName ? 'border-amber-400 bg-amber-400/5' : 'border-sky-400 bg-sky-400/5')}>
+      <p className={'mb-1 text-xs font-bold tracking-wide ' + (block.speaker === guideName ? 'text-amber-300' : 'text-sky-300')}>{block.speaker}{block.speaker === guideName ? ' · vai của bạn' : ''}</p>
+      <p>{block.text}</p>
+    </div> : block.kind === 'culture' ? <aside key={index} aria-label="Góc khám phá" className="rounded-xl border border-slate-700 bg-slate-800/60 p-4 text-sm leading-6 text-slate-300">
+      <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-300">Góc khám phá</p><p>{block.text}</p>
+    </aside> : block.kind === 'gameplay' ? <p key={index} className="text-xs leading-6 text-slate-400">{block.text}</p> : <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-200' : ''}>{block.text}</p>)}
   </div>;
 }
 
@@ -37,10 +44,10 @@ export function StoryVisual({ theme, motif, assetId, src = null, alt = '' }: {
   const table = asset?.id === 'lunch-table';
 
   return <figure className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-900">
-    <div className="aspect-[16/9] w-full overflow-hidden">
+    <div className={cup ? "aspect-[4/3] w-full overflow-hidden bg-white" : "aspect-[16/9] w-full overflow-hidden"}>
       {hasImage ? <img src={imageSrc} alt={description} loading="lazy" decoding="async"
         width={photo?.width} height={photo?.height}
-        className="h-full w-full object-cover" style={{ objectPosition: photo?.objectPosition }}
+        className={cup ? "h-full w-full object-contain" : "h-full w-full object-cover"} style={{ objectPosition: photo?.objectPosition }}
         onError={() => setFailedSrc(imageSrc)} />
         : <svg viewBox="0 0 640 300" className="h-full w-full" role="img"
             aria-label={asset?.kind === 'svg' ? description : 'Minh họa dự phòng khi chưa có hoặc không tải được ảnh'}>

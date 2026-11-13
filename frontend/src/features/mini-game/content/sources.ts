@@ -1,3 +1,5 @@
+import { regionalSources } from './regional-sources.js';
+
 export interface CulturalSource {
   readonly id: string;
   readonly title: string;
@@ -8,6 +10,7 @@ export interface CulturalSource {
 }
 
 export const culturalSources: Readonly<Record<string, CulturalSource>> = {
+  ...regionalSources,
   'heritage-hoan-kiem': {
     id: 'heritage-hoan-kiem',
     title: 'Di tích lịch sử và danh lam thắng cảnh hồ Hoàn Kiếm và đền Ngọc Sơn',

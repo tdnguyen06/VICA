@@ -4,9 +4,9 @@ import type { GameEvent } from './state';
 
 export interface MiniGameContextValue {
   session: GameSession;
-  begin: () => void;
+  begin: (scenarioId: string) => void;
   dispatch: (event: GameEvent) => void;
-  restart: () => boolean;
+  restart: (scenarioId: string) => boolean;
   reload: () => void;
   retry: () => void;
 }

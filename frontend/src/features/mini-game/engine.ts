@@ -29,7 +29,7 @@ export function transition(scenario: Scenario, state: GameState, event: GameEven
     return { ok: true, state: { ...state, revision: nextRevision, phase: 'choice', sceneId: scenario.firstSceneId } };
   }
   if (event.type === 'choose' && state.phase === 'choice') {
-    const choice = scenario.scenes[state.sceneId].choices.find(option => option.id === event.choiceId);
+    const choice = scenario.scenes[state.sceneId]?.choices.find(option => option.id === event.choiceId);
     if (!choice) return reject('invalid_choice');
     if (state.choices.some(record => record.sceneId === state.sceneId)) return reject('invalid_action');
     return {
@@ -44,7 +44,7 @@ export function transition(scenario: Scenario, state: GameState, event: GameEven
     };
   }
   if (event.type === 'continue' && state.phase === 'result') {
-    const choice = scenario.scenes[state.sceneId].choices.find(option => option.id === state.choiceId);
+    const choice = scenario.scenes[state.sceneId]?.choices.find(option => option.id === state.choiceId);
     if (!choice) return reject('invalid_choice');
     // Explicitly rebuild the state so a previous result's choiceId cannot leak into a choice screen.
     const base = {
@@ -66,6 +66,6 @@ export function transition(scenario: Scenario, state: GameState, event: GameEven
 
 export function getCurrentResult(scenario: Scenario, state: GameState): ChoiceResult | null {
   if (state.phase !== 'result' || state.scenarioId !== scenario.id || state.scenarioVersion !== scenario.version) return null;
-  const result = scenario.scenes[state.sceneId].choices.find(option => option.id === state.choiceId)?.result;
+  const result = scenario.scenes[state.sceneId]?.choices.find(option => option.id === state.choiceId)?.result;
   return result ? { ...result, blocks: result.blocks.map(block => renderNarrative(scenario, state, block)) } : null;
 }

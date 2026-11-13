@@ -5,7 +5,7 @@ import { getCurrentResult } from '../engine.js';
 export interface SceneChatRequest {
   readonly conversationId: number | null;
   readonly message: string;
-  readonly provinceSlug: 'ha-noi';
+  readonly provinceSlug: string;
   readonly guestSessionUuid: string | null;
 }
 export interface SceneGuestCredentials {
@@ -33,12 +33,13 @@ export function buildSceneQuestion(scenario: Scenario, state: GameState, questio
     throw new SceneAssistantError('invalid_context');
   }
   const labels = state.choices.map(record =>
-    scenario.scenes[record.sceneId].choices.find(choice => choice.id === record.choiceId)?.label ?? '');
-  const sceneTitle = state.phase === 'completed' ? 'Nhật ký kết thúc' : scenario.scenes[state.sceneId].title;
+    scenario.scenes[record.sceneId]?.choices.find(choice => choice.id === record.choiceId)?.label ?? '');
+  const sceneTitle = state.phase === 'completed' ? 'Nhật ký kết thúc' : (scenario.scenes[state.sceneId]?.title ?? scenario.title);
   const facts = getCurrentResult(scenario, state)?.blocks.filter(block => block.kind === 'culture').map(block => block.text) ?? [];
   const context = [
-    'Ngữ cảnh trải nghiệm VICA: Một ngày làm người Hà Nội. Nhân vật và hội thoại là hư cấu.',
-    'Địa phương: Hà Nội (ha-noi). Cảnh: ' + sceneTitle + '. Trạng thái: ' + state.phase + '.',
+    'Ngữ cảnh trải nghiệm VICA: ' + scenario.title + '. Nhân vật và hội thoại là hư cấu.',
+    ...(scenario.cast ? ['Nhân vật hư cấu: người chơi nhập vai ' + scenario.cast.guide + '; bạn đồng hành là ' + scenario.cast.visitor + '. Không nhập vai hay viết tiếp thay họ.'] : []),
+    'Địa phương: ' + scenario.provinceName + ' (' + scenario.provinceSlug + '). Cảnh: ' + sceneTitle + '. Trạng thái: ' + state.phase + '.',
     'Các lựa chọn đã thực hiện: ' + (labels.join(' → ') || 'Chưa chọn hoạt động.'),
     ...facts,
     'Chỉ giải thích điều người dùng hỏi; không quyết định lựa chọn, chuyển cảnh hoặc viết tiếp cốt truyện.',
@@ -92,12 +93,13 @@ export function createSceneAssistant(transport: AssistantTransport) {
       let message: string;
       try { message = buildSceneQuestion(scenario, state, question); }
       catch { return { status: 'error' as const, message: 'Hãy nhập câu hỏi từ 1 đến 500 ký tự trong một cảnh đang chơi.' }; }
-      if (runId !== state.runId) { cancel(); runId = state.runId; conversationId = null; credentials = null; }
+      const runKey = scenario.id + ':' + state.runId;
+      if (runId !== runKey) { cancel(); runId = runKey; conversationId = null; credentials = null; }
       if (pending) return { status: 'busy' as const };
       const id = ++requestId;
       pending = true;
       try {
-        const raw = await transport.send({ conversationId, message, provinceSlug: 'ha-noi',
+        const raw = await transport.send({ conversationId, message, provinceSlug: scenario.provinceSlug,
           guestSessionUuid: credentials?.guestSessionUuid ?? null }, credentials);
         if (id !== requestId) return { status: 'cancelled' as const };
         const reply = parseReply(raw);

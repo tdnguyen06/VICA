@@ -1,0 +1,11 @@
+import { hai_phong } from './regions/hai-phong.js';
+import { quang_ninh } from './regions/quang-ninh.js';
+import { ninh_binh } from './regions/ninh-binh.js';
+import { thua_thien_hue } from './regions/thua-thien-hue.js';
+import { da_nang } from './regions/da-nang.js';
+import { quang_nam } from './regions/quang-nam.js';
+import { khanh_hoa } from './regions/khanh-hoa.js';
+import { lam_dong } from './regions/lam-dong.js';
+import { ho_chi_minh } from './regions/ho-chi-minh.js';
+import { can_tho } from './regions/can-tho.js';
+export const regionalStories = [hai_phong, quang_ninh, ninh_binh, thua_thien_hue, da_nang, quang_nam, khanh_hoa, lam_dong, ho_chi_minh, can_tho] as const;

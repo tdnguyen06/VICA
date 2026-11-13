@@ -18,6 +18,7 @@ const fixture = `<!doctype html><html lang="vi"><head><meta charset="utf-8"><tit
 <button onclick="fetch('/__qa/mode/ai-delay').then(()=>location.href='/experiences/ha-noi?view=play')">AI giả lập chậm</button>
 <button onclick="fetch('/__qa/mode/write-failure').then(()=>location.href='/experiences/ha-noi')">Lỗi ghi QA</button>
 <button onclick="fetch('/__qa/mode/read-failure').then(()=>location.href='/experiences/ha-noi')">Chặn storage QA</button>
+<button onclick="fetch('/__qa/mode/photo-error').then(()=>location.href='/experiences/da-nang?view=play')">Ảnh vùng lỗi giả lập</button>
 <p><a href="/" style="color:#fbbf24">Mở bản đồ QA</a></p><div id="image-fixture"></div>
 <script type="module">import React from 'react';import{createRoot}from'react-dom/client';import{StoryVisual}from'/src/features/mini-game/components/StoryCard.tsx';createRoot(document.getElementById('image-fixture')).render(React.createElement(StoryVisual,{theme:'intro',src:'/__qa/missing-image.png',alt:'Ảnh QA lỗi'}));</script>
 </body></html>`;
@@ -46,10 +47,15 @@ export default {
         const json = (data: unknown) => { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(data)); };
         if (path.startsWith('/__qa/mode/')) { mode = path.split('/').at(-1) ?? 'normal'; json({ mode }); return; }
         if (path === '/__qa/requests') { json(requests); return; }
+        if (mode === 'photo-error' && path.startsWith('/mini-game/regions/') && path.endsWith('.jpg')) { res.statusCode = 404; res.end(); return; }
         if (path === '/__qa/missing-image.png') { res.statusCode = 404; res.end(); return; }
         if (path === '/__qa/map-style.json') {
           json({ version: 8, glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
             sources: {}, layers: [{ id: 'background', type: 'background', paint: { 'background-color': '#dbeafe' } }] }); return;
+        }
+        if (path === '/__qa/hanoi-photos') {
+          const html = `<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>Ảnh thật Hà Nội — QA</title></head><body style="background:#020617;color:white;padding:24px"><h1>Ảnh thật Hà Nội — kiểm tra minh họa</h1><div id="photo-review"></div><script type="module">import React from 'react';import{createRoot}from'react-dom/client';import '/src/index.css';import{StoryVisual}from'/src/features/mini-game/components/StoryCard.tsx';createRoot(document.getElementById('photo-review')).render(React.createElement('div',{className:'grid gap-6 md:grid-cols-2 max-w-5xl mx-auto'},...['lunch-table','cup-blank','cup-geometric','cup-leaves'].map(id=>React.createElement('section',{key:id},React.createElement('h2',null,id),React.createElement(StoryVisual,{assetId:id,theme:id.startsWith('cup')?'pottery':'lunch'})))));</script></body></html>`;
+          res.setHeader('Content-Type','text/html; charset=utf-8');res.end(await server.transformIndexHtml(path,html));return;
         }
         if (path === '/__qa') { res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(await server.transformIndexHtml(path, fixture)); return; }
         if (!path.startsWith('/api/')) { next(); return; }
@@ -72,7 +78,7 @@ export default {
           }
           json({ success: true, data: { conversationId: id, messageId: id + 1000, role: 'ASSISTANT',
             content: 'Phản hồi QA giả lập: AI chỉ giải thích cảnh hiện tại, không chuyển cảnh. Đây không phải kết quả LLM thật.',
-            provinceSlug: 'ha-noi', credentials, citations: [], suggestedQuestions: [] } }); return;
+            provinceSlug: request.provinceSlug, credentials, citations: [], suggestedQuestions: [] } }); return;
         }
         let data: unknown = [];
         if (path.endsWith('/geo/identify')) data = registry.provinces.find((province: {slug: string}) => province.slug === (request.latitude >= 20 && request.latitude <= 22 ? 'ha-noi' : 'da-nang'));

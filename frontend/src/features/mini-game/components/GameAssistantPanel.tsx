@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { SourceCitationList } from '../../../components/Chat/SourceCitationList';
-import { hanoiScenario } from '../content/hanoi';
+import type { Scenario } from '../scenario';
 import { createSceneAssistant } from '../assistant/assistant';
 import type { SceneCitation } from '../assistant/assistant';
 import { createBrowserAssistantTransport } from '../assistant/browserTransport';
@@ -8,7 +8,7 @@ import type { GameState } from '../state';
 import { ActionButton, actionClass } from './StoryCard';
 
 interface Message { id: number; question: string; content: string; citations: SceneCitation[]; error: boolean; }
-export function GameAssistantPanel({ game, open, onClose }: { game: GameState; open: boolean; onClose: () => void }) {
+export function GameAssistantPanel({ scenario, game, open, onClose }: { scenario: Scenario; game: GameState; open: boolean; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [client] = useState(() => createSceneAssistant(createBrowserAssistantTransport()));
   const [question, setQuestion] = useState('');
@@ -30,7 +30,7 @@ export function GameAssistantPanel({ game, open, onClose }: { game: GameState; o
     if (!text || busy) return;
     setBusy(true);
     const id = ++request.current.sequence;
-    const reply = await client.ask(hanoiScenario, game, text);
+    const reply = await client.ask(scenario, game, text);
     if (id !== request.current.sequence) return;
     if (reply.status === 'answered' || reply.status === 'error') {
       setMessages(previous => [...previous, {
@@ -48,7 +48,7 @@ export function GameAssistantPanel({ game, open, onClose }: { game: GameState; o
       <h2 id="scene-assistant-title" className="text-xl font-bold">Hỏi thêm về cảnh này</h2>
       <ActionButton onClick={close} className="shrink-0 border border-slate-600">Đóng AI</ActionButton>
     </div>
-    <p className="my-3 text-sm leading-6 text-slate-400">Hà Nội · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : hanoiScenario.scenes[game.sceneId].title}. AI chỉ giải thích, không chọn hoặc chuyển cảnh. Hội thoại riêng của lượt chơi, không lưu sau khi tải lại trang.</p>
+    <p className="my-3 text-sm leading-6 text-slate-400">{scenario.provinceName} · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : scenario.scenes[game.sceneId]?.title}. AI chỉ giải thích, không chọn hoặc chuyển cảnh. Hội thoại riêng của lượt chơi, không lưu sau khi tải lại trang.</p>
     <p className="text-xs text-amber-200">Câu trả lời AI có thể sai. Đối chiếu nguồn; đóng cửa sổ bất cứ lúc nào để chơi tiếp.</p>
     <div aria-live="polite" aria-busy={busy} className="my-5 space-y-4">
       {messages.map(message => <article key={message.id} className="space-y-3 rounded-xl border border-slate-700 p-4 text-sm leading-6">

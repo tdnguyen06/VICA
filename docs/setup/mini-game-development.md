@@ -1,90 +1,75 @@
-# Mini-game Hà Nội — phát triển và nghiệm thu
+# Demo mini-game 11 tỉnh — 13/11/2026
 
-## Phạm vi đã triển khai
+## Phiên bản và develop
 
-- Trải nghiệm “Một ngày làm người Hà Nội”: sáng Hồ Gươm → bữa trưa → gốm hoặc cà phê → nhật ký.
-- 16 hành trình chính; chọn → đọc kết quả → Tiếp tục. Không điểm số, quay lại hoặc đổi lựa chọn trong cùng lượt.
-- Hai lối vào: thẻ Khám phá và nút riêng trên thẻ Hà Nội. Tỉnh khác không có kịch bản.
-- Một lượt lưu trên thiết bị, riêng khóa `vica:minigame:hanoi:current`. Không ghi auth/chat.
-- Nội dung kịch bản, lõi trạng thái, lưu/khôi phục, giao diện và Assistant tách module.
-- Kịch bản `hanoi-one-day` phiên bản `0.2.0`: hội thoại biên tập, ghi chú văn hóa đối chiếu nguồn, lời kết theo lựa chọn thực tế.
-- Save cũ khác phiên bản không được tự chuyển đổi hoặc xóa. Người chơi phải xác nhận chơi lại để thay thế.
-- Họa tiết cốc là minh họa SVG trong dự án, không gán ý nghĩa văn hóa. Không gian thủ công/quán trong truyện là hư cấu; không phải địa chỉ dịch vụ đã xác minh.
+- Nhánh: feat/mini-game; HEAD trước/sau đợt triển khai: 6549c66. Các bổ sung đa tỉnh, ảnh và biên tập chưa commit/push.
+- Đã git fetch origin trước khi làm. Develop mới nhất lúc kiểm tra: 6f3bc33, merge PR #10 (auth). Chưa merge PR auth vào nhánh này; không chạy backend/migration/database. Nhánh hiện tại đã có develop trước đó qua merge 6549c66 (3d6882b, PR #8).
 
-## Chạy và kiểm tra (tại thư mục frontend)
+## Phạm vi đã hoàn thiện để demo local
+
+- 11 kịch bản chơi từ mở đầu đến nhật ký, 16 tổ hợp chính mỗi tỉnh, tổng 176 hành trình. Tên tỉnh theo registry hiện có của VICA, không khẳng định là bộ địa giới hành chính hiện hành.
+- Danh sách /experiences mặc định lọc 11 tỉnh sẵn sàng, 9 mục/trang. Có tìm không dấu, phân trang, random trên tất cả 11 tỉnh; bỏ lọc để xem 63 tỉnh. Random/xem giới thiệu không tự thay lượt.
+- Cả 11 thẻ tỉnh tương ứng trên bản đồ có nút Trải nghiệm một ngày. Tỉnh chưa có kịch bản và các mục hiển thị chủ quyền không có nút chơi.
+- Mỗi tỉnh có hai nhân vật được đặt tên, phần giới thiệu quan hệ, lời thoại tách lời kể, ba chặng trong ngày và ghi chú văn hóa riêng. Hội thoại mới tự biên tập, không lấy từ nguồn văn hóa hoặc nhờ LLM dịch vụ tạo.
+- Hà Nội giữ gốm/cà phê; mười tỉnh khác giữ bưu thiếp/khoảng nghỉ như phạm vi đã triển khai. Không thêm điểm số, quiz, tiền hay chỉ số nhân vật. Chọn → đọc kết quả → Tiếp tục, không quay lại đổi lựa chọn.
+- Cảnh nói chuyện và lời kết dùng kỷ niệm đúng lựa chọn sáng/trưa. Nhật ký có ba hoạt động thực tế theo thứ tự; không lộ nội dung nhánh chưa chơi.
+- Một lượt hiện tại trên thiết bị, không cần đăng nhập. ID/đồ thị/version giữ nguyên (Hà Nội 0.2.0, tỉnh khác 1.0.0); bản lưu cũ giữ lựa chọn, đọc nội dung biên tập mới. Khóa legacy vica:minigame:hanoi:current vẫn dùng cho toàn module.
+- Hai lối vào dùng cùng tiến trình. Chuyển tỉnh hoặc chơi lại cần xác nhận; không xóa auth/chat. Lỗi đọc/ghi, save hỏng, xung đột tab và sự kiện muộn có kiểm tra trong lõi.
+- Assistant tùy chọn có ngữ cảnh tỉnh/cảnh/lựa chọn và tên hai nhân vật, guest conversation tách theo scenario/run. Không điều khiển cốt truyện; lỗi AI không chặn chơi. Chỉ test AI giả lập trong đợt này.
+
+## Nhân vật
+
+| Tỉnh trong registry | Vai người chơi | Bạn đồng hành |
+| --- | --- | --- |
+| Hà Nội | An | Linh |
+| Hải Phòng | Huy | Mai |
+| Quảng Ninh | Khánh | Vy |
+| Ninh Bình | Bình | Chi |
+| Thừa Thiên Huế | Duy | Ngọc |
+| Đà Nẵng | Nam | Hà |
+| Quảng Nam | Phúc | Trang |
+| Khánh Hòa | Hải | Yến |
+| Lâm Đồng | Sơn | Thảo |
+| TP. Hồ Chí Minh | Quân | Nhi |
+| Cần Thơ | Tín | Hân |
+
+## Ảnh và nguồn
+
+- Hà Nội: 9 mục ảnh thật; các cốc có sẵn chỉ tham khảo hình dáng/họa tiết, không khẳng định là gốm Hà Nội hoặc sản phẩm An–Linh vừa làm. Ảnh trước bữa trưa chỉ gợi ý, chưa chốt món.
+- Ngoài Hà Nội: 40 mục lựa chọn sáng/trưa có JPEG local, 39 ảnh nguồn khác nhau, phủ cả 100 tham chiếu ảnh. Nhánh chiều dùng ảnh chặng sáng đã chơi làm cảm hứng/ký ức.
+- Đã thay bối cảnh Nhà cổ Bình Thủy bằng ảnh đúng Nhà thờ họ Dương/Bình Thủy, và thay ba ảnh bối cảnh món ăn bằng ảnh món tham khảo.
+- Giới hạn còn lại: Bảo tàng Hải Phòng dùng ảnh Nhà hát làm bối cảnh thành phố, ghi rõ không phải bảo tàng. Một số ảnh món chụp ngoài tỉnh/khác biến thể: cơm cháy Đông Hà, cơm gà Việt Nam chưa xác nhận Hội An, xíu mại trong bánh mì tại Houston không phải cách phục vụ Đà Lạt, cùng các giới hạn ghi ngay dưới từng ảnh. Không gọi toàn bộ bộ ảnh là ảnh địa phương đã xác minh.
+- Nguồn/giấy phép/credit/hash: frontend/public/mini-game/hanoi/CREDITS.md và frontend/public/mini-game/regions/CREDITS.md. Metadata trong content/media.ts và regional-media.ts. Ảnh lỗi có dự phòng; không chặn tiếp tục.
+- Dữ kiện và truyền thuyết được giữ nguyên nguồn hiện có; hội thoại/nhân vật và góc thủ công/chỗ nghỉ hư cấu không được trình bày là dịch vụ thật.
+
+## Cấu trúc
+
+- content/regions/*.ts: thông tin lựa chọn, dữ kiện, nguồn và hình ảnh theo tỉnh.
+- content/regional-narratives.ts: toàn bộ nội dung mới cho mười tỉnh (cast, mở đầu, đối thoại, ký ức và kết thúc). Đã bỏ các đoạn hội thoại cũ không còn dùng.
+- content/regional-builder.ts: chỉ ghép dữ liệu thành scene graph chung, đặt đúng người nói; không sao chép toàn bộ truyện Hà Nội sang các tỉnh.
+- engine.ts, journal.ts, storage.ts, session.ts, adventure.ts: lõi/nhật ký/lưu và chuyển lượt. regional-photo.ts: ảnh theo lựa chọn.
+- ProvinceExperiencePage.tsx, StoryCard.tsx: trang chơi và trình bày người nói. ExperienceCatalogPage.tsx: chọn tỉnh. MapViewer.tsx: lối vào theo registry kịch bản.
+
+## Kiểm thử và bằng chứng
+
+- 330/330 test đạt, không skip: 176 hành trình, tên nhân vật, hội thoại, ký ức đúng nhánh/không lộ nhánh khác, journal, save/restore, chống bấm lặp/đến muộn, ảnh/hash/credit, catalog và Assistant giả lập.
+- Build/typecheck frontend đạt; lint toàn bộ mini-game, các trang game và test đạt. MapViewer có 4 cảnh báo lint kế thừa từ develop, không thuộc các dòng nối nút game. Build còn cảnh báo chunk ứng dụng lớn.
+- Browser Edge QA: đã chơi trọn một lượt ở từng tỉnh, đủ 11/11 tới nhật ký với ba mục; ảnh các lượt kiểm tra tải được. Nhánh bưu thiếp, bảng màu, nghỉ/ngắm cảnh và trò chuyện đều được chạy ở các tỉnh khác nhau. Hà Nội đi dạo/phở/cốc hình học.
+- Browser: tìm da nang ra Đà Nẵng, filter 11 tỉnh/2 trang, random chọn Huế khi đang lọc Đà Nẵng và giữ nguyên lượt Hà Nội. Reload nhật ký Hà Nội đúng màn hình.
+- Khung 390 × 844 (375px phần nội dung): Cần Thơ không tràn ngang, reload tại kết quả Nhà cổ Bình Thủy đúng cảnh. Hỏi thêm giả lập thành công/503, đóng AI quay về đúng kết quả, vẫn hoàn thành Bình Thủy/bánh xèo/trò chuyện dù AI lỗi.
+- Bằng chứng ngoài repo tại workspace Codex: game-11-provinces-browser-qa.json, game-can-tho-mobile.jpg, game-11-provinces-catalog.jpg. Không chứa secrets hoặc credentials thật.
+
+## Chạy demo
 
 ```powershell
-npm.cmd run test:mini-game
-npm.cmd run build
-node node_modules/oxlint/bin/oxlint --deny-warnings src/features/mini-game src/pages/HanoiExperiencePage.tsx src/pages/HomePage.tsx tests/mini-game
-npm.cmd run dev
-```
-
-Chơi tại `/experiences/ha-noi`. Chạy thông thường sử dụng cấu hình API của frontend; gửi câu hỏi có thể gọi LLM thật và phát sinh chi phí.
-
-## QA cô lập, không cần backend/database/API key
-
-```powershell
+cd D:\Codex_Hackathon_141126\VICA\frontend
 npm.cmd run dev:mini-game-qa
 ```
 
-Mở `http://127.0.0.1:15176/__qa`.
+Mở http://127.0.0.1:15176/experiences. API dùng middleware QA, không chuyển tới backend thật kể cả khi có .env.local. /__qa có các chế độ lỗi, /__qa/hanoi-photos xem bốn ảnh Hà Nội vừa thay. Ctrl+C dừng server. Không deploy cấu hình QA.
 
-- Cấu hình chỉ dành cho QA, buộc API về middleware giả lập cùng origin dù có `.env.local`.
-- Không chuyển tiếp bất kỳ đường dẫn `/api/` nào tới backend thật.
-- Geo dùng registry thật với định danh tọa độ giả lập: vĩ độ 20–22 trả Hà Nội, còn lại Đà Nẵng. Đây không phải kiểm chứng PostGIS.
-- Bản đồ vẫn dùng MapLibre và GeoJSON hiện có; nền QA đơn giản, font có thể tải từ máy chủ demo MapLibre.
-- Có nút giả lập AI thành công/lỗi/chậm, save hỏng, ghi storage thất bại và không truy cập được storage.
-- “Xóa save QA” chỉ xóa khóa mini-game của origin cổng 15176; không xóa dữ liệu module khác.
-- Chế độ lỗi áp dụng toàn server QA, cho tới khi chọn lại “AI giả lập thành công” để về chế độ bình thường.
-- Xem `/__qa/requests` để kiểm tra ngữ cảnh và việc không gửi Authorization; không lưu token thật.
-- Ảnh QA hỏng phải hiện minh họa dự phòng và vẫn chơi được.
-- Không triển khai server QA ra môi trường public. Dừng bằng Ctrl+C sau khi kiểm tra.
+Kiểm thử: npm.cmd run test:mini-game; build: npm.cmd run build. Không cần thêm dependency hay database cho gameplay.
 
-## Assistant theo cảnh
+## Giới hạn nghiệm thu
 
-- Tái sử dụng endpoint public hiện có `POST /api/v1/assistant/chat` và kiểu ChatRequest, không sửa contract/backend.
-- Ngữ cảnh cảnh, giai đoạn và lựa chọn đã chơi được đính kèm trong message. Backend chưa có trường sceneContext có cấu trúc.
-- Mỗi lượt game dùng một guest conversation riêng trong bộ nhớ. Không đọc/lưu guest session hoặc lịch sử chat thông thường; không gửi Authorization/cookie.
-- Token guest của game chỉ được gửi trong X-Guest-Token cho conversation của chính lượt đó.
-- Đóng AI hủy request và bỏ qua phản hồi đến muộn; timeout 30 giây. AI không phát sự kiện gameplay.
-- Tải lại trang sẽ mất hội thoại AI nhưng giữ tiến trình game đã lưu. Chơi lại tạo conversation mới.
-- Nếu sau này muốn lưu chat game, dùng tài khoản, hoặc bổ sung contract riêng, phối hợp owner Assistant trước.
-
-## Nội dung và nguồn
-
-Nguồn được quản lý tại `src/features/mini-game/content/sources.ts`; nguồn ảnh và quyền sử dụng tại `content/media.ts` và `public/mini-game/hanoi/CREDITS.md`.
-
-- Cục Di sản văn hóa: truyền thuyết Lê Lợi trả gươm và mốc xếp hạng di tích năm 2013.
-- Vietnam Tourism: xin phép khi chụp ảnh người khác; thành phần cơ bản của phở/bún chả.
-- Truyền thuyết, dữ kiện, khuyến nghị ứng xử và hội thoại hư cấu được phân biệt.
-- Không có nguồn/ảnh/URL placeholder trong nội dung chơi hiện tại. Ảnh quán là ảnh minh họa, không khẳng định là quán trong truyện.
-- Nhóm vẫn cần duyệt giọng văn và tính phù hợp của trải nghiệm trước nghiệm thu; trạng thái review-ready không thay thế review của nhóm.
-
-## Kết quả kiểm tra ngày 12/11/2026
-
-| Kiểm tra | Kết quả |
-| --- | --- |
-| Bộ test Node + TypeScript | 113 pass, 0 fail |
-| 16 tổ hợp và nhật ký chính xác | Tự động kiểm tra đủ 16 |
-| Chặn chọn lại, sai cảnh, tiếp tục sớm, hành động lặp/đến muộn | Pass test lõi |
-| Save hỏng/khác phiên bản, mất quyền ghi/đọc, xung đột, restart | Pass test storage/session |
-| AI riêng từng lượt, lỗi/timeout, hủy, credential và citation không hợp lệ | Pass test với transport giả lập |
-| Typecheck và production build | Pass; cảnh báo chunk lớn của ứng dụng hiện có |
-| Lint các file mini-game và trang tích hợp liên quan | Pass |
-| Edge, viewport 360×800 và 390×844 | Không tràn ngang ở các cảnh đã kiểm; ảnh tải đúng, nút Bắt đầu cao 48px |
-| Chơi trên trình duyệt: sáng câu chuyện → phở → cà phê trò chuyện → nhật ký | Đúng lựa chọn, đúng nguồn và thứ tự |
-| Reload kết quả buổi sáng | Giữ màn hình kết quả, không tự chuyển cảnh |
-| Hai lối vào | Thẻ Khám phá có liên kết; click Hà Nội trên bản đồ → nút trải nghiệm mở lại cùng nhật ký |
-| Hủy chơi lại và xác nhận thay save hỏng | Hủy giữ nhật ký; xác nhận mới thay lượt |
-| Storage ghi thất bại | Hiện chưa lưu; vẫn chọn và đọc kết quả trong phiên |
-| Ảnh lỗi | Fallback hiển thị, không chặn nội dung |
-| AI qua UI với backend giả lập | Thành công, lượt hỏi tiếp dùng guest token riêng, không Authorization; lỗi 503 có thông báo; đóng khi đang chờ giữ nhật ký |
-
-## Cần kiểm chứng trước nghiệm thu cuối
-
-- Điện thoại thật/browser mục tiêu và bản cài nếu nhóm có mobile wrapper: bàn phím, vùng an toàn, đóng/mở app, bộ nhớ và nút Back. Responsive desktop không thay thế bước này.
-- Chơi thử có người đọc để đo mục tiêu 3–5 phút, không tính hỏi thêm AI. Chưa xác nhận bằng đo thực tế.
-- Với owner Assistant, chạy một lượt E2E có kiểm soát trên backend thật sau khi thống nhất việc dùng API key/chi phí: CORS, guest lifecycle, chất lượng trả lời và nguồn trích dẫn. Lượt triển khai này không gọi LLM thật.
-- Smoke test trên môi trường tích hợp khi có bản deploy; QA giả lập không chứng minh cấu hình triển khai hoặc database.
-- Kiểm tra thủ công đầy đủ các cảnh ở mobile, nút của tỉnh ngoài Hà Nội, đóng/mở tab mới và chế độ storage bị chặn. Những trường hợp lõi liên quan đã có test tự động; bảng trên chỉ ghi các thao tác UI thực sự đã thực hiện.
+Demo gameplay 11 tỉnh hoàn tất về kỹ thuật ở local. Chưa kiểm tra bản cài điện thoại thật, chưa đo thời lượng bằng người chơi thực tế, chưa gọi LLM thật, chưa tích hợp PR auth mới nhất. Cảm giác nhập vai/nội dung và ảnh tham khảo cần nhóm review trước nghiệm thu phát hành. Không tuyên bố đây là production đã kiểm chứng.

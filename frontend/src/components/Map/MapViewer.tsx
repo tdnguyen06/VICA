@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { scenarioByProvince } from '../../features/mini-game/scenarios';
 import * as maplibregl from 'maplibre-gl';
 import maplibreglWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { useAppStore } from '../../stores/appStore';
@@ -774,8 +775,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
               )}
             </p>
 
-            {currentProvince === 'ha-noi' && !selectedProvinceInfo.isSovereignty ? (
-              <Link to="/experiences/ha-noi" className="mt-4 flex min-h-12 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400">
+            {currentProvince && scenarioByProvince(currentProvince) && !selectedProvinceInfo.isSovereignty ? (
+              <Link to={"/experiences/" + currentProvince} className="mt-4 flex min-h-12 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400">
                 Trải nghiệm một ngày
               </Link>
             ) : null}

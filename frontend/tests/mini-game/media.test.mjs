@@ -55,3 +55,8 @@ test('older content version is rejected without silently migrating progress', ()
   assert.equal(restored.ok, false);
   assert.equal(restored.reason, 'incompatible_scenario');
 });
+
+test('all authored Hanoi visuals are real photographs; cup outcomes use different files', () => {
+  for (const visual of Object.values(hanoiVisuals)) assert.equal(visual.kind,'photo',visual.id);
+  assert.notEqual(hanoiVisuals['cup-geometric'].sha256,hanoiVisuals['cup-leaves'].sha256);
+});

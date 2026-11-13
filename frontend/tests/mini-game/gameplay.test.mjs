@@ -90,8 +90,8 @@ for (const morning of mornings) {
           assert.ok(result);
           if (choiceId === 'cafe-chat') {
             const text = result.blocks.map(block => block.text).join(' ');
-            assert.ok(text.includes(labels[morning]));
-            assert.ok(text.includes(labels[lunch]));
+            assert.ok(text.includes(scenario.recallByChoice[morning]));
+            assert.ok(text.includes(scenario.recallByChoice[lunch]));
             assert.equal(text.includes('{morning}'), false);
             assert.equal(text.includes('[Chưa trải nghiệm]'), false);
           }
@@ -115,9 +115,9 @@ for (const morning of mornings) {
         };
         assert.deepEqual(journal.imageRefs, [imageByChoice[morning], imageByChoice[lunch], imageByChoice[detail]]);
         assert.deepEqual(journal.sourceRefs, [morning === 'morning-story' ? 'heritage-hoan-kiem' : 'tourism-photo-etiquette', 'tourism-hanoi-food']);
-        assert.ok(journal.ending.text.includes(labels[morning]));
-        assert.ok(journal.ending.text.includes(labels[lunch]));
-        assert.ok(journal.ending.text.includes(labels[detail]));
+        assert.ok(journal.ending.text.includes(scenario.recallByChoice[morning]));
+        assert.ok(journal.ending.text.includes(scenario.recallByChoice[lunch]));
+        assert.ok(journal.ending.text.includes(detail.startsWith('pottery-') ? 'cốc' : 'cà phê'));
         assert.equal(journal.ending.text.includes('[Chưa trải nghiệm]'), false);
         assert.equal(state.choices.length, 4);
         for (const type of ['start', 'choose', 'continue']) {
@@ -252,4 +252,27 @@ test('journal filters image and source references to the played route', () => {
   ]);
   assert.equal(JSON.stringify(journal).includes('fixture-image-pottery'), false);
   assert.equal(JSON.stringify(journal).includes('fixture-source-lunch-bun-cha'), false);
+});
+
+test('Hanoi named dialogue recalls only the lived moments and survives journal/reload rendering', () => {
+  const morningMemories = { 'morning-walk': 'xin phép chụp ảnh', 'morning-story': 'phân biệt truyền thuyết' };
+  const lunchMemories = { 'lunch-bun-cha': 'bữa bún chả', 'lunch-pho': 'bát phở' };
+  for (const morning of mornings) for (const lunch of lunches) {
+    let state = act(newRun(), 'start');
+    for (const choice of [morning, lunch, 'afternoon-cafe']) {
+      state = act(state, 'choose', choice); state = act(state, 'continue');
+    }
+    state = act(state, 'choose', 'cafe-chat');
+    const blocks = getCurrentResult(scenario, structuredClone(state)).blocks;
+    const text = blocks.map(block => block.text).join(' ');
+    assert.ok(text.includes(morningMemories[morning]));
+    assert.ok(text.includes(lunchMemories[lunch]));
+    for (const [id, memory] of Object.entries({...morningMemories,...lunchMemories})) {
+      if (id !== morning && id !== lunch) assert.equal(text.includes(memory),false);
+    }
+    assert.equal(/\{[^}]+\}|Người bạn:/.test(text),false);
+    assert.deepEqual([...new Set(blocks.map(block=>block.speaker).filter(Boolean))].sort(), ['An','Linh']);
+    const journal = buildJournal(scenario,act(state,'continue'));
+    assert.deepEqual(journal.entries.at(-1).result.blocks,blocks);
+  }
 });
