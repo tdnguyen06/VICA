@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Compass, Map, Bot } from 'lucide-react';
 import { CulturalAiAssistant } from '../components/Chat/CulturalAiAssistant';
+import { ProvinceDetailDrawer } from '../components/Culture/ProvinceDetailDrawer';
 import { useAppStore } from '../stores/appStore';
 
 export const MainLayout: React.FC = () => {
@@ -52,6 +53,9 @@ export const MainLayout: React.FC = () => {
 
       {/* Floating Cultural AI Assistant Drawer */}
       {!inExperience ? <CulturalAiAssistant /> : null}
+
+      {/* Keep the map culture drawer outside the isolated game experience. */}
+      {!inExperience ? <ProvinceDetailDrawer /> : null}
     </div>
   );
 };

@@ -54,8 +54,8 @@ public class CulturalKnowledgeAdapter implements CulturalKnowledgePort {
                     .map(this::toExternalDto)
                     .toList();
         } catch (Exception e) {
-            log.error("Error retrieving cultural sites for province {}: {}", provinceSlug, e.getMessage(), e);
-            throw new CulturalKnowledgeUnavailableException("getSitesByProvince", "Cultural knowledge service failure for province: " + provinceSlug, e);
+            log.warn("Could not retrieve cultural sites from culturalSiteService for province {}: {}", provinceSlug, e.getMessage());
+            return List.of();
         }
     }
 
