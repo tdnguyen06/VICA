@@ -101,6 +101,10 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
+      - name: Test mini-game gameplay and persistence
+        working-directory: ./frontend
+        run: npm run test:mini-game
+
       - name: Type check and build
         working-directory: ./frontend
         run: npm run build

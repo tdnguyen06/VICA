@@ -2,8 +2,8 @@
 
 ## Phiên bản và develop
 
-- Nhánh: feat/mini-game; HEAD trước/sau đợt triển khai: 6549c66. Các bổ sung đa tỉnh, ảnh và biên tập chưa commit/push.
-- Đã git fetch origin trước khi làm. Develop mới nhất lúc kiểm tra: 6f3bc33, merge PR #10 (auth). Chưa merge PR auth vào nhánh này; không chạy backend/migration/database. Nhánh hiện tại đã có develop trước đó qua merge 6549c66 (3d6882b, PR #8).
+- Nhánh: feat/mini-game. Bản game 11 tỉnh được commit tại 719e9ff; merge develop auth tại 11b0dbc. Các commit chỉ ở local, chưa push theo yêu cầu.
+- Đã fetch rồi pull origin/develop (6f3bc33, PR #10 auth) sau khi commit bảo toàn WIP. Sau pull mới resolve conflict MainLayout/AppRoutes, giữ UserMenu, cả sáu route auth và hai route game public. Không chạy backend/migration/database.
 
 ## Phạm vi đã hoàn thiện để demo local
 
@@ -72,4 +72,12 @@ Kiểm thử: npm.cmd run test:mini-game; build: npm.cmd run build. Không cần
 
 ## Giới hạn nghiệm thu
 
-Demo gameplay 11 tỉnh hoàn tất về kỹ thuật ở local. Chưa kiểm tra bản cài điện thoại thật, chưa đo thời lượng bằng người chơi thực tế, chưa gọi LLM thật, chưa tích hợp PR auth mới nhất. Cảm giác nhập vai/nội dung và ảnh tham khảo cần nhóm review trước nghiệm thu phát hành. Không tuyên bố đây là production đã kiểm chứng.
+Demo gameplay 11 tỉnh hoàn tất về kỹ thuật ở local. Chưa kiểm tra bản cài điện thoại thật, chưa đo thời lượng bằng người chơi thực tế, chưa gọi LLM thật, đã tích hợp PR auth mới nhất tại thời điểm fetch (6f3bc33), nhưng chưa chạy auth/backend thật. Cảm giác nhập vai/nội dung và ảnh tham khảo cần nhóm review trước nghiệm thu phát hành. Không tuyên bố đây là production đã kiểm chứng.
+
+## Kiểm tra tích hợp auth sau pull
+
+- Header có thể xuống hàng, tự tăng chiều cao và giới hạn tên tài khoản, tránh bị cắt/tràn trên điện thoại khi giữ UserMenu từ develop.
+- Workflow frontend chạy npm run test:mini-game sau npm ci, trước build. CI GitHub chưa chạy cho các commit local chưa push.
+- Mini-game vẫn không bắt đăng nhập. Transport hỏi thêm dùng fetch guest riêng, không qua auth refresh interceptor; đăng nhập/đăng xuất không xóa khóa lưu game.
+
+- Smoke test trên code repo thật với auth giả lập: đăng nhập, đi vào game qua trang Khám phá, tiếp tục đúng kết quả đã lưu; đăng xuất không xóa tiến trình. Header đã đo ở viewport 390/768/1280; nội dung game mobile rộng 375px khớp khung 375px. Không gọi tài khoản hoặc backend thật.
