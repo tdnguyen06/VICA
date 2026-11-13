@@ -102,6 +102,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Google Sign-In: verifies Google ID tokens on the backend -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>2.7.2</version>
+		</dependency>
+
+		<!-- Email verification and password reset codes -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- OpenAPI / Swagger Documentation -->
 		<dependency>
 			<groupId>org.springdoc</groupId>

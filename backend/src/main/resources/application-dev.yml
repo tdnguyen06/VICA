@@ -45,3 +45,9 @@ logging:
     org.hibernate.SQL: DEBUG
     org.flywaydb: INFO
 
+# Dev-only accounts created by DevUserSeeder. Passwords come from env vars, never from this file.
+app:
+  dev-users:
+    admin-password: ${DEV_ADMIN_PASSWORD:}
+    researcher-password: ${DEV_RESEARCHER_PASSWORD:}    
+

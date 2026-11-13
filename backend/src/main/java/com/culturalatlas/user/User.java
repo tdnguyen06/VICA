@@ -4,6 +4,9 @@ import com.culturalatlas.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -33,5 +36,38 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     @Builder.Default
     private boolean enabled = true;
+
+    // ---- Profile and verification (V9__extend_users_for_auth.sql) ----
+
+    @Column(length = 15)
+    private String phone;
+
+    @Column(length = 255)
+    private String address;
+
+    /** MALE, FEMALE or OTHER. */
+    @Column(length = 10)
+    private String gender;
+
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Column(name = "email_verified", nullable = false)
+    @Builder.Default
+    private boolean emailVerified = false;
+
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
+    @Builder.Default
+    @Column(name = "google_linked", nullable = false)
+    private boolean googleLinked = false;
+
+    @Builder.Default
+    @Column(name = "has_password", nullable = false)
+    private boolean hasPassword = true;
+
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
 

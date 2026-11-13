@@ -195,6 +195,6 @@ Dùng `ErrorResponse` hiện có: `status`, `error`, `message`, `path`, `timesta
 
 ## 8. Migration và phiên bản
 
-- Cultural dùng Flyway V6, V8. Migration mới của các module bắt đầu từ V9, báo nhóm trước khi tạo.
+- Cultural dùng Flyway V6, V8 (V7 thuộc Assistant), Auth dùng V9. Migration mới của các module bắt đầu từ V10, báo nhóm trước khi tạo.
 - Thêm trường optional được phép trong v1.x. Đổi tên/xóa trường, đổi ý nghĩa enum hoặc slug là breaking change:
   phải báo Người 3, Người 4 và chờ xác nhận.

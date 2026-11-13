@@ -33,7 +33,17 @@ app:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
   jwt:
     secret: ${JWT_SECRET:culturalAtlasSecretKeyForDevelopmentPhaseMustBeAtLeast32BytesLong!}
-    expiration-ms: ${JWT_EXPIRATION_MS:86400000} # 24 hours
+    access-expiration-ms: ${JWT_EXPIRATION_MS:3600000}            # 1 hour
+    refresh-expiration-ms: ${JWT_REFRESH_EXPIRATION_MS:604800000} # 7 days
+  google:
+    client-id: ${GOOGLE_CLIENT_ID:}  # OAuth Web client id; empty = Google login disabled
+  mail:
+    # false = dev mode: codes are written to the backend log instead of being emailed
+    enabled: ${MAIL_ENABLED:false}
+    from: ${MAIL_FROM:no-reply@vica.local}
+  verification:
+    ttl-minutes: ${VERIFICATION_TTL_MINUTES:10}
+  admin-emails: ${ADMIN_EMAILS:}   # email admin, cach nhau bang dau phay; duoc nang ROLE_ADMIN khi dang nhap
 
 # Actuator Endpoints
 management:
