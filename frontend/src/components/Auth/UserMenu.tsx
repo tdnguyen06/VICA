@@ -29,19 +29,19 @@ export const UserMenu: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
       {user.role === 'ROLE_ADMIN' && (
         <Link to="/admin" className="flex items-center gap-1 text-slate-300 hover:text-amber-300">
           <Shield className="h-4 w-4 text-amber-400" /> <span>Quản trị</span>
         </Link>
       )}
-      <Link to="/profile" className="flex items-center gap-1.5 text-slate-200 hover:text-amber-300" title={user.email}>
+      <Link to="/profile" className="flex min-w-0 max-w-full items-center gap-1.5 text-slate-200 hover:text-amber-300" title={user.email}>
         {user.avatarUrl ? (
           <img src={user.avatarUrl} alt="" referrerPolicy="no-referrer" className="h-6 w-6 rounded-full object-cover" />
         ) : (
           <UserRound className="h-4 w-4 text-amber-400" />
         )}
-        <span>{user.fullName || user.username}</span>
+        <span className="max-w-[9rem] truncate sm:max-w-[12rem]">{user.fullName || user.username}</span>
         <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">{ROLE_LABEL[user.role]}</span>
       </Link>
       <button
