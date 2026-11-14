@@ -49,17 +49,17 @@ export function GameAssistantPanel({ scenario, game, open, onClose }: { scenario
     className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border border-clay-300 bg-clay-50 p-5 text-clay-900 backdrop:bg-black/70 sm:p-6 clay-soft">
     <div className="flex items-start justify-between gap-3">
       <h2 id="scene-assistant-title" className="text-xl font-bold">Hỏi thêm về cảnh này</h2>
-      <ActionButton onClick={close} className="shrink-0 border border-clay-400">Đóng</ActionButton>
+      <ActionButton onClick={close} className="shrink-0 border border-clay-400">Đóng AI</ActionButton>
     </div>
-    <p className="my-3 text-sm leading-6 text-clay-600">{scenario.provinceName} · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : scenario.scenes[game.sceneId]?.title}. Tìm hiểu sâu hơn về nét văn hóa, lịch sử và điểm nhấn của cảnh này.</p>
-    <p className="text-xs text-amber-800">Thông tin tham khảo từ cơ sở dữ liệu văn hóa VICA.</p>
+    <p className="my-3 text-sm leading-6 text-clay-600">{scenario.provinceName} · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : scenario.scenes[game.sceneId]?.title}. AI chỉ giải thích, không chọn hoặc chuyển cảnh. Hội thoại riêng của lượt chơi, không lưu sau khi tải lại trang.</p>
+    <p className="text-xs text-amber-800">Câu trả lời AI có thể sai. Đối chiếu nguồn; đóng cửa sổ bất cứ lúc nào để chơi tiếp.</p>
     <div aria-live="polite" aria-busy={busy} className="my-5 space-y-4">
       {messages.map(message => <article key={message.id} className="space-y-3 rounded-xl border border-clay-300 p-4 text-sm leading-6">
         <p className="font-semibold text-amber-800">Bạn: {message.question}</p>
         <p className={'whitespace-pre-wrap break-words ' + (message.error ? 'text-red-800' : 'text-clay-800')}>{message.content}</p>
         <SourceCitationList citations={message.citations} messageId={'game-' + message.id} />
       </article>)}
-      {busy ? <p role="status" className="text-sm text-clay-700">Trợ lý AI đang tìm câu trả lời…</p> : null}
+      {busy ? <p role="status" className="text-sm text-clay-700">AI đang giải thích… Bạn vẫn có thể đóng để chơi tiếp.</p> : null}
     </div>
     {!user ? <div className="space-y-3 rounded-xl border border-white/70 bg-clay-pink/60 p-4 text-sm leading-6 clay-soft">
       <p className="font-semibold text-clay-900">Đăng nhập để hỏi Trợ lý AI</p>

@@ -35,15 +35,15 @@ export function buildRegionalScenario(story: RegionalStory): Scenario {
     id:story.slug+'-one-day',version:'1.0.0',provinceSlug:story.slug,provinceName:story.name,
     title:'Một ngày ở '+story.name,editorialStatus:'review-ready',firstSceneId:'morning',
     cast:{guide,visitor},introImageRef:image('intro'),
-    intro:[fiction(script.premise),...pair(script.intro,'intro'),gameplay('Đồng hành cùng '+visitor+' và lựa chọn các hoạt động để cùng nhau tạo nên một ngày đáng nhớ.')],
+    intro:[fiction(script.premise),...pair(script.intro,'intro'),gameplay('Bạn quyết định thay '+guide+'. Chọn một phương án, đọc kết quả rồi Tiếp tục. Không điểm số hay thắng thua. Nhân vật và không gian nghỉ/làm bưu thiếp là hư cấu; kiến thức và ảnh có nguồn riêng.')],
     scenes:{
       morning:{id:'morning',title:'Buổi sáng — '+story.name,imageRef:image('intro'),blocks:pair(script.morningPrompt,'morningPrompt'),choices:morning},
       lunch:{id:'lunch',title:'Buổi trưa — ăn cùng nhau',imageRef:image('meal'),blocks:pair(script.lunchPrompt,'lunchPrompt'),choices:lunch},
-      afternoon:{id:'afternoon',title:'Buổi chiều — giữ lại một điều',imageRef:image('intro'),blocks:[...pair(script.afternoon,'afternoon'),gameplay('Buổi chiều êm ả, hãy chọn một hoạt động để khép lại hành trình hôm nay.')],choices:[
+      afternoon:{id:'afternoon',title:'Buổi chiều — giữ lại một điều',imageRef:image('intro'),blocks:[...pair(script.afternoon,'afternoon'),gameplay('Góc làm bưu thiếp và chỗ nghỉ là không gian hư cấu, không phải gợi ý đặt dịch vụ.')],choices:[
         {id:creativeId,label:'Làm một tấm bưu thiếp',nextSceneId:'creative',result:result('Một tờ giấy đang chờ',null,[fiction(guide+' đặt giấy và màu cạnh ảnh chặng sáng đã chọn. '+visitor+' kéo ghế lại gần, để hai người cùng nghĩ bố cục.'),...pair(script.creative,'creative')],image('postcard'))},
         {id:pauseId,label:'Dành một khoảng nghỉ',nextSceneId:'pause',result:result('Không cần vội thêm',null,[fiction('Hai người chọn một chỗ ngồi trong câu chuyện, để những việc khác chờ một lát.'),...pair(script.rest,'rest')],image('pause'))},
       ]},
-      creative:{id:'creative',title:'Bưu thiếp của '+guide+' và '+visitor,imageRef:image('postcard'),blocks:[...pair(script.creative,'creative'),gameplay('Lưu giữ kỷ niệm chuyến đi qua tấm bưu thiếp đặc biệt của hai bạn.')],choices:story.postcardLabels.map((label,index)=>({
+      creative:{id:'creative',title:'Bưu thiếp của '+guide+' và '+visitor,imageRef:image('postcard'),blocks:[...pair(script.creative,'creative'),gameplay('Ảnh gợi ý bố cục/màu sắc từ chặng sáng, không phải sản phẩm nhân vật vừa làm. Họa tiết không được gán ý nghĩa văn hóa truyền thống.')],choices:story.postcardLabels.map((label,index)=>({
         id:postcardIds[index]!,label,nextSceneId:'journal' as const,
         result:result('Bưu thiếp — '+label,'Làm bưu thiếp: '+label,[...exchange(script.postcards[index]!),say(visitor,'Mình còn nhớ {morningMemory}, rồi cả {lunchMemory}.'),fiction(guide+' viết tên hai người ở góc giấy còn trống.')],image(index===0?'postcard-scene':'postcard-colour')),
       }))},

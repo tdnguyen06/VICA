@@ -35,7 +35,7 @@ function RegionalVisual({ image }: { image: RegionalImage }) {
           <>{[0,1,2,3,4].map(i=><rect key={i} x={163+i*65} y={125+(i%2)*18} width="51" height={107-(i%2)*18} rx="8" fill={i%2?image.accent:'#fb923c'} opacity={.45+i*.1} />)}<path d="M159 273h216" stroke="#94a3b8" strokeWidth="6" /></>}
       </g> : null}
     </svg>
-    <figcaption className="space-y-1 p-4 text-xs leading-5 text-clay-600"><p className="font-semibold text-clay-800">{image.label} · {image.province}</p><p>Hình ảnh minh họa phong cách đồ họa.</p></figcaption>
+    <figcaption className="space-y-1 p-4 text-xs leading-5 text-clay-600"><p className="font-semibold text-clay-800">{image.label} · {image.province}</p><p>Minh họa SVG do VICA tạo · không phải ảnh tư liệu hay mô phỏng chính xác địa điểm/món ăn.</p></figcaption>
   </figure>;
 }
 

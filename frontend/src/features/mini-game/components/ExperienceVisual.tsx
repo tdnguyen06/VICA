@@ -21,16 +21,16 @@ function RegionalPhoto({ assetId, selectedMorningChoiceId }: { assetId: string; 
     </div> : null}
     <figcaption className={'space-y-2 px-4 py-3 text-xs leading-5 ' + (isPostcard ? 'text-clay-300' : 'text-clay-600')}>
       {photo ? <p>{photo.caption}</p> : null}
-      {isPostcard ? <p>Hình ảnh bưu thiếp kỷ niệm từ chặng sáng.</p>
-        : binding?.role === 'pause' ? <p>Khoảnh khắc nghỉ chân gợi nhớ điểm đến buổi sáng.</p>
-        : binding?.role === 'meal-preview' ? <p>Gợi ý ẩm thực đặc sản địa phương.</p> : null}
+      {isPostcard ? <p>Ảnh từ chặng sáng làm gợi ý cho bố cục/màu sắc. Đây không phải ảnh thành phẩm bưu thiếp của nhân vật.</p>
+        : binding?.role === 'pause' ? <p>Ảnh gợi lại chặng sáng đã chọn; không xác nhận địa điểm của chỗ nghỉ hư cấu.</p>
+        : binding?.role === 'meal-preview' ? <p>Ảnh gợi ý một món trong các lựa chọn, chưa ghi nhận món ăn vào hành trình.</p> : null}
       {photo ? <details>
         <summary className={'cursor-pointer focus-visible:outline-2 focus-visible:outline-amber-400 ' + (isPostcard ? 'text-amber-900' : 'text-amber-700')}>Nguồn ảnh và quyền sử dụng</summary>
         <div className="mt-2 space-y-1 break-words">
           <p>Ảnh: {photo.author} · <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">Wikimedia Commons</a></p>
           <p>Giấy phép: {photo.licenseUrl ? <a href={photo.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline">{photo.license}</a> : photo.license}</p>
           <p>{photo.changes}</p>
-          <p>Nguồn đối chiếu: {photo.reviewedOn}.</p>
+          <p>Đối chiếu nguồn ngày {photo.reviewedOn}. Ảnh không xác nhận quán, dịch vụ hoặc nhân vật trong truyện.</p>
         </div>
       </details> : null}
     </figcaption>
