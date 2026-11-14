@@ -177,14 +177,21 @@ export const CulturalAiAssistant: React.FC = () => {
     }
   }, [assistantInitialPrompt, user]);
 
-  // Đăng xuất: xoá hội thoại của tài khoản cũ khỏi màn hình và bộ nhớ trình duyệt.
-  useEffect(() => {
-    if (!user) {
+  // Đăng xuất: xoá hội thoại của tài khoản cũ khỏi màn hình (điều chỉnh state ngay khi render)...
+  const username = user?.username ?? null;
+  const [sessionUsername, setSessionUsername] = useState<string | null>(username);
+  if (username !== sessionUsername) {
+    setSessionUsername(username);
+    if (!username) {
       setMessages([]);
       setConversationId(null);
-      clearLastConversationId();
     }
-  }, [user]);
+  }
+
+  // ...và khỏi bộ nhớ trình duyệt.
+  useEffect(() => {
+    if (!username) clearLastConversationId();
+  }, [username]);
 
   // Close drawer on Escape key (if comparison modal is not open)
   useEffect(() => {
@@ -199,7 +206,7 @@ export const CulturalAiAssistant: React.FC = () => {
 
   // Try restoring previous conversation once the user is logged in
   useEffect(() => {
-    if (!user) return;
+    if (!username) return;
     const savedId = getLastConversationId();
     if (savedId) {
       setConversationId(savedId);
@@ -231,7 +238,7 @@ export const CulturalAiAssistant: React.FC = () => {
           setConversationId(null);
         });
     }
-  }, [user?.username]);
+  }, [username]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
