@@ -25,7 +25,7 @@ export const hanoiScenario: Scenario = {
             say("An", "Hôm nay mình dẫn đường. Nhưng đi đâu thì hai đứa cùng chọn nhé."),
     say("Linh", "Được! Mình muốn về có chuyện để kể, chứ không chỉ có một máy đầy ảnh."),
             fiction("Bạn quyết định thay An. Linh sẽ cùng bạn đi từ buổi sáng bên hồ, qua một bữa trưa, đến khoảng thời gian cuối ngày."),
-    gameplay('Chọn hoạt động, đọc kết quả rồi bấm Tiếp tục. Không có điểm số hay lựa chọn thắng thua. Nhân vật, hội thoại và địa điểm phục vụ câu chuyện đều hư cấu; ghi chú văn hóa có nguồn riêng.'),
+    gameplay('Cùng Linh trải nghiệm một ngày trọn vẹn tại Hà Nội qua các hoạt động văn hóa và ẩm thực đặc trưng.'),
   ],
   introImageRef: 'hanoi-lake',
   firstSceneId: 'morning',

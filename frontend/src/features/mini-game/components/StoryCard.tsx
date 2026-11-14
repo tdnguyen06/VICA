@@ -20,7 +20,7 @@ export function Narrative({ blocks, guideName = 'An' }: { blocks: readonly Narra
   </div>;
   return <div className="space-y-4 leading-7 text-slate-200">
     {blocks.map((block, index) => block.speaker ? <div key={index} className={'rounded-2xl border-l-2 px-4 py-3 ' + (block.speaker === guideName ? 'border-amber-400 bg-amber-400/5' : 'border-sky-400 bg-sky-400/5')}>
-      <p className={'mb-1 text-xs font-bold tracking-wide ' + (block.speaker === guideName ? 'text-amber-300' : 'text-sky-300')}>{block.speaker}{block.speaker === guideName ? ' · vai của bạn' : ''}</p>
+      <p className={'mb-1 text-xs font-bold tracking-wide ' + (block.speaker === guideName ? 'text-amber-300' : 'text-sky-300')}>{block.speaker}{block.speaker === guideName ? ' (Bạn)' : ''}</p>
       <p>{block.text}</p>
     </div> : block.kind === 'culture' ? <aside key={index} aria-label="Góc khám phá" className="rounded-xl border border-slate-700 bg-slate-800/60 p-4 text-sm leading-6 text-slate-300">
       <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-300">Góc khám phá</p><p>{block.text}</p>
@@ -74,16 +74,16 @@ export function StoryVisual({ theme, motif, assetId, src = null, alt = '' }: {
         </svg>}
     </div>
     <figcaption className="space-y-2 border-t border-slate-700 px-4 py-3 text-xs leading-5 text-slate-400">
-      <p>{hasImage ? photo?.caption ?? alt : asset?.kind === 'svg' ? asset.caption : 'Không tải được ảnh hoặc chưa có ảnh · hiển thị minh họa dự phòng.'}</p>
+      <p>{hasImage ? photo?.caption ?? alt : asset?.kind === 'svg' ? asset.caption : 'Hình ảnh minh họa bối cảnh.'}</p>
       {photo ? <details>
         <summary className="cursor-pointer text-amber-300 focus-visible:outline-2 focus-visible:outline-amber-400">Nguồn ảnh và quyền sử dụng</summary>
         <div className="mt-2 space-y-1 break-words">
           <p>Ảnh: {photo.author} · <a href={photo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">Wikimedia Commons</a></p>
           <p>Giấy phép: {photo.licenseUrl ? <a href={photo.licenseUrl} target="_blank" rel="noopener noreferrer" className="underline">{photo.license}</a> : photo.license}</p>
           <p>{photo.changes}</p>
-          <p>Đối chiếu metadata nguồn ngày {photo.reviewedOn}; không xác minh dịch vụ hoặc nội dung văn hóa trong truyện.</p>
+          <p>Nguồn đối chiếu: {photo.reviewedOn}.</p>
         </div>
-      </details> : asset?.kind === 'svg' ? <p>Minh họa bằng mã SVG trong dự án VICA, không phải ảnh tư liệu.</p> : null}
+      </details> : asset?.kind === 'svg' ? <p>Hình ảnh minh họa đồ họa.</p> : null}
     </figcaption>
   </figure>;
 }

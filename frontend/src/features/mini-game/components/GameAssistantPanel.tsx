@@ -46,17 +46,17 @@ export function GameAssistantPanel({ scenario, game, open, onClose }: { scenario
     className="m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border border-slate-700 bg-slate-950 p-5 text-slate-100 backdrop:bg-black/70 sm:p-6">
     <div className="flex items-start justify-between gap-3">
       <h2 id="scene-assistant-title" className="text-xl font-bold">Hỏi thêm về cảnh này</h2>
-      <ActionButton onClick={close} className="shrink-0 border border-slate-600">Đóng AI</ActionButton>
+      <ActionButton onClick={close} className="shrink-0 border border-slate-600">Đóng</ActionButton>
     </div>
-    <p className="my-3 text-sm leading-6 text-slate-400">{scenario.provinceName} · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : scenario.scenes[game.sceneId]?.title}. AI chỉ giải thích, không chọn hoặc chuyển cảnh. Hội thoại riêng của lượt chơi, không lưu sau khi tải lại trang.</p>
-    <p className="text-xs text-amber-200">Câu trả lời AI có thể sai. Đối chiếu nguồn; đóng cửa sổ bất cứ lúc nào để chơi tiếp.</p>
+    <p className="my-3 text-sm leading-6 text-slate-400">{scenario.provinceName} · {game.phase === 'completed' ? 'Nhật ký' : game.phase === 'intro' ? 'Mở đầu' : scenario.scenes[game.sceneId]?.title}. Tìm hiểu sâu hơn về nét văn hóa, lịch sử và điểm nhấn của cảnh này.</p>
+    <p className="text-xs text-amber-200/80">Thông tin tham khảo từ cơ sở dữ liệu văn hóa VICA.</p>
     <div aria-live="polite" aria-busy={busy} className="my-5 space-y-4">
       {messages.map(message => <article key={message.id} className="space-y-3 rounded-xl border border-slate-700 p-4 text-sm leading-6">
         <p className="font-semibold text-amber-200">Bạn: {message.question}</p>
         <p className={'whitespace-pre-wrap break-words ' + (message.error ? 'text-red-200' : 'text-slate-200')}>{message.content}</p>
         <SourceCitationList citations={message.citations} messageId={'game-' + message.id} />
       </article>)}
-      {busy ? <p role="status" className="text-sm text-slate-300">AI đang giải thích… Bạn vẫn có thể đóng để chơi tiếp.</p> : null}
+      {busy ? <p role="status" className="text-sm text-slate-300">Trợ lý AI đang tìm câu trả lời…</p> : null}
     </div>
     <form onSubmit={event => { event.preventDefault(); void ask(); }} className="space-y-3">
       <label htmlFor="scene-question" className="block text-sm font-semibold">Câu hỏi của bạn</label>

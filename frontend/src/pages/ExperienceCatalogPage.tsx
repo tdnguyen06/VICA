@@ -37,12 +37,12 @@ export default function ExperienceCatalogPage() {
     <div className="space-y-3">
       <p className="text-xs font-semibold uppercase tracking-widest text-amber-300">Trải nghiệm một ngày</p>
       <h1 ref={pageHeading} tabIndex={-1} className="scroll-mt-24 outline-none text-3xl font-bold tracking-tight text-white sm:text-4xl">Bạn muốn sống một ngày ở đâu?</h1>
-      <p className="max-w-3xl text-sm leading-6 text-slate-300">Chọn tỉnh thành, nhập vai dẫn một người bạn khám phá và giữ lại nhật ký của riêng mình. Không điểm số, không thắng thua.</p>
-      <p id="catalog-availability" className="text-sm leading-6 text-amber-200">Danh sách theo bộ dữ liệu {provinceExperiences.length} tỉnh thành hiện có của VICA. Hiện có {ready.length} tỉnh có kịch bản: {ready.map(province => province.name).join(', ')}. Những tỉnh khác chưa thể chơi.</p>
+      <p className="max-w-3xl text-sm leading-6 text-slate-300">Chọn một tỉnh thành để nhập vai người bản địa, cùng người bạn đồng hành khám phá văn hóa, ẩm thực và lưu lại trang nhật ký hành trình của riêng mình.</p>
+      <p id="catalog-availability" className="text-sm leading-6 text-amber-200">Hiện có {ready.length} tỉnh thành đã sẵn sàng trải nghiệm. Các địa phương khác đang tiếp tục được cập nhật.</p>
     </div>
 
     {currentExperience?.experience ? <aside className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
-      <p className="text-sm text-amber-100">Lượt hiện tại: {currentExperience.name}. {session.unsaved ? 'Có bước chưa lưu trên thiết bị.' : session.issue ? 'Bản lưu cần được kiểm tra trong trải nghiệm.' : 'Chọn tỉnh không thay thế tiến trình của bạn.'}</p>
+      <p className="text-sm text-amber-100">Hành trình đang dở dang tại {currentExperience.name}. {session.unsaved ? 'Đang lưu tạm trên thiết bị.' : 'Bạn có thể tiếp tục bất cứ lúc nào.'}</p>
       <Link to={currentExperience.experience.path + '?view=play'} className={actionClass + ' border border-amber-400/50 text-amber-200'}>{session.game?.phase === 'completed' ? 'Xem nhật ký' : session.game?.phase === 'intro' ? 'Mở lượt chơi' : 'Tiếp tục lượt chơi'}</Link>
     </aside> : null}
 
@@ -57,17 +57,17 @@ export default function ExperienceCatalogPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="inline-flex min-h-12 cursor-pointer items-center gap-3 text-sm text-slate-200">
           <input type="checkbox" checked={readyOnly} onChange={event => updateSearch(query, event.target.checked)} className="h-5 w-5 accent-amber-400" />
-          Chỉ tỉnh có trải nghiệm
+          Chỉ hiện tỉnh đã sẵn sàng
         </label>
         <ActionButton disabled={!ready.length} aria-describedby="random-explanation" onClick={() => setRandomProvince(chooseRandomExperience(provinceExperiences))}
           className="inline-flex items-center gap-2 border border-amber-400/50 bg-amber-400 text-slate-950"><Shuffle className="h-4 w-4" /> Chọn tỉnh ngẫu nhiên</ActionButton>
       </div>
-      <p id="random-explanation" className="text-xs leading-5 text-slate-400">Ngẫu nhiên trong toàn bộ tỉnh có kịch bản, không giới hạn ở trang hay kết quả tìm kiếm. {ready.length === 1 ? 'Hiện chỉ có ' + ready[0]?.name + ' nên kết quả luôn là ' + ready[0]?.name + '.' : ''}</p>
+      <p id="random-explanation" className="text-xs leading-5 text-slate-400">Gợi ý ngẫu nhiên một địa phương đã sẵn sàng để bạn khám phá ngay.</p>
     </div>
 
     {randomProvince?.experience ? <aside aria-live="polite" className="space-y-3 rounded-2xl border border-amber-400/50 bg-amber-500/10 p-5">
       <h2 className="text-lg font-semibold text-amber-200">Tỉnh được chọn: {randomProvince.name}</h2>
-      <p className="text-sm text-slate-300">{randomProvince.experience.title}. Bạn chưa bắt đầu hoặc thay lượt chơi khi chọn ngẫu nhiên.</p>
+      <p className="text-sm text-slate-300">{randomProvince.experience.title}</p>
       <div className="flex flex-wrap gap-3">
         <Link to={randomProvince.experience.path} className={actionClass + ' inline-flex items-center bg-amber-400 text-slate-950'}>Khám phá {randomProvince.name}</Link>
         <ActionButton onClick={() => setRandomProvince(null)} className="border border-slate-600 text-slate-200">Bỏ chọn</ActionButton>
@@ -81,12 +81,12 @@ export default function ExperienceCatalogPage() {
         {result.items.map(province => <li key={province.slug} className="flex flex-col gap-3 rounded-2xl border border-slate-700 bg-slate-900/60 p-5">
           <h3 className="flex items-center gap-2 text-lg font-semibold text-slate-100"><MapPin className="h-5 w-5 shrink-0 text-amber-300" />{province.name}</h3>
           <p className="text-xs text-slate-400">{province.adminUnit}</p>
-          <p className="text-sm leading-6 text-slate-300">{province.experience?.title ?? 'Kịch bản của tỉnh này chưa được biên tập và kiểm chứng.'}</p>
+          <p className="text-sm leading-6 text-slate-300">{province.experience?.title ?? 'Kịch bản trải nghiệm đang được biên tập.'}</p>
           {province.experience ? <Link to={province.experience.path} className={actionClass + ' mt-auto inline-flex items-center justify-center bg-amber-400 text-slate-950'}>Khám phá {province.name}</Link>
-            : <span className="mt-auto inline-flex min-h-12 items-center rounded-xl border border-slate-700 px-4 py-3 text-sm text-slate-400">Chưa có trải nghiệm</span>}
+            : <span className="mt-auto inline-flex min-h-12 items-center rounded-xl border border-slate-700 px-4 py-3 text-sm text-slate-400">Sắp ra mắt</span>}
         </li>)}
       </ul> : <div className="space-y-3 rounded-2xl border border-dashed border-slate-700 p-6 text-sm text-slate-300">
-        <p>Thử tên có dấu hoặc không dấu, hoặc bỏ bộ lọc để xem danh sách.</p>
+        <p>Không tìm thấy tỉnh phù hợp. Hãy thử tìm tên có dấu, không dấu hoặc tắt bộ lọc.</p>
         <ActionButton onClick={() => updateSearch('', false)} className="border border-slate-600">Xóa tìm kiếm và bộ lọc</ActionButton>
       </div>}
       {result.pageCount > 1 ? <nav aria-label="Phân trang tỉnh thành" className="flex flex-wrap items-center justify-center gap-2">
