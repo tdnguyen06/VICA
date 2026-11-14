@@ -56,6 +56,20 @@ test('uses a separate guest conversation and fresh scene context on each request
   assert.deepEqual(state, before);
 });
 
+test('logged-in transport accepts replies without guest credentials and keeps the conversation', async () => {
+  const calls = [];
+  const client = createSceneAssistant({ authenticated: true, cancel() {}, async send(request, credentials) {
+    calls.push({ request, credentials }); return answer({ credentials: null });
+  } });
+  const state = lunch();
+  assert.equal((await client.ask(scenario, state, 'Phở là gì?')).status, 'answered');
+  assert.equal((await client.ask(scenario, state, 'Ăn kèm gì?')).status, 'answered');
+  assert.equal(calls[0].credentials, null);
+  assert.equal(calls[1].credentials, null);
+  assert.equal(calls[1].request.conversationId, 42);
+  assert.equal(calls[1].request.guestSessionUuid, null);
+});
+
 test('new run does not reuse previous conversation or credentials', async () => {
   const calls = [];
   const client = createSceneAssistant({ cancel() {}, async send(request, credentials) {

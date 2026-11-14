@@ -20,6 +20,8 @@ export interface SceneCitation {
 export interface AssistantTransport {
   send(request: SceneChatRequest, credentials: SceneGuestCredentials | null): Promise<unknown>;
   cancel(): void;
+  /** True when requests carry a logged-in user's token: the backend then returns no guest credentials. */
+  readonly authenticated?: boolean;
 }
 export class SceneAssistantError extends Error {
   readonly code: string;
@@ -103,7 +105,7 @@ export function createSceneAssistant(transport: AssistantTransport) {
           guestSessionUuid: credentials?.guestSessionUuid ?? null }, credentials);
         if (id !== requestId) return { status: 'cancelled' as const };
         const reply = parseReply(raw);
-        if ((conversationId === null && reply.credentials === null) ||
+        if ((conversationId === null && reply.credentials === null && !transport.authenticated) ||
             (conversationId !== null && reply.conversationId !== conversationId)) throw new SceneAssistantError('invalid_reply');
         conversationId = reply.conversationId;
         if (reply.credentials) credentials = reply.credentials;

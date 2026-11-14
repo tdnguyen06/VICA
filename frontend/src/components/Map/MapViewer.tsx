@@ -507,29 +507,29 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       const el = document.createElement('div');
       el.className = 'cursor-pointer group relative select-none';
       el.innerHTML = `
-        <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-slate-950/80 hover:bg-slate-900 border ${isSpecial ? 'border-amber-400/90 shadow-md shadow-amber-500/20' : 'border-slate-700/80'
+        <div class="flex items-center space-x-1 px-2 py-0.5 rounded-full bg-clay-50/80 hover:bg-clay-100 border ${isSpecial ? 'border-amber-400/90 shadow-md shadow-amber-500/20' : 'border-clay-300/80'
         } transition-all duration-150">
           <span class="w-1.5 h-1.5 rounded-full ${isSpecial ? 'bg-red-500 ring-1 ring-amber-300' : 'bg-cyan-400'} shrink-0"></span>
-          <span class="text-[11px] font-bold ${isSpecial ? 'text-amber-200' : 'text-slate-200'} whitespace-nowrap">
+          <span class="text-[11px] font-bold ${isSpecial ? 'text-amber-800' : 'text-clay-800'} whitespace-nowrap">
             ${shortName}
           </span>
         </div>
 
         <!-- HOVER TOOLTIP: Revealed strictly on hover -->
-        <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 bg-slate-950/95 backdrop-blur-md p-3 rounded-xl border border-amber-400/80 shadow-2xl text-left text-slate-100">
+        <div class="pointer-events-none absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-50 bg-clay-50/95 backdrop-blur-md p-3 rounded-xl border border-amber-400/80 shadow-2xl text-left text-clay-900">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-amber-300 flex items-center">
+            <span class="text-xs font-black text-amber-700 flex items-center">
               <span class="mr-1">🇻🇳</span> ${territory.name}
             </span>
-            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-400/30">
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-700 font-bold border border-amber-400/30">
               Biển đảo
             </span>
           </div>
-          <p class="text-[10px] text-amber-200/90 font-medium mt-1">${territory.adminUnit}</p>
-          <p class="text-[10px] text-slate-300 mt-1 leading-relaxed line-clamp-3">${territory.description}</p>
-          <div class="mt-2 pt-1.5 border-t border-slate-800 flex items-center justify-between text-[9px] text-slate-400">
+          <p class="text-[10px] text-amber-800/90 font-medium mt-1">${territory.adminUnit}</p>
+          <p class="text-[10px] text-clay-700 mt-1 leading-relaxed line-clamp-3">${territory.description}</p>
+          <div class="mt-2 pt-1.5 border-t border-clay-200 flex items-center justify-between text-[9px] text-clay-600">
             <span>Click để mở ảnh di tích</span>
-            <span class="text-amber-400 font-bold">Xem thêm →</span>
+            <span class="text-amber-700 font-bold">Xem thêm →</span>
           </div>
         </div>
       `;
@@ -613,45 +613,45 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
   return (
     <div className="space-y-3">
       {/* Sleek Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-slate-900/95 border border-slate-800 p-2.5 rounded-xl shadow-lg backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 bg-clay-lilac sheen border border-white/60 p-2.5 rounded-2xl  backdrop-blur-md clay-soft">
         {/* Region & Sovereignty Navigation Buttons */}
         <div className="flex flex-wrap items-center gap-1 text-xs">
-          <span className="text-slate-400 font-semibold mr-1 flex items-center">
-            <Compass className="w-3.5 h-3.5 mr-1 text-rose-400" /> Tiêu điểm:
+          <span className="text-clay-600 font-semibold mr-1 flex items-center">
+            <Compass className="w-3.5 h-3.5 mr-1 text-rose-700" /> Tiêu điểm:
           </span>
           <button
             onClick={() => flyTo(108.5, 15.5, 4.75)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer font-medium"
+            className="px-2.5 py-1 bg-clay-cream/85 hover:bg-clay-butter text-clay-800 rounded-lg transition cursor-pointer font-medium"
           >
             🇻🇳 Toàn cảnh (63 Tỉnh)
           </button>
           <button
             onClick={() => flyTo(112.0, 16.5, 7.5)}
-            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition shadow-md border border-amber-400/50 cursor-pointer"
+            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition border border-amber-400/50 cursor-pointer clay"
           >
             🇻🇳 QĐ Hoàng Sa
           </button>
           <button
             onClick={() => flyTo(114.3, 10.0, 7.0)}
-            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition shadow-md border border-amber-400/50 cursor-pointer"
+            className="px-2.5 py-1 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-bold rounded-lg transition border border-amber-400/50 cursor-pointer clay"
           >
             🇻🇳 QĐ Trường Sa
           </button>
           <button
             onClick={() => flyTo(105.8, 21.2, 7.0)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
+            className="px-2.5 py-1 bg-clay-cream/85 hover:bg-clay-butter text-clay-800 rounded-lg transition cursor-pointer"
           >
             Miền Bắc
           </button>
           <button
             onClick={() => flyTo(107.8, 16.2, 7.0)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
+            className="px-2.5 py-1 bg-clay-cream/85 hover:bg-clay-butter text-clay-800 rounded-lg transition cursor-pointer"
           >
             Miền Trung
           </button>
           <button
             onClick={() => flyTo(106.6, 10.5, 7.0)}
-            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition cursor-pointer"
+            className="px-2.5 py-1 bg-clay-cream/85 hover:bg-clay-butter text-clay-800 rounded-lg transition cursor-pointer"
           >
             Miền Nam
           </button>
@@ -664,9 +664,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             type="button"
             onClick={handleRandomProvince}
             title="Khám phá ngẫu nhiên một tỉnh/thành phố hoặc hải đảo Việt Nam"
-            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm"
+            className="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 border-amber-500/40 shadow-sm"
           >
-            <Shuffle className="w-3.5 h-3.5 text-amber-400" />
+            <Shuffle className="w-3.5 h-3.5 text-amber-700" />
             <span>Khám phá ngẫu nhiên</span>
           </button>
 
@@ -674,8 +674,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
           <button
             onClick={toggle3DView}
             className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition cursor-pointer border ${is3DView
-                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20'
-                : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-amber-400/40'
+                ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-clay-900 border-amber-400 shadow-md shadow-amber-500/20'
+                : 'bg-clay-cream/85 hover:bg-clay-butter text-amber-700 border-amber-400/40'
               }`}
             title="Bật/Tắt góc nhìn không gian 3D nghiêng"
           >
@@ -683,7 +683,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             <span>{is3DView ? 'Bản đồ 3D (Đang bật)' : 'Góc nhìn 3D'}</span>
           </button>
 
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+          <div className="flex items-center gap-1 bg-clay-50 p-1 rounded-lg border border-clay-200 text-xs">
             {(Object.keys(MAP_STYLES) as Array<keyof typeof MAP_STYLES>).map((key) => {
               const style = MAP_STYLES[key];
               const Icon = style.icon;
@@ -693,8 +693,8 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                   key={key}
                   onClick={() => handleSwitchStyle(key)}
                   className={`flex items-center space-x-1 px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${isActive
-                      ? 'bg-amber-500 text-slate-950 font-bold shadow'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-amber-500 text-clay-900 font-bold shadow'
+                      : 'text-clay-600 hover:text-clay-800'
                     }`}
                 >
                   <Icon className="w-3 h-3" />
@@ -707,7 +707,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
       </div>
 
       {/* Main Map Box */}
-      <div className={`relative rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-950 ${className}`}>
+      <div className={`relative rounded-3xl overflow-hidden border-4 border-clay-cream bg-clay-50 ${className} clay-soft`}>
         <div ref={mapContainerRef} className="w-full h-full" />
 
         {/* Keep feedback in the map without shifting it or intercepting map gestures. */}
@@ -716,10 +716,10 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             aria-atomic="true"
             className={`absolute top-4 left-4 right-14 z-30 max-w-md pointer-events-none flex items-start gap-2 px-3 py-2 rounded-lg border text-sm shadow-lg ${
               geographicFeedback.kind === 'error'
-                ? 'bg-red-950 text-red-200 border-red-900'
+                ? 'bg-red-50 text-red-800 border-red-100'
                 : geographicFeedback.kind === 'empty'
-                  ? 'bg-amber-950 text-amber-200 border-amber-900'
-                  : 'bg-slate-900 text-slate-200 border-slate-700'
+                  ? 'bg-amber-50 text-amber-800 border-amber-100'
+                  : 'bg-clay-100 text-clay-800 border-clay-300'
             }`}>
             {geographicFeedback.kind === 'loading' && (
               <LoaderCircle aria-hidden="true" className="w-4 h-4 mt-0.5 shrink-0 animate-spin" />
@@ -730,18 +730,18 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
 
         {/* Selected Province Info Panel with Authentic Photography */}
         {selectedProvinceInfo && (
-          <div className="absolute top-28 sm:top-20 left-4 z-20 w-[calc(100%-2rem)] sm:w-96 max-h-[calc(100%-8rem)] sm:max-h-[calc(100%-6rem)] overflow-y-auto bg-slate-900/98 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80 shadow-2xl text-slate-100 transition-all">
+          <div className="absolute top-28 sm:top-20 left-4 z-20 w-[calc(100%-2rem)] sm:w-96 max-h-[calc(100%-8rem)] sm:max-h-[calc(100%-6rem)] overflow-y-auto bg-clay-cream/95 backdrop-blur-lg p-3.5 rounded-2xl border-2 border-amber-400/80  text-clay-900 transition-all clay-soft">
             <div className="flex items-start justify-between">
               <span className={`px-2.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wide flex items-center ${selectedProvinceInfo.isSovereignty
-                  ? 'bg-red-600/30 text-red-300 border border-red-500/50'
-                  : 'bg-amber-500/20 text-amber-300 border border-amber-400/40'
+                  ? 'bg-red-600/30 text-red-700 border border-red-500/50'
+                  : 'bg-amber-500/20 text-amber-700 border border-amber-400/40'
                 }`}>
                 <Sparkles className="w-3 h-3 mr-1" />
                 {selectedProvinceInfo.culturalCategoryLabel || (selectedProvinceInfo.isSovereignty ? '🇻🇳 Lãnh thổ Biển Đảo' : 'Di sản Cổ truyền')}
               </span>
               <button
                 onClick={clearProvinceSelection}
-                className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition cursor-pointer"
+                className="text-clay-600 hover:text-clay-900 p-1 rounded-lg hover:bg-clay-200 transition cursor-pointer"
                 title="Đóng thẻ"
               >
                 <X className="w-4 h-4" />
@@ -749,11 +749,11 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             </div>
 
             <div className="mt-2">
-              <h4 className="font-black text-lg text-white flex items-center space-x-1.5">
+              <h4 className="font-black text-lg text-clay-900 flex items-center space-x-1.5">
                 <span>{selectedProvinceInfo.isSovereignty ? '🇻🇳' : '📍'}</span>
                 <span>{selectedProvinceInfo.name}</span>
               </h4>
-              <p className="text-xs text-slate-400 font-medium">{selectedProvinceInfo.adminUnit}</p>
+              <p className="text-xs text-clay-600 font-medium">{selectedProvinceInfo.adminUnit}</p>
             </div>
 
             {/* Cultural Landmark Photo & Info */}
@@ -767,7 +767,7 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
               />
             </div>
 
-            <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+            <p className="text-xs text-clay-700 mt-2 leading-relaxed">
               {selectedProvinceInfo.culturalSummary || selectedProvinceInfo.description || (
                 selectedProvinceInfo.isSovereignty
                   ? 'Phần lãnh thổ thiêng liêng không thể tách rời của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam trên Biển Đông.'
@@ -776,13 +776,13 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
             </p>
 
             {currentProvince && scenarioByProvince(currentProvince) && !selectedProvinceInfo.isSovereignty ? (
-              <Link to={"/experiences/" + currentProvince} className="mt-4 flex min-h-12 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400">
+              <Link to={"/experiences/" + currentProvince} className="mt-4 flex min-h-12 items-center justify-center rounded-xl border border-amber-400/50 bg-amber-400 px-4 py-3 text-sm font-bold text-clay-900 hover:bg-amber-300 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400 clay-soft">
                 Trải nghiệm một ngày
               </Link>
             ) : null}
 
             {/* Quick Action Buttons */}
-            <div className="mt-3.5 pt-2.5 border-t border-slate-800/80 flex flex-col gap-2">
+            <div className="mt-3.5 pt-2.5 border-t border-clay-200/80 flex flex-col gap-2">
               <button
                 type="button"
                 onClick={() => {
@@ -791,13 +791,13 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                     state.openCultureDrawerForProvince(state.currentProvince);
                   }
                 }}
-                className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-amber-500/20 transition cursor-pointer group"
+                className="w-full py-2.5 px-3 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-clay-900 font-extrabold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-amber-500/20 transition cursor-pointer group clay-soft"
               >
-                <Compass className="w-4 h-4 text-slate-950 group-hover:rotate-45 transition-transform" />
+                <Compass className="w-4 h-4 text-clay-900 group-hover:rotate-45 transition-transform" />
                 <span>Khám phá Văn hóa {selectedProvinceInfo.name}</span>
               </button>
               <div className="flex items-center justify-between text-xs pt-0.5">
-                <span className="text-[11px] text-slate-400">Đàm thoại thông minh</span>
+                <span className="text-[11px] text-clay-600">Đàm thoại thông minh</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -808,9 +808,9 @@ export const MapViewer: React.FC<MapViewerProps> = ({ className = 'h-[620px] w-f
                       slug || undefined
                     );
                   }}
-                  className="text-amber-400 hover:text-amber-300 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-amber-500/30 transition"
+                  className="text-amber-700 hover:text-amber-700 font-bold text-[11px] flex items-center cursor-pointer gap-1 px-2.5 py-1 rounded-lg bg-clay-200 hover:bg-clay-300 border border-clay-300 hover:border-amber-500/30 transition"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-700" />
                   <span>Hỏi Trợ lý AI →</span>
                 </button>
               </div>

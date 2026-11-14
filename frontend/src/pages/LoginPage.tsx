@@ -50,12 +50,12 @@ export const LoginPage: React.FC = () => {
       </form>
 
       <div className="mt-3 flex justify-between text-xs">
-        <Link to="/forgot-password" className="text-slate-400 hover:text-amber-300">Quên mật khẩu?</Link>
-        <Link to="/register" className="text-amber-400 hover:text-amber-300">Tạo tài khoản</Link>
+        <Link to="/forgot-password" className="text-clay-600 hover:text-amber-700">Quên mật khẩu?</Link>
+        <Link to="/register" className="text-amber-700 hover:text-amber-700">Tạo tài khoản</Link>
       </div>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-slate-500">
-        <span className="h-px flex-1 bg-slate-800" /> hoặc <span className="h-px flex-1 bg-slate-800" />
+      <div className="my-5 flex items-center gap-3 text-xs text-clay-500">
+        <span className="h-px flex-1 bg-clay-200" /> hoặc <span className="h-px flex-1 bg-clay-200" />
       </div>
 
       <GoogleSignInButton onCredential={(idToken) => void finish(() => loginWithGoogle(idToken))} />

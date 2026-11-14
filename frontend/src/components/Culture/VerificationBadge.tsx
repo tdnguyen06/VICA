@@ -10,7 +10,7 @@ interface VerificationBadgeProps {
 export const VerificationBadge: React.FC<VerificationBadgeProps> = ({ status }) =>
   status === 'VERIFIED' ? (
     <span
-      className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-300"
+      className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-700"
       title="Dữ kiện được xác nhận bởi nguồn tài liệu đã kiểm duyệt"
     >
       <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
@@ -18,7 +18,7 @@ export const VerificationBadge: React.FC<VerificationBadgeProps> = ({ status }) 
     </span>
   ) : (
     <span
-      className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 text-[11px] font-semibold text-amber-300"
+      className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/15 px-2 py-0.5 text-[11px] font-semibold text-amber-700"
       title="Truyền thuyết, dân gian: không phải dữ kiện lịch sử đã xác minh"
     >
       <ScrollText className="h-3.5 w-3.5" aria-hidden="true" />

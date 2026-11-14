@@ -41,7 +41,7 @@ export const VerifyEmailPage: React.FC = () => {
     return (
       <AuthCard title="Email đã được xác minh">
         <Notice kind="success">Bạn có thể đăng nhập ngay bây giờ.</Notice>
-        <Link to="/login" className="mt-4 block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">
+        <Link to="/login" className="mt-4 block text-center text-sm font-semibold text-amber-700 hover:text-amber-700">
           Đến trang đăng nhập
         </Link>
       </AuthCard>
@@ -61,7 +61,7 @@ export const VerifyEmailPage: React.FC = () => {
         </SubmitButton>
       </form>
       <button type="button" onClick={() => void resend()} disabled={!email.trim()}
-        className="mt-3 w-full text-center text-xs text-slate-400 hover:text-amber-300 disabled:opacity-50">
+        className="mt-3 w-full text-center text-xs text-clay-600 hover:text-amber-700 disabled:opacity-50">
         Gửi lại mã
       </button>
     </AuthCard>

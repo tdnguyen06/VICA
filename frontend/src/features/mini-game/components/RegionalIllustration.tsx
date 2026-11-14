@@ -7,7 +7,7 @@ function RegionalVisual({ image }: { image: RegionalImage }) {
   const gradient = useId();
   const motif = image.motif;
   const postcard = motif.startsWith('postcard');
-  return <figure className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950">
+  return <figure className="overflow-hidden rounded-2xl border border-clay-300 bg-clay-50 clay-soft">
     <svg role="img" aria-label={'Minh họa ' + image.label + ' — ' + image.province} viewBox="0 0 640 360" className="block aspect-video w-full">
       <defs><linearGradient id={gradient} x2="1" y2="1"><stop stopColor="#0f172a" /><stop offset="1" stopColor={image.accent} stopOpacity=".6" /></linearGradient></defs>
       <rect width="640" height="360" fill={'url(#' + gradient + ')'} />
@@ -35,7 +35,7 @@ function RegionalVisual({ image }: { image: RegionalImage }) {
           <>{[0,1,2,3,4].map(i=><rect key={i} x={163+i*65} y={125+(i%2)*18} width="51" height={107-(i%2)*18} rx="8" fill={i%2?image.accent:'#fb923c'} opacity={.45+i*.1} />)}<path d="M159 273h216" stroke="#94a3b8" strokeWidth="6" /></>}
       </g> : null}
     </svg>
-    <figcaption className="space-y-1 p-4 text-xs leading-5 text-slate-400"><p className="font-semibold text-slate-200">{image.label} · {image.province}</p><p>Minh họa SVG do VICA tạo · không phải ảnh tư liệu hay mô phỏng chính xác địa điểm/món ăn.</p></figcaption>
+    <figcaption className="space-y-1 p-4 text-xs leading-5 text-clay-600"><p className="font-semibold text-clay-800">{image.label} · {image.province}</p><p>Minh họa SVG do VICA tạo · không phải ảnh tư liệu hay mô phỏng chính xác địa điểm/món ăn.</p></figcaption>
   </figure>;
 }
 

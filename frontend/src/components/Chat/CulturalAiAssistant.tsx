@@ -13,8 +13,12 @@ import {
   Loader2,
   AlertTriangle,
   Shuffle,
+  Lock,
+  LogIn,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useAppStore } from '../../stores/appStore';
+import { useAuthStore } from '../../stores/authStore';
 import {
   sendChatMessage,
   sendCompareMessage,
@@ -61,6 +65,7 @@ export const CulturalAiAssistant: React.FC = () => {
   const isStoreOpen = useAppStore((state) => state.isAssistantOpen);
   const setIsStoreOpen = useAppStore((state) => state.setIsAssistantOpen);
   const assistantInitialPrompt = useAppStore((state) => state.assistantInitialPrompt);
+  const user = useAuthStore((state) => state.user);
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<ChatMessageItem[]>([]);
@@ -164,12 +169,22 @@ export const CulturalAiAssistant: React.FC = () => {
   }, [currentProvince]);
 
   // Handle triggered prompt from other components (e.g. Map card)
+  // Chưa đăng nhập thì giữ câu hỏi lại, gửi ngay sau khi đăng nhập xong.
   useEffect(() => {
-    if (assistantInitialPrompt) {
+    if (assistantInitialPrompt && user) {
       handleSendMessage(assistantInitialPrompt, currentProvince || undefined);
       useAppStore.setState({ assistantInitialPrompt: null });
     }
-  }, [assistantInitialPrompt]);
+  }, [assistantInitialPrompt, user]);
+
+  // Đăng xuất: xoá hội thoại của tài khoản cũ khỏi màn hình và bộ nhớ trình duyệt.
+  useEffect(() => {
+    if (!user) {
+      setMessages([]);
+      setConversationId(null);
+      clearLastConversationId();
+    }
+  }, [user]);
 
   // Close drawer on Escape key (if comparison modal is not open)
   useEffect(() => {
@@ -182,8 +197,9 @@ export const CulturalAiAssistant: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, isCompareModalOpen]);
 
-  // Try restoring previous conversation on initial mount
+  // Try restoring previous conversation once the user is logged in
   useEffect(() => {
+    if (!user) return;
     const savedId = getLastConversationId();
     if (savedId) {
       setConversationId(savedId);
@@ -215,7 +231,7 @@ export const CulturalAiAssistant: React.FC = () => {
           setConversationId(null);
         });
     }
-  }, []);
+  }, [user?.username]);
 
   // Auto scroll to bottom when messages update
   useEffect(() => {
@@ -332,8 +348,8 @@ export const CulturalAiAssistant: React.FC = () => {
             }}
             className={`inline-flex items-center justify-center px-1.5 py-0.5 mx-0.5 rounded text-[11px] font-mono font-bold border transition ${
               highlightedCitation === citeNum
-                ? 'bg-amber-400 text-slate-950 border-amber-300 scale-110 shadow-sm'
-                : 'bg-amber-500/15 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
+                ? 'bg-amber-400 text-clay-900 border-amber-300 scale-110 shadow-sm'
+                : 'bg-amber-500/15 text-amber-700 border-amber-500/40 hover:bg-amber-500/30'
             }`}
             title={targetCite ? `Nguồn: ${targetCite.sourceName}` : `Trích dẫn [${citeNum}]`}
           >
@@ -345,7 +361,7 @@ export const CulturalAiAssistant: React.FC = () => {
       const boldMatch = part.match(/^\*\*([^*]+)\*\*$/);
       if (boldMatch) {
         return (
-          <strong key={index} className="font-semibold text-amber-200/90">
+          <strong key={index} className="font-semibold text-amber-800/90">
             {boldMatch[1]}
           </strong>
         );
@@ -364,7 +380,7 @@ export const CulturalAiAssistant: React.FC = () => {
 
     const lines = content.split('\n');
     return (
-      <div className="space-y-1.5 leading-relaxed text-slate-200 text-xs sm:text-sm font-normal">
+      <div className="space-y-1.5 leading-relaxed text-clay-800 text-xs sm:text-sm font-normal">
         {lines.map((line, lIdx) => {
           const trimmed = line.trim();
           if (!trimmed) {
@@ -375,7 +391,7 @@ export const CulturalAiAssistant: React.FC = () => {
           if (trimmed.startsWith('### ') || trimmed.startsWith('## ')) {
             const headingText = trimmed.replace(/^#{2,3}\s+/, '');
             return (
-              <h5 key={lIdx} className="font-bold text-amber-300 text-xs sm:text-sm pt-1.5 pb-0.5">
+              <h5 key={lIdx} className="font-bold text-amber-700 text-xs sm:text-sm pt-1.5 pb-0.5">
                 {renderInlineFormatted(headingText, messageId, citations)}
               </h5>
             );
@@ -386,7 +402,7 @@ export const CulturalAiAssistant: React.FC = () => {
             const bulletText = trimmed.replace(/^[-*]\s+/, '');
             return (
               <div key={lIdx} className="flex items-start space-x-2 pl-2">
-                <span className="text-amber-400 font-bold leading-5">•</span>
+                <span className="text-amber-700 font-bold leading-5">•</span>
                 <div className="flex-1">
                   {renderInlineFormatted(bulletText, messageId, citations)}
                 </div>
@@ -399,7 +415,7 @@ export const CulturalAiAssistant: React.FC = () => {
           if (numMatch) {
             return (
               <div key={lIdx} className="flex items-start space-x-1.5 pl-2">
-                <span className="text-amber-400 font-mono font-bold text-xs">{numMatch[1]}.</span>
+                <span className="text-amber-700 font-mono font-bold text-xs">{numMatch[1]}.</span>
                 <div className="flex-1">
                   {renderInlineFormatted(numMatch[2], messageId, citations)}
                 </div>
@@ -424,33 +440,89 @@ export const CulturalAiAssistant: React.FC = () => {
         <button
           type="button"
           onClick={() => setDrawerOpen(!isOpen)}
-          className="relative group p-4 bg-gradient-to-tr from-amber-500 via-rose-500 to-red-600 rounded-full text-white shadow-xl shadow-rose-600/30 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center"
+          className="relative group p-4 bg-gradient-to-tr from-amber-500 via-rose-500 to-red-600 rounded-full text-white shadow-rose-600/30 hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center clay"
           title="Trợ lý Tri thức Văn hóa VICA"
         >
-          <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-rose-600 opacity-60 blur-sm group-hover:opacity-100 transition animate-pulse" />
+          <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-rose-600 opacity-60 blur-sm group-hover:opacity-100 transition animate-pulse clay" />
           <div className="relative flex items-center justify-center">
             {isOpen ? <X className="w-6 h-6" /> : <Bot className="w-6 h-6" />}
           </div>
           {!isOpen && (
-            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap px-3 py-1.5 rounded-xl bg-slate-900/90 text-amber-300 text-xs font-semibold border border-amber-500/30 shadow-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition duration-200 pointer-events-none">
+            <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 whitespace-nowrap px-3 py-1.5 rounded-xl bg-clay-cream text-amber-700 text-xs font-semibold border border-amber-500/30  backdrop-blur-md opacity-0 group-hover:opacity-100 transition duration-200 pointer-events-none clay-soft">
               Trợ lý Văn hóa VICA
             </span>
           )}
         </button>
       </div>
 
-      {/* Slide-over Chat Drawer */}
-      {isOpen && (
-        <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] md:w-[520px] bg-slate-950 border-l border-slate-800 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-          {/* Header */}
-          <div className="px-5 py-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md flex items-center justify-between shrink-0">
+      {/* Khách chưa đăng nhập: mời đăng nhập thay cho khung chat */}
+      {isOpen && !user && (
+        <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] md:w-[520px] bg-clay-cream border-l border-white/70 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+          <div className="px-5 py-4 border-b border-white/60 bg-clay-lilac sheen flex items-center justify-between shrink-0">
             <div className="flex items-center space-x-3">
-              <div className="p-2 bg-gradient-to-tr from-amber-500 to-rose-600 rounded-xl text-white shadow-md shadow-rose-500/20">
+              <div className="p-2 bg-gradient-to-tr from-amber-500 to-rose-600 rounded-xl text-white shadow-rose-500/20 clay-soft">
                 <Compass className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-slate-100">Trợ lý Văn hóa VICA</h3>
-                <p className="text-xs text-slate-400">Trợ lý Tri thức Văn hóa 63 Tỉnh Thành</p>
+                <h3 className="font-bold text-sm text-clay-900">Trợ lý Văn hóa VICA</h3>
+                <p className="text-xs text-clay-600">Trợ lý Tri thức Văn hóa 63 Tỉnh Thành</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(false)}
+              className="p-2 text-clay-600 hover:text-clay-800 hover:bg-clay-200/80 rounded-lg transition"
+              title="Đóng"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
+            <div className="inline-flex p-4 rounded-2xl bg-clay-pink sheen border border-white/60 text-rose-700 clay-soft mb-5">
+              <Lock className="w-8 h-8" />
+            </div>
+            <h4 className="text-lg font-extrabold text-clay-900 mb-2">Đăng nhập để dùng Trợ lý AI</h4>
+            <p className="text-sm text-clay-600 leading-relaxed mb-6 max-w-sm">
+              Bạn vẫn xem bản đồ và thông tin văn hóa các tỉnh thành bình thường. Hỏi đáp và so sánh vùng miền với
+              Trợ lý AI chỉ dành cho tài khoản đã đăng nhập.
+            </p>
+            <div className="flex w-full max-w-xs flex-col gap-3">
+              <Link
+                to="/login"
+                onClick={() => setDrawerOpen(false)}
+                className="flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 to-rose-500 px-4 py-2.5 font-semibold text-white shadow-rose-500/30 clay"
+              >
+                <LogIn className="w-4 h-4" />
+                Đăng nhập
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setDrawerOpen(false)}
+                className="rounded-xl bg-white/85 border border-clay-200 px-4 py-2.5 text-sm font-semibold text-clay-800 hover:bg-clay-butter transition clay-soft"
+              >
+                Tạo tài khoản mới
+              </Link>
+            </div>
+            {assistantInitialPrompt && (
+              <p className="mt-5 text-xs text-clay-500">Câu hỏi của bạn sẽ được gửi ngay sau khi đăng nhập.</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Slide-over Chat Drawer */}
+      {isOpen && user && (
+        <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[480px] md:w-[520px] bg-clay-cream border-l border-white/70 shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+          {/* Header */}
+          <div className="px-5 py-4 border-b border-white/60 bg-clay-lilac sheen flex items-center justify-between shrink-0">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-to-tr from-amber-500 to-rose-600 rounded-xl text-white shadow-rose-500/20 clay-soft">
+                <Compass className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-sm text-clay-900">Trợ lý Văn hóa VICA</h3>
+                <p className="text-xs text-clay-600">Trợ lý Tri thức Văn hóa 63 Tỉnh Thành</p>
               </div>
             </div>
 
@@ -458,7 +530,7 @@ export const CulturalAiAssistant: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsCompareModalOpen(true)}
-                className="p-2 text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 rounded-lg transition"
+                className="p-2 text-clay-600 hover:text-amber-700 hover:bg-clay-200/80 rounded-lg transition"
                 title="So sánh văn hóa vùng miền"
               >
                 <Scale className="w-4 h-4" />
@@ -466,7 +538,7 @@ export const CulturalAiAssistant: React.FC = () => {
               <button
                 type="button"
                 onClick={handleResetConversation}
-                className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 rounded-lg transition"
+                className="p-2 text-clay-600 hover:text-clay-800 hover:bg-clay-200/80 rounded-lg transition"
                 title="Bắt đầu phiên hội thoại mới"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -474,7 +546,7 @@ export const CulturalAiAssistant: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDrawerOpen(false)}
-                className="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800/80 rounded-lg transition"
+                className="p-2 text-clay-600 hover:text-clay-800 hover:bg-clay-200/80 rounded-lg transition"
                 title="Đóng bảng chat"
               >
                 <X className="w-4 h-4" />
@@ -484,16 +556,16 @@ export const CulturalAiAssistant: React.FC = () => {
 
           {/* Context Banner */}
           {activeProvinceSlug && (
-            <div className="px-5 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between text-xs text-amber-300">
+            <div className="px-5 py-2 bg-amber-500/10 border-b border-amber-500/20 flex items-center justify-between text-xs text-amber-700">
               <div className="flex items-center space-x-1.5 truncate">
-                <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                 <span>Bối cảnh địa phương:</span>
                 <span className="font-bold uppercase tracking-wider">{activeProvinceSlug}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveProvinceSlug(null)}
-                className="text-[11px] text-amber-400/80 hover:text-amber-300 underline ml-2 shrink-0"
+                className="text-[11px] text-amber-700/80 hover:text-amber-700 underline ml-2 shrink-0"
               >
                 Bỏ bối cảnh
               </button>
@@ -504,25 +576,25 @@ export const CulturalAiAssistant: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 ? (
               <div className="py-8 px-2 text-center space-y-6">
-                <div className="inline-flex p-4 rounded-2xl bg-gradient-to-tr from-amber-500/10 to-rose-500/10 border border-amber-500/20 text-amber-400">
+                <div className="inline-flex p-4 rounded-2xl bg-clay-pink sheen border border-white/60 text-amber-700 clay-soft">
                   <Sparkles className="w-8 h-8" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="font-bold text-base text-slate-100">Khám phá Văn hóa Việt Nam</h4>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  <h4 className="font-bold text-base text-clay-900">Khám phá Văn hóa Việt Nam</h4>
+                  <p className="text-xs text-clay-600 max-w-sm mx-auto">
                     Hỏi đáp di tích, truyền thuyết, ẩm thực và lễ hội 63 tỉnh thành có trích dẫn nguồn kiểm chứng độc lập.
                   </p>
                 </div>
 
                 <div className="space-y-2 text-left pt-2">
                   <div className="flex items-center justify-between px-1">
-                    <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                    <span className="text-[11px] font-semibold text-clay-600 uppercase tracking-wider">
                       Gợi ý câu hỏi bắt đầu:
                     </span>
                     <button
                       type="button"
                       onClick={shuffleStarterPrompts}
-                      className="text-[11px] text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1 transition cursor-pointer"
+                      className="text-[11px] text-amber-700 hover:text-amber-700 font-medium flex items-center gap-1 transition cursor-pointer"
                     >
                       <Shuffle className="w-3 h-3" />
                       <span>Đổi gợi ý khác</span>
@@ -533,10 +605,10 @@ export const CulturalAiAssistant: React.FC = () => {
                       key={i}
                       type="button"
                       onClick={() => handleSendMessage(prompt)}
-                      className="w-full text-left p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-900 border border-slate-800/80 hover:border-amber-500/40 text-xs text-slate-300 hover:text-amber-300 transition flex items-center justify-between group cursor-pointer"
+                      className="w-full text-left p-2.5 rounded-xl bg-clay-butter/70 hover:bg-clay-butter border border-white/70 hover:border-amber-500/40 text-xs text-clay-700 hover:text-amber-700 transition flex items-center justify-between group cursor-pointer clay-soft"
                     >
                       <span>{prompt}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 shrink-0 ml-2 transition" />
+                      <ArrowRight className="w-3.5 h-3.5 text-clay-500 group-hover:text-amber-700 shrink-0 ml-2 transition" />
                     </button>
                   ))}
                 </div>
@@ -550,7 +622,7 @@ export const CulturalAiAssistant: React.FC = () => {
                   }`}
                 >
                   {msg.role !== 'USER' && (
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-sm">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5 clay">
                       <Bot className="w-4 h-4" />
                     </div>
                   )}
@@ -560,12 +632,12 @@ export const CulturalAiAssistant: React.FC = () => {
                       msg.role === 'USER'
                         ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-rose-600/10'
                         : msg.isError
-                        ? 'bg-red-950/40 border border-red-800/60 text-red-200'
-                        : 'bg-slate-900/90 border border-slate-800 text-slate-200 shadow-sm'
+                        ? 'bg-red-50/40 border border-red-200/60 text-red-800'
+                        : 'bg-clay-mint/70 border border-white/70 text-clay-900 clay-soft'
                     }`}
                   >
                     {msg.isError && (
-                      <div className="flex items-center space-x-1.5 text-red-400 font-semibold mb-1 text-xs">
+                      <div className="flex items-center space-x-1.5 text-red-700 font-semibold mb-1 text-xs">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span>Thông báo từ hệ thống</span>
                       </div>
@@ -584,9 +656,9 @@ export const CulturalAiAssistant: React.FC = () => {
 
                     {/* Suggested questions / Next prompts */}
                     {msg.role === 'ASSISTANT' && (
-                      <div className="mt-3 pt-3 border-t border-slate-800/60 space-y-2">
-                        <span className="text-[10px] font-bold text-amber-400/90 uppercase tracking-wider flex items-center gap-1">
-                          <Sparkles className="w-3 h-3 text-amber-400" />
+                      <div className="mt-3 pt-3 border-t border-clay-200/60 space-y-2">
+                        <span className="text-[10px] font-bold text-amber-700/90 uppercase tracking-wider flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-amber-700" />
                           Câu hỏi gợi ý tiếp theo:
                         </span>
                         <div className="flex flex-wrap gap-1.5">
@@ -598,10 +670,10 @@ export const CulturalAiAssistant: React.FC = () => {
                               key={idx}
                               type="button"
                               onClick={() => handleSendMessage(promptText)}
-                              className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/60 text-slate-200 hover:text-amber-300 transition flex items-center gap-1 cursor-pointer shadow-sm group"
+                              className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-clay-200/90 hover:bg-clay-200 border border-clay-300/80 hover:border-amber-500/60 text-clay-800 hover:text-amber-700 transition flex items-center gap-1 cursor-pointer shadow-sm group"
                             >
                               <span>{promptText}</span>
-                              <ArrowRight className="w-3 h-3 text-slate-500 group-hover:text-amber-400 transition" />
+                              <ArrowRight className="w-3 h-3 text-clay-500 group-hover:text-amber-700 transition" />
                             </button>
                           ))}
                         </div>
@@ -610,7 +682,7 @@ export const CulturalAiAssistant: React.FC = () => {
                   </div>
 
                   {msg.role === 'USER' && (
-                    <div className="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="w-7 h-7 rounded-lg bg-clay-200 text-clay-700 flex items-center justify-center shrink-0 mt-0.5">
                       <UserIcon className="w-4 h-4" />
                     </div>
                   )}
@@ -621,11 +693,11 @@ export const CulturalAiAssistant: React.FC = () => {
             {/* Loading Indicator */}
             {isLoading && (
               <div className="flex items-start space-x-2.5">
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5 clay">
                   <Bot className="w-4 h-4" />
                 </div>
-                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 text-xs text-slate-400 flex items-center space-x-2">
-                  <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
+                <div className="bg-clay-lilac/70 border border-white/70 rounded-2xl p-3.5 text-xs text-clay-600 flex items-center space-x-2 clay-soft">
+                  <Loader2 className="w-4 h-4 text-amber-700 animate-spin" />
                   <span>Trợ lý VICA đang tra cứu dữ liệu văn hóa...</span>
                 </div>
               </div>
@@ -635,7 +707,7 @@ export const CulturalAiAssistant: React.FC = () => {
           </div>
 
           {/* Input Box Footer */}
-          <div className="p-3 border-t border-slate-800 bg-slate-900/60">
+          <div className="p-3 border-t border-clay-200 bg-clay-100/60">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -643,7 +715,7 @@ export const CulturalAiAssistant: React.FC = () => {
               }}
               className="flex items-end space-x-2"
             >
-              <div className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 focus-within:border-amber-500/80 transition">
+              <div className="flex-1 bg-white/85 border border-clay-200 rounded-xl px-3 py-2 focus-within:border-amber-500/80 transition clay-soft">
                 <textarea
                   ref={inputRef}
                   value={inputText}
@@ -660,7 +732,7 @@ export const CulturalAiAssistant: React.FC = () => {
                       : 'Hỏi về di sản, ẩm thực, lịch sử Việt Nam...'
                   }
                   rows={2}
-                  className="w-full bg-transparent text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none resize-none leading-relaxed"
+                  className="w-full bg-transparent text-xs sm:text-sm text-clay-800 placeholder-clay-500 focus:outline-none resize-none leading-relaxed"
                 />
               </div>
 
@@ -670,7 +742,7 @@ export const CulturalAiAssistant: React.FC = () => {
                 className={`p-3 rounded-xl transition shadow-md shrink-0 ${
                   inputText.trim() && !isLoading
                     ? 'bg-gradient-to-r from-amber-500 to-rose-600 text-white hover:from-amber-400 hover:to-rose-500 shadow-rose-600/20 cursor-pointer'
-                    : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700/50'
+                    : 'bg-clay-200 text-clay-500 cursor-not-allowed border border-clay-300/50'
                 }`}
                 title="Gửi câu hỏi"
               >
@@ -678,12 +750,12 @@ export const CulturalAiAssistant: React.FC = () => {
               </button>
             </form>
 
-            <div className="mt-2 flex items-center justify-between text-[10px] text-slate-500 px-1">
+            <div className="mt-2 flex items-center justify-between text-[10px] text-clay-500 px-1">
               <span>Nhấn Enter để gửi, Shift+Enter xuống dòng</span>
               <button
                 type="button"
                 onClick={() => setIsCompareModalOpen(true)}
-                className="hover:text-amber-400 transition flex items-center space-x-1"
+                className="hover:text-amber-700 transition flex items-center space-x-1"
               >
                 <Scale className="w-3 h-3" />
                 <span>So sánh vùng miền</span>
