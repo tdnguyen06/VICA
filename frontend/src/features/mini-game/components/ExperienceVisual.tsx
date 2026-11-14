@@ -1,3 +1,4 @@
+import { TransitionImage } from './StoryMotion';
 import { useState } from 'react';
 import { regionalImages } from '../scenarios';
 import { resolveRegionalPhoto } from '../regional-photo';
@@ -12,14 +13,14 @@ function RegionalPhoto({ assetId, selectedMorningChoiceId }: { assetId: string; 
   const hasImage = photo && failedSrc !== photo.src;
   return <figure className={'overflow-hidden rounded-2xl border border-clay-300 ' + (isPostcard ? 'bg-amber-50 p-3' : 'bg-clay-50')}>
     <div className={'aspect-video overflow-hidden ' + (isPostcard ? 'rounded-lg bg-clay-200' : '')}>
-      {hasImage ? <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width={photo.width} height={photo.height}
+      {hasImage ? <TransitionImage src={photo.src} alt={photo.alt} loading="lazy" decoding="async" width={photo.width} height={photo.height}
         className="h-full w-full object-cover" style={{ objectPosition: photo.objectPosition }} onError={() => setFailedSrc(photo.src)} />
         : <div role="img" aria-label="Ảnh tạm thời không tải được" className="flex h-full items-center justify-center bg-clay-100 p-6 text-center text-sm leading-6 text-clay-700">Ảnh tạm thời không tải được. Bạn vẫn có thể đọc và tiếp tục hành trình.</div>}
     </div>
     {binding?.role === 'postcard-colour' ? <div aria-label="Bảng màu gợi ý của nhân vật" className="mt-3 flex gap-2">
       {['#0f172a', binding.accent, '#fef3c7', '#64748b'].map(colour => <span key={colour} className="h-5 flex-1 rounded" style={{backgroundColor:colour}} />)}
     </div> : null}
-    <figcaption className={'space-y-2 px-4 py-3 text-xs leading-5 ' + (isPostcard ? 'text-clay-300' : 'text-clay-600')}>
+    <figcaption className={'space-y-2 px-4 py-3 text-xs leading-5 ' + (isPostcard ? 'text-clay-700' : 'text-clay-600')}>
       {photo ? <p>{photo.caption}</p> : null}
       {isPostcard ? <p>Ảnh từ chặng sáng làm gợi ý cho bố cục/màu sắc. Đây không phải ảnh thành phẩm bưu thiếp của nhân vật.</p>
         : binding?.role === 'pause' ? <p>Ảnh gợi lại chặng sáng đã chọn; không xác nhận địa điểm của chỗ nghỉ hư cấu.</p>

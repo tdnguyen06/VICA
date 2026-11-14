@@ -1,7 +1,10 @@
+import { TransitionImage } from './StoryMotion';
 import { useId, useRef, useEffect, useState } from 'react';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import type { NarrativeBlock } from '../scenario';
 import { hanoiVisuals } from '../content/media';
+import { CharacterAvatar } from './CharacterAvatar';
+import { getCharacterMood } from '../immersion';
 
 export const actionClass = 'min-h-12 rounded-xl px-5 py-3 font-semibold text-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400 disabled:opacity-50 disabled:cursor-not-allowed';
 
@@ -14,17 +17,16 @@ export function ActionButton({ children, className = '', onClick, onKeyDown, ...
 }
 
 export function Narrative({ blocks, guideName = 'An' }: { blocks: readonly NarrativeBlock[]; guideName?: string }) {
-  // Blocks without dialogue retain the plain paragraph layout.
-  if (!blocks.some(block => block.speaker)) return <div className="space-y-4 leading-7 text-clay-800">
-    {blocks.map((block, index) => <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-800 clay-soft' : ''}>{block.text}</p>)}
-  </div>;
-  return <div className="space-y-4 leading-7 text-clay-800">
-    {blocks.map((block, index) => block.speaker ? <div key={index} className={'rounded-2xl border-l-2 px-4 py-3 ' + (block.speaker === guideName ? 'border-amber-400 bg-amber-400/5' : 'border-sky-400 bg-sky-400/5')}>
-      <p className={'mb-1 text-xs font-bold tracking-wide ' + (block.speaker === guideName ? 'text-amber-700' : 'text-sky-700')}>{block.speaker}{block.speaker === guideName ? ' · vai của bạn' : ''}</p>
-      <p>{block.text}</p>
-    </div> : block.kind === 'culture' ? <aside key={index} aria-label="Góc khám phá" className="rounded-xl border border-clay-300 bg-clay-200/60 p-4 text-sm leading-6 text-clay-700 clay-soft">
-      <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-amber-700">Góc khám phá</p><p>{block.text}</p>
-    </aside> : block.kind === 'gameplay' ? <p key={index} className="text-xs leading-6 text-clay-600">{block.text}</p> : <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-800 clay-soft' : ''}>{block.text}</p>)}
+  const notes = blocks.filter(block => block.kind === 'gameplay');
+  return <div className="space-y-5 leading-7 text-clay-800">
+    {blocks.filter(block => block.kind !== 'gameplay').map((block, index) => block.speaker ? <div key={index} className={'flex items-start gap-3 ' + (block.speaker === guideName ? 'sm:mr-8' : 'flex-row-reverse sm:ml-8')}>
+      <CharacterAvatar name={block.speaker} guide={block.speaker === guideName} mood={getCharacterMood(block)} small />
+      <div className={'min-w-0 flex-1 rounded-2xl border p-4 clay-soft ' + (block.speaker === guideName ? 'rounded-tl-sm border-amber-400/20 bg-amber-400/5' : 'rounded-tr-sm border-sky-400/20 bg-sky-400/5')}>
+        <p className={'mb-1 text-xs font-bold ' + (block.speaker === guideName ? 'text-amber-700' : 'text-sky-700')}>{block.speaker}{block.speaker === guideName ? ' · vai của bạn' : ''}</p><p className="break-words">{block.text}</p>
+      </div>
+    </div> : block.kind === 'culture' ? <aside key={index} aria-label="Góc khám phá" className="rounded-2xl border border-clay-300 bg-clay-200/60 p-4 text-sm leading-6 text-clay-700"><p className="mb-2 text-xs font-semibold uppercase tracking-wide text-amber-700">Góc khám phá</p><p>{block.text}</p></aside>
+      : <p key={index} className={block.kind === 'cultural-placeholder' ? 'rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-800' : 'text-sm leading-7 text-clay-700 sm:text-base'}>{block.text}</p>)}
+    {notes.length ? <details className="rounded-xl border border-clay-200 px-4 py-3 text-xs leading-6 text-clay-600"><summary className="cursor-pointer focus-visible:outline-2 focus-visible:outline-amber-400">Lưu ý về trải nghiệm và minh họa</summary><div className="mt-2 space-y-2">{notes.map((note, index) => <p key={index}>{note.text}</p>)}</div></details> : null}
   </div>;
 }
 
@@ -43,9 +45,9 @@ export function StoryVisual({ theme, motif, assetId, src = null, alt = '' }: {
   const geometric = asset?.id === 'cup-geometric' || motif === 'pottery-geometric';
   const table = asset?.id === 'lunch-table';
 
-  return <figure className="overflow-hidden rounded-2xl border border-clay-300 bg-clay-100 clay-soft">
+  return <figure className="overflow-hidden rounded-2xl border border-clay-300 bg-clay-100">
     <div className={cup ? "aspect-[4/3] w-full overflow-hidden bg-white" : "aspect-[16/9] w-full overflow-hidden"}>
-      {hasImage ? <img src={imageSrc} alt={description} loading="lazy" decoding="async"
+      {hasImage ? <TransitionImage src={imageSrc} alt={description} loading="lazy" decoding="async"
         width={photo?.width} height={photo?.height}
         className={cup ? "h-full w-full object-contain" : "h-full w-full object-cover"} style={{ objectPosition: photo?.objectPosition }}
         onError={() => setFailedSrc(imageSrc)} />
@@ -97,7 +99,7 @@ export function ConfirmDialog({ title, children, confirmLabel, onConfirm, onClos
   useEffect(() => { dialog.current?.showModal(); }, []);
   return <dialog ref={dialog} aria-labelledby={id} aria-describedby={id + '-description'}
     onCancel={event => { event.preventDefault(); onClose(); }}
-    className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-clay-300 bg-clay-100 p-6 text-clay-900 backdrop:bg-black/70 clay-soft">
+    className="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-clay-300 bg-clay-100 p-6 text-clay-900 backdrop:bg-black/70">
     <h2 id={id} className="text-xl font-bold">{title}</h2>
     <div id={id + '-description'} className="my-4 text-sm leading-6 text-clay-700">{children}</div>
     <div className="flex flex-wrap justify-end gap-3">

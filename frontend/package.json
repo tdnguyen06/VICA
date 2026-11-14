@@ -9,7 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "dev:mini-game-qa": "vite --config tests/mini-game/qa-vite.config.ts",
-    "test:mini-game": "tsc -p tsconfig.mini-game-tests.json && node --test tests/mini-game/gameplay.test.mjs tests/mini-game/storage.test.mjs tests/mini-game/session.test.mjs tests/mini-game/media.test.mjs tests/mini-game/assistant.test.mjs tests/mini-game/catalog.test.mjs tests/mini-game/regions.test.mjs tests/mini-game/regional-photos.test.mjs"
+    "test:mini-game": "tsc -p tsconfig.mini-game-tests.json && node --test tests/mini-game/gameplay.test.mjs tests/mini-game/storage.test.mjs tests/mini-game/session.test.mjs tests/mini-game/media.test.mjs tests/mini-game/assistant.test.mjs tests/mini-game/catalog.test.mjs tests/mini-game/regions.test.mjs tests/mini-game/regional-photos.test.mjs tests/mini-game/immersion.test.mjs"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.105.3",
