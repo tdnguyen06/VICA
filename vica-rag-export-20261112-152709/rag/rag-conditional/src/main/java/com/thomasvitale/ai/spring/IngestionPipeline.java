@@ -29,6 +29,7 @@ class IngestionPipeline {
 
     @Value("file:/app/data/_manifest.csv") Resource manifestCsv;
     @Value("file:/app/data/entities/*.md")  Resource[] entityFiles;
+    @Value("file:/app/data/_images.csv")    Resource imagesCsv;
 
     IngestionPipeline(VectorStore vectorStore, JdbcTemplate jdbc) {
         this.vectorStore = vectorStore;
@@ -52,6 +53,7 @@ class IngestionPipeline {
         }
 
         Map<String, Map<String, String>> manifest = loadManifest();
+        Map<String, Map<String, String>> images = loadImages();
         List<Document> docs = new ArrayList<>();
         int missed = 0;
 
@@ -72,6 +74,13 @@ class IngestionPipeline {
             extra.put("is_history", domain.contains("lịch sử"));
             extra.put("is_cuisine", domain.contains("ẩm thực"));
             extra.put("is_culture", domain.contains("văn hoá"));
+            Map<String, String> img = images.get(row.getOrDefault("entity_id", ""));
+            if (img != null) {
+                extra.put("image_url",     img.getOrDefault("thumb_url", ""));
+                extra.put("image_license", img.getOrDefault("license", ""));
+                extra.put("image_author",  img.getOrDefault("author", ""));
+                extra.put("image_source",  img.getOrDefault("source_page", ""));
+            }
 
             docs.addAll(new MarkdownDocumentReader(f, MarkdownDocumentReaderConfig.builder()
                     .withAdditionalMetadata(extra).build()).get());
@@ -87,6 +96,40 @@ class IngestionPipeline {
         log.info("Ingest xong.");
     }
 
+    private Map<String, Map<String, String>> loadImages() {
+        Map<String, Map<String, String>> out = new HashMap<>();
+        if (imagesCsv == null || !imagesCsv.exists()) {
+            log.warn("Không thấy /app/data/_images.csv — ảnh sẽ trống");
+            return out;
+        }
+        int skipped = 0;
+        try (BufferedReader r = new BufferedReader(
+                new InputStreamReader(imagesCsv.getInputStream(), StandardCharsets.UTF_8))) {
+            List<String> header = null;
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (line.isBlank()) continue;
+                List<String> cells = splitCsv(line);
+                if (header == null) {
+                    header = new ArrayList<>();
+                    for (String h : cells) header.add(h.replace("\uFEFF", "").trim());
+                    continue;
+                }
+                Map<String, String> row = new HashMap<>();
+                for (int i = 0; i < header.size() && i < cells.size(); i++)
+                    row.put(header.get(i), cells.get(i));
+                if (row.getOrDefault("license", "").isBlank()
+                        || row.getOrDefault("thumb_url", "").isBlank()) { skipped++; continue; }
+                out.put(row.getOrDefault("entity_id", ""), row);
+            }
+        } catch (Exception e) {
+            log.error("Lỗi đọc _images.csv", e);
+            return out;
+        }
+        log.info("Nạp {} ảnh có giấy phép hợp lệ (loại {} thiếu license/url)", out.size(), skipped);
+        return out;
+    }
+
     private Map<String, Map<String, String>> loadManifest() throws Exception {
         Map<String, Map<String, String>> out = new HashMap<>();
         try (BufferedReader r = new BufferedReader(
@@ -96,7 +139,7 @@ class IngestionPipeline {
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 List<String> cells = splitCsv(line);
-                if (header == null) { header = cells; continue; }
+                if (header == null) { header = new ArrayList<>(); for (String h : cells) header.add(h.replace("\uFEFF", "").trim()); continue; }
                 Map<String, String> row = new HashMap<>();
                 for (int i = 0; i < header.size() && i < cells.size(); i++) row.put(header.get(i), cells.get(i));
                 String file = row.getOrDefault("file", "");
