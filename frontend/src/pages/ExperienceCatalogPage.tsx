@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, MapPin, Search, Shuffle } from 'lucide-react';
+import { ArrowLeft, MapPin, Search } from 'lucide-react';
 import { provinceExperiences } from '../features/mini-game/catalog-data';
-import { chooseRandomExperience, getCatalogPage } from '../features/mini-game/catalog';
-import type { ProvinceExperience } from '../features/mini-game/catalog';
+import { getCatalogPage } from '../features/mini-game/catalog';
 import { useMiniGame } from '../features/mini-game/MiniGameContext';
 import { ActionButton, actionClass } from '../features/mini-game/components/StoryCard';
+import { ProvinceLuckyWheel } from '../features/mini-game/components/ProvinceLuckyWheel';
 
 export default function ExperienceCatalogPage() {
   const [params, setParams] = useSearchParams();
   const { session } = useMiniGame();
-  const [randomProvince, setRandomProvince] = useState<ProvinceExperience | null>(null);
   const pageHeading = useRef<HTMLHeadingElement>(null);
   const resultsHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { pageHeading.current?.focus(); }, []);
@@ -46,8 +45,11 @@ export default function ExperienceCatalogPage() {
       <Link to={currentExperience.experience.path + '?view=play'} className={actionClass + ' border border-amber-400/50 text-amber-200'}>{session.game?.phase === 'completed' ? 'Xem nhật ký' : session.game?.phase === 'intro' ? 'Mở lượt chơi' : 'Tiếp tục lượt chơi'}</Link>
     </aside> : null}
 
+    {/* Vòng quay may mắn hiển thị trực tiếp và nổi bật */}
+    <ProvinceLuckyWheel allProvinces={provinceExperiences} />
+
     <div className="space-y-4 rounded-2xl border border-slate-700 bg-slate-900/70 p-4 sm:p-5">
-      <label htmlFor="province-search" className="block text-sm font-semibold text-slate-100">Tìm tỉnh thành</label>
+      <label htmlFor="province-search" className="block text-sm font-semibold text-slate-100">Tìm kiếm tỉnh thành</label>
       <div className="relative">
         <Search className="pointer-events-none absolute left-3 top-3.5 h-5 w-5 text-slate-400" aria-hidden="true" />
         <input id="province-search" type="search" value={query} maxLength={100} placeholder="Ví dụ: Hà Nội hoặc da nang"
@@ -57,22 +59,10 @@ export default function ExperienceCatalogPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <label className="inline-flex min-h-12 cursor-pointer items-center gap-3 text-sm text-slate-200">
           <input type="checkbox" checked={readyOnly} onChange={event => updateSearch(query, event.target.checked)} className="h-5 w-5 accent-amber-400" />
-          Chỉ hiện tỉnh đã sẵn sàng
+          Chỉ hiện tỉnh đã sẵn sàng kịch bản ({ready.length} tỉnh)
         </label>
-        <ActionButton disabled={!ready.length} aria-describedby="random-explanation" onClick={() => setRandomProvince(chooseRandomExperience(provinceExperiences))}
-          className="inline-flex items-center gap-2 border border-amber-400/50 bg-amber-400 text-slate-950"><Shuffle className="h-4 w-4" /> Chọn tỉnh ngẫu nhiên</ActionButton>
       </div>
-      <p id="random-explanation" className="text-xs leading-5 text-slate-400">Gợi ý ngẫu nhiên một địa phương đã sẵn sàng để bạn khám phá ngay.</p>
     </div>
-
-    {randomProvince?.experience ? <aside aria-live="polite" className="space-y-3 rounded-2xl border border-amber-400/50 bg-amber-500/10 p-5">
-      <h2 className="text-lg font-semibold text-amber-200">Tỉnh được chọn: {randomProvince.name}</h2>
-      <p className="text-sm text-slate-300">{randomProvince.experience.title}</p>
-      <div className="flex flex-wrap gap-3">
-        <Link to={randomProvince.experience.path} className={actionClass + ' inline-flex items-center bg-amber-400 text-slate-950'}>Khám phá {randomProvince.name}</Link>
-        <ActionButton onClick={() => setRandomProvince(null)} className="border border-slate-600 text-slate-200">Bỏ chọn</ActionButton>
-      </div>
-    </aside> : null}
 
     <div className="space-y-4">
       <h2 ref={resultsHeading} tabIndex={-1} className="scroll-mt-24 text-xl font-semibold text-white outline-none">Danh sách tỉnh thành</h2>
