@@ -115,7 +115,9 @@ export function createSceneAssistant(transport: AssistantTransport) {
         if (error instanceof SceneAssistantError && error.code === 'access_denied') { conversationId = null; credentials = null; }
         return { status: 'error' as const, message: error instanceof SceneAssistantError && error.code === 'timeout'
           ? 'AI phản hồi quá lâu. Bạn có thể hỏi lại hoặc đóng cửa sổ để tiếp tục chơi.'
-          : 'Chưa thể nhận câu trả lời từ AI. Bạn vẫn có thể đóng cửa sổ và hoàn thành hành trình.' };
+          : error instanceof SceneAssistantError && error.code === 'access_denied'
+            ? 'Phiên đăng nhập chưa hợp lệ hoặc đã hết hạn. Hãy đăng nhập lại để hỏi AI; bạn vẫn có thể tiếp tục chơi.'
+            : 'Chưa thể nhận câu trả lời từ AI. Bạn vẫn có thể đóng cửa sổ và hoàn thành hành trình.' };
       } finally { if (id === requestId) pending = false; }
     },
   };
