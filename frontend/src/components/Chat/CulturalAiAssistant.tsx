@@ -826,10 +826,6 @@ export const CulturalAiAssistant: React.FC = () => {
                   );
                 });
               })()
-                    </div>
-                  );
-                });
-              })()
             )}
 
             {/* Loading Indicator */}
