@@ -43,6 +43,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AssistantOrchestratorService {
 
     private final ChatClient chatClient;
+
+    /** When RAG_BASE_URL is set, chat answers come from the RAG server instead of the chat model. Field-injected so the constructors stay unchanged. */
+    @org.springframework.beans.factory.annotation.Autowired(required = false)
+    private com.culturalatlas.assistant.infrastructure.adapter.RagServerClient ragServerClient;
     private final AssistantConversationPersistenceService persistenceService;
     private final ContextLoader contextLoader;
     private final CitationBuilderService citationBuilderService;
@@ -119,7 +123,39 @@ public class AssistantOrchestratorService {
         String systemPrompt = AssistantPromptTemplates.buildSystemPrompt(context.effectiveProvinceSlug());
 
         String assistantContent;
-        if (chatClient == null) {
+        List<CitationDto> ragCitations = new java.util.ArrayList<>();
+        if (ragServerClient != null && ragServerClient.isEnabled()) {
+            try {
+                var rag = ragServerClient.ask(request.message(), null);
+                assistantContent = (rag == null || rag.answer() == null || rag.answer().isBlank())
+                        ? "Tôi đã ghi nhận câu hỏi nhưng hiện tại chưa thể tạo câu trả lời chi tiết. Xin bạn vui lòng đặt lại câu hỏi."
+                        : rag.answer();
+                if (rag != null) {
+                    if (!"rag".equals(rag.answerSource())) {
+                        ragCitations.add(new CitationDto("llm-general", "Kiến thức chung của AI (chưa đối chiếu kho dữ liệu)",
+                                context.effectiveProvinceSlug(), "AI", null,
+                                com.culturalatlas.assistant.domain.enums.VerificationStatus.UNVERIFIED));
+                    }
+                    if (rag.images() != null) {
+                        for (var img : rag.images()) {
+                            String name = img.name() != null ? img.name() : String.valueOf(img.entityId());
+                            String credit = java.util.stream.Stream.of(img.author(), img.license())
+                                    .filter(s -> s != null && !s.isBlank())
+                                    .collect(java.util.stream.Collectors.joining(", "));
+                            ragCitations.add(new CitationDto(
+                                    "rag-" + (img.entityId() != null ? img.entityId() : name),
+                                    credit.isEmpty() ? name : name + " (" + credit + ")",
+                                    context.effectiveProvinceSlug(), "RAG",
+                                    img.sourcePage() != null ? img.sourcePage() : img.url(),
+                                    com.culturalatlas.assistant.domain.enums.VerificationStatus.VERIFIED));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.error("RAG server call failed for conversation {}: {}", context.conversationId(), e.getMessage(), e);
+                assistantContent = "Hệ thống trợ lý văn hóa VICA hiện đang tạm thời gián đoạn kết nối tới máy chủ tri thức. Xin vui lòng thử lại sau ít phút.";
+            }
+        } else if (chatClient == null) {
             log.warn("ChatClient is not configured (e.g. test profile with model chat: none)");
             assistantContent = "Hệ thống trợ lý văn hóa VICA hiện đang tạm thời gián đoạn kết nối tới mô hình AI. Xin vui lòng thử lại sau ít phút.";
         } else {
@@ -145,7 +181,8 @@ public class AssistantOrchestratorService {
         String effectiveProvinceSlug = resolveEffectiveProvinceSlug(context.effectiveProvinceSlug(), capturedResults);
 
         // Xây dựng danh sách trích dẫn nguồn có kiểm định (Citation Engine)
-        List<CitationDto> citations = citationBuilderService.buildCitations(capturedResults, assistantContent);
+        List<CitationDto> citations = new java.util.ArrayList<>(citationBuilderService.buildCitations(capturedResults, assistantContent));
+        citations.addAll(ragCitations);
 
         // Sinh câu hỏi gợi ý tiếp nối có căn cứ dữ liệu (Suggestion Engine)
         List<SuggestedQuestionDto> suggestions = suggestionEngine.generateSuggestions(

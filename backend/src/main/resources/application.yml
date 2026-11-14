@@ -45,6 +45,9 @@ app:
     from: ${MAIL_FROM:no-reply@vica.local}
   verification:
     ttl-minutes: ${VERIFICATION_TTL_MINUTES:10}
+  rag:
+    base-url: ${RAG_BASE_URL:}          # vd http://<EC2_PUBLIC_IP>; de trong = dung chat model nhu cu
+    timeout-seconds: ${RAG_TIMEOUT_SECONDS:60}
   admin-emails: ${ADMIN_EMAILS:}   # email admin, cach nhau bang dau phay; duoc nang ROLE_ADMIN khi dang nhap
 
 # Actuator Endpoints
