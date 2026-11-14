@@ -30,8 +30,11 @@ class ImageController {
                  consumes = MediaType.APPLICATION_JSON_VALUE,
                  produces = MediaType.APPLICATION_JSON_VALUE)
     List<ImageRef> byQuestion(@RequestBody ImageQuery req) {
+        if (req.question() == null || req.question().isBlank()) return List.of();
         SearchRequest.Builder sb = SearchRequest.builder()
-                .query(req.question() == null ? "" : req.question()).topK(12);
+                .query(req.question().trim())
+                .topK(12)
+                .similarityThreshold(0.3);
         if (req.placeId() != null && !req.placeId().isBlank()) {
             sb.filterExpression(new FilterExpressionBuilder().eq("entity_id", req.placeId()).build());
         }

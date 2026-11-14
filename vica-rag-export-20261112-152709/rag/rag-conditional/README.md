@@ -1,76 +1,100 @@
-# Conditional RAG: Routing
+# VICA RAG server
 
-Ask questions about documents with LLMs via Ollama and PGVector.
+Spring Boot reads the prepared entity files from `/app/data`. On EC2, Compose mounts
+`/home/ec2-user/llm-apps-java-spring-ai/rag/rag-conditional/data/` at that path. The
+mount should contain `_embed_manifest.csv` (preferred), `_images.csv` (optional),
+and `entities/*.md`. If `_embed_manifest.csv` is absent, the server falls back to
+`_manifest.csv`.
 
-## Ollama
+The server uses OpenAI for chat and embeddings. `text-embedding-3-small` is configured
+to return 768 dimensions to match the pgvector table. At startup, entity IDs already
+present in `vector_store` are skipped, so ordinary restarts do not embed the same files
+again.
 
-The application consumes models from an [Ollama](https://ollama.ai) inference server. You can either run Ollama locally on your laptop, or let Arconia provide a Dev Service that will run Ollama as a container automatically.
+## Query and image APIs
 
-Either way, Spring AI will take care of pulling the needed Ollama models when the application starts, if they are not available yet on your machine.
+`POST /rag/query/routing` keeps the original plain-text answer response. The server first
+searches pgvector; if it finds no relevant chunks, it answers from general model knowledge
+and says that the answer did not come from the RAG store.
 
-### Tavily (Optional)
+Use `POST /rag/query/with-images` when the client needs the answer and related images in
+one JSON response:
 
-The application consumes the [Tavily Search API](https://tavily.com).
-
-#### Create an account
-
-Visit [app.tavily.com](https://app.tavily.com/home) and sign up for a new account. You can choose the "Researcher" plan to get started for free.
-
-#### Configure API Key
-
-In the Tavily AI console, navigate to _Overview_. Then, in the _API Keys_ section, generate a new API key. Copy and securely store your API key on your machine as an environment variable. The application will use it to access the Tavily Search API.
-
-```shell
-export TAVILY_SEARCH_API_KEY=<YOUR-API-KEY>
+```json
+{
+  "question": "Giới thiệu về địa điểm này",
+  "placeId": "optional-entity-id"
+}
 ```
 
-## Running the application
+The response contains `answer`, `answerSource` (`rag` or `llm_general_knowledge`), and
+`images` with URL, license, author, and source page. The separate image endpoints remain
+available: `POST /rag/images` searches by question, and `GET /rag/images/{entityId}`
+returns images for one entity.
 
-Run the application as follows:
+## Configure on EC2
 
-```shell
-./gradlew bootRun
+Keep the real API key in the ignored `.env` file; never add it to source control. If
+`.env` does not exist yet:
+
+```bash
+cd /home/ec2-user/llm-apps-java-spring-ai/rag/rag-conditional
+cp env.example .env
+nano .env
+chmod 600 .env
 ```
 
-Under the hood, in case no native Ollama connection is detected on your machine, the Arconia framework will automatically spin up an [Ollama](https://arconia.io/docs/arconia/latest/dev-services/ollama/) inference service using Testcontainers. It will also automatically provision a [PostgreSQL](https://arconia.io/docs/arconia/latest/dev-services/postgresql/) database and a [Grafana LGTM](https://arconia.io/docs/arconia/latest/dev-services/lgtm/) observability platform. See [Arconia Dev Services](https://arconia.io/docs/arconia/latest/dev-services/) for more information.
+Set `OPENAI_API_KEY` in `.env`. Keep the existing PostgreSQL values and set
+`OPENAI_CHAT_MODEL=gpt-4o-mini` and
+`OPENAI_EMBEDDING_MODEL=text-embedding-3-small`.
 
-The application will be accessible at http://localhost:8080.
+## Deploy the updated app on the existing EC2 setup
 
-## Observability Platform
+1. Push the code changes to the branch used by EC2. Connect to the existing instance and
+   pull the update:
 
-The application logs will show you the URL where you can access the Grafana observability platform and start exploring your application’s telemetry data.
-
-```logs
-...o.t.grafana.LgtmStackContainer: Access to the Grafana dashboard: http://localhost:<port>
+```bash
+cd /home/ec2-user/llm-apps-java-spring-ai
+git pull --ff-only
+cd rag/rag-conditional
 ```
 
-By default, logs, metrics, and traces are exported via OTLP using the HTTP/Protobuf format.
+2. Set the rotated key in `.env` and keep the existing PostgreSQL settings. Confirm that
+   the downloaded entity files are present in the host directory which is mounted to
+   `/app/data`:
 
-In Grafana, you can query the telemetry from the "Drilldown" and "Explore" sections.
-
-## Calling the application
-
-> [!NOTE]
-> These examples use the [httpie](https://httpie.io) CLI to send HTTP requests.
-
-Call the application that will use a chat model to answer your questions.
-
-### Query Routing
-
-First, ask a question that should be routed to the first RAG flow for the first story using a vector store.
-
-```shell
-http --raw "What is Iorek's biggest dream?" :8080/rag/query/routing -b --pretty none
+```bash
+nano .env
+chmod 600 .env
+ls data/_embed_manifest.csv
+find data/entities -maxdepth 1 -name '*.md' | wc -l
 ```
 
-Then, ask a question that should be routed to the second RAG flow for the second story using a vector store.
+3. When switching an existing database from Gemini to OpenAI, clear the old vectors once.
+Equal vector dimensions do not make embeddings from different providers compatible. This
+truncates only the RAG vectors; it keeps the PostgreSQL volume and all other data.
 
-```shell
-http --raw "Who is Lucio?" :8080/rag/query/routing -b --pretty none
+```bash
+sudo docker compose stop app
+sudo docker compose exec -T postgres sh -lc 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "TRUNCATE TABLE vector_store;"'
+sudo docker compose up -d --build app
 ```
 
-Finally, ask a question that should be routed to the third RAG flow using a web search engine.
+4. Follow ingestion and application logs:
 
-```shell
-http --raw "At the Spring I/O 2025 conference in Barcelona, who is the speaker presenting about Modular RAG?" :8080/rag/query/routing -b --pretty none
+```bash
+sudo docker compose logs -f app
+```
+
+Look for `Ingest ... file -> ... chunk` and `Ingest xong.`. The mounted data remains
+read-only to the app container; new or updated files can be copied to the EC2 `data/`
+directory and the app restarted. Existing entity IDs are skipped, so to re-embed
+changed content for an existing ID, clear `vector_store` before restarting.
+
+5. Smoke-check the combined answer and image response through Caddy:
+
+```bash
+curl -sS -X POST http://127.0.0.1/rag/query/with-images \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"Giới thiệu về địa điểm này"}'
 ```

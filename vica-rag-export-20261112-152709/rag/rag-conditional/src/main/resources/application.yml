@@ -2,17 +2,13 @@ spring:
   application:
     name: rag-conditional
   ai:
-    google:
-      genai:
-        # Do NOT set project-id / location: that silently switches the client to Vertex AI mode.
-        api-key: ${GEMINI_API_KEY}
-        chat:
-          model: ${GEMINI_CHAT_MODEL:gemini-2.5-flash-lite}
-        embedding:
-          api-key: ${GEMINI_API_KEY}
-          text:
-            model: ${GEMINI_EMBEDDING_MODEL:gemini-embedding-001}
-            dimensions: 768   # gemini-embedding-001 defaults to 3072, which pgvector HNSW cannot index (limit 2000)
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        model: ${OPENAI_CHAT_MODEL:gpt-4o-mini}
+      embedding:
+        model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+        dimensions: 768       # keep pgvector's existing 768-dimensional schema
     chat:
       observations:
         log-completion: true
@@ -22,7 +18,7 @@ spring:
         log-query-response: true
       pgvector:
         initialize-schema: true
-        dimensions: 768       # must equal spring.ai.google.genai.embedding.text.dimensions
+        dimensions: 768       # must equal spring.ai.openai.embedding.dimensions
         index-type: hnsw
   threads:
     virtual:
