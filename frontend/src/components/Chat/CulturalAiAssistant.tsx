@@ -17,6 +17,7 @@ import {
   LogIn,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import registry from '../../data/provinces-v1.json';
 import { useAppStore } from '../../stores/appStore';
 import { useAuthStore } from '../../stores/authStore';
 import {
@@ -33,6 +34,22 @@ import type {
 } from '../../types/assistant';
 import { SourceCitationList } from './SourceCitationList';
 import { ComparisonModal } from './ComparisonModal';
+
+const PROVINCES_MAP = new Map<string, string>(
+  registry.provinces.map((p) => [p.slug, p.name])
+);
+
+function formatSlug(slug: string): string {
+  return slug
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+function getProvinceName(slug?: string | null): string {
+  if (!slug) return '';
+  return PROVINCES_MAP.get(slug) || formatSlug(slug);
+}
 
 const ALL_PROMPTS_POOL = [
   'Giới thiệu các di sản văn hóa thế giới UNESCO tại Việt Nam',
@@ -53,12 +70,106 @@ const ALL_PROMPTS_POOL = [
   'Bánh mì Việt Nam - Hành trình trở thành di sản ẩm thực đường phố toàn cầu',
 ];
 
-const DEFAULT_FOLLOW_UP_PROMPTS = [
-  'Món ăn đặc sản địa phương có gì nổi tiếng?',
-  'Lễ hội truyền thống và phong tục tập quán ở đây?',
-  'Các di tích lịch sử và danh lam thắng cảnh tiêu biểu?',
-  'Kể truyền thuyết và huyền tích dân gian gắn với nơi này',
-];
+function getSmartSuggestions(
+  msg: ChatMessageItem,
+  activeSlug: string | null,
+  allMessages: ChatMessageItem[]
+): string[] {
+  const suggestions: string[] = [];
+
+  // 1. If backend already generated contextual suggested questions, prioritize them
+  if (msg.suggestedQuestions && msg.suggestedQuestions.length > 0) {
+    for (const sq of msg.suggestedQuestions) {
+      if (sq.question && !suggestions.includes(sq.question)) {
+        suggestions.push(sq.question);
+      }
+    }
+  }
+
+  const effSlug = msg.provinceSlug || activeSlug;
+  const pName = getProvinceName(effSlug);
+
+  // 2. Extract discussed topics from user and assistant messages
+  const userText = allMessages
+    .filter((m) => m.role === 'USER')
+    .map((m) => m.content.toLowerCase())
+    .join(' ');
+
+  const isFoodAsked =
+    userText.includes('ẩm thực') ||
+    userText.includes('món') ||
+    userText.includes('ăn') ||
+    userText.includes('uống') ||
+    userText.includes('đặc sản') ||
+    userText.includes('phở') ||
+    userText.includes('bún');
+
+  const isHeritageAsked =
+    userText.includes('di sản') ||
+    userText.includes('di tích') ||
+    userText.includes('thắng cảnh') ||
+    userText.includes('chùa') ||
+    userText.includes('đền') ||
+    userText.includes('tháp') ||
+    userText.includes('kiến trúc');
+
+  const isFestivalAsked =
+    userText.includes('lễ hội') ||
+    userText.includes('hội') ||
+    userText.includes('phong tục') ||
+    userText.includes('tập quán') ||
+    userText.includes('tín ngưỡng');
+
+  const isHistoryAsked =
+    userText.includes('lịch sử') ||
+    userText.includes('truyền thuyết') ||
+    userText.includes('huyền tích') ||
+    userText.includes('triều đại');
+
+  // 3. Fallback candidates tailored to province
+  if (pName) {
+    if (!isFoodAsked) {
+      suggestions.push(`Ẩm thực đặc sản ${pName} có những món ngon nào nổi tiếng?`);
+    }
+    if (!isHeritageAsked) {
+      suggestions.push(`Những di tích lịch sử và danh lam thắng cảnh tiêu biểu tại ${pName}?`);
+    }
+    if (!isFestivalAsked) {
+      suggestions.push(`Lễ hội truyền thống và phong tục tập quán đặc trưng của ${pName}?`);
+    }
+    if (!isHistoryAsked) {
+      suggestions.push(`Kể truyền thuyết và huyền tích dân gian gắn liền với ${pName}`);
+    }
+    suggestions.push(`So sánh nét đặc sắc của văn hóa ${pName} với các tỉnh lân cận`);
+  } else {
+    suggestions.push('Giới thiệu các di sản văn hóa thế giới UNESCO tại Việt Nam');
+    suggestions.push('Khám phá nét đặc trưng của văn hóa ẩm thực 3 miền Bắc - Trung - Nam');
+    suggestions.push('Những lễ hội truyền thống tiêu biểu nhất trong văn hóa Việt');
+    suggestions.push('Không gian văn hóa Cồng chiêng Tây Nguyên và Đờn ca tài tử Nam Bộ');
+  }
+
+  // 4. Strictly filter out anything that has ALREADY been asked by the user in this conversation
+  const userQueries = allMessages
+    .filter((m) => m.role === 'USER')
+    .map((m) => m.content.toLowerCase().trim());
+
+  const isAlreadyAsked = (cand: string) => {
+    const norm = cand.toLowerCase().trim();
+    return userQueries.some(
+      (q) => q === norm || (q.length > 12 && norm.includes(q)) || (norm.length > 12 && q.includes(norm))
+    );
+  };
+
+  const finalResults: string[] = [];
+  for (const s of suggestions) {
+    if (!isAlreadyAsked(s) && !finalResults.includes(s)) {
+      finalResults.push(s);
+      if (finalResults.length >= 3) break;
+    }
+  }
+
+  return finalResults;
+}
 
 export const CulturalAiAssistant: React.FC = () => {
   const currentProvince = useAppStore((state) => state.currentProvince);
@@ -596,18 +707,28 @@ export const CulturalAiAssistant: React.FC = () => {
                 <div className="space-y-2 text-left pt-2">
                   <div className="flex items-center justify-between px-1">
                     <span className="text-[11px] font-semibold text-clay-600 uppercase tracking-wider">
-                      Gợi ý câu hỏi bắt đầu:
+                      {activeProvinceSlug ? `Gợi ý khám phá ${getProvinceName(activeProvinceSlug)}:` : 'Gợi ý câu hỏi bắt đầu:'}
                     </span>
-                    <button
-                      type="button"
-                      onClick={shuffleStarterPrompts}
-                      className="text-[11px] text-amber-700 hover:text-amber-700 font-medium flex items-center gap-1 transition cursor-pointer"
-                    >
-                      <Shuffle className="w-3 h-3" />
-                      <span>Đổi gợi ý khác</span>
-                    </button>
+                    {!activeProvinceSlug && (
+                      <button
+                        type="button"
+                        onClick={shuffleStarterPrompts}
+                        className="text-[11px] text-amber-700 hover:text-amber-800 font-medium flex items-center gap-1 transition cursor-pointer"
+                      >
+                        <Shuffle className="w-3 h-3" />
+                        <span>Đổi gợi ý khác</span>
+                      </button>
+                    )}
                   </div>
-                  {ALL_PROMPTS_POOL.slice(starterIndex, starterIndex + 4).map((prompt, i) => (
+                  {(activeProvinceSlug
+                    ? [
+                        `Ẩm thực đặc sản ${getProvinceName(activeProvinceSlug)} có những món ngon nào nổi tiếng?`,
+                        `Những di tích lịch sử và danh lam thắng cảnh tiêu biểu tại ${getProvinceName(activeProvinceSlug)}?`,
+                        `Lễ hội truyền thống và phong tục tập quán đặc trưng của ${getProvinceName(activeProvinceSlug)}?`,
+                        `Kể truyền thuyết và huyền tích dân gian gắn liền với ${getProvinceName(activeProvinceSlug)}`,
+                      ]
+                    : ALL_PROMPTS_POOL.slice(starterIndex, starterIndex + 4)
+                  ).map((prompt, i) => (
                     <button
                       key={i}
                       type="button"
@@ -621,80 +742,94 @@ export const CulturalAiAssistant: React.FC = () => {
                 </div>
               </div>
             ) : (
-              messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex items-start space-x-2.5 ${
-                    msg.role === 'USER' ? 'justify-end' : 'justify-start'
-                  }`}
-                >
-                  {msg.role !== 'USER' && (
-                    <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5 clay">
-                      <Bot className="w-4 h-4" />
-                    </div>
-                  )}
+              (() => {
+                const latestAssistantMsgId = [...messages]
+                  .reverse()
+                  .find((m) => m.role === 'ASSISTANT' && !m.isError)?.id;
 
-                  <div
-                    className={`max-w-[85%] rounded-2xl p-3.5 text-xs sm:text-sm ${
-                      msg.role === 'USER'
-                        ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-rose-600/10'
-                        : msg.isError
-                        ? 'bg-red-50/40 border border-red-200/60 text-red-800'
-                        : 'bg-clay-mint/70 border border-white/70 text-clay-900 clay-soft'
-                    }`}
-                  >
-                    {msg.isError && (
-                      <div className="flex items-center space-x-1.5 text-red-700 font-semibold mb-1 text-xs">
-                        <AlertTriangle className="w-3.5 h-3.5" />
-                        <span>Thông báo từ hệ thống</span>
-                      </div>
-                    )}
+                return messages.map((msg) => {
+                  const isLatestAssistant = msg.id === latestAssistantMsgId && !isLoading;
+                  const followUps = isLatestAssistant
+                    ? getSmartSuggestions(msg, activeProvinceSlug, messages)
+                    : [];
 
-                    {renderFormattedText(msg.content, msg.id, msg.citations)}
-
-                    {/* Source citations */}
-                    {msg.citations && msg.citations.length > 0 && (
-                      <SourceCitationList
-                        citations={msg.citations}
-                        highlightedIndex={highlightedCitation}
-                        messageId={msg.id}
-                      />
-                    )}
-
-                    {/* Suggested questions / Next prompts */}
-                    {msg.role === 'ASSISTANT' && (
-                      <div className="mt-3 pt-3 border-t border-clay-200/60 space-y-2">
-                        <span className="text-[10px] font-bold text-amber-700/90 uppercase tracking-wider flex items-center gap-1">
-                          <Sparkles className="w-3 h-3 text-amber-700" />
-                          Câu hỏi gợi ý tiếp theo:
-                        </span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {(msg.suggestedQuestions && msg.suggestedQuestions.length > 0
-                            ? msg.suggestedQuestions.map((q) => q.question)
-                            : DEFAULT_FOLLOW_UP_PROMPTS
-                          ).map((promptText, idx) => (
-                            <button
-                              key={idx}
-                              type="button"
-                              onClick={() => handleSendMessage(promptText)}
-                              className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-clay-200/90 hover:bg-clay-200 border border-clay-300/80 hover:border-amber-500/60 text-clay-800 hover:text-amber-700 transition flex items-center gap-1 cursor-pointer shadow-sm group"
-                            >
-                              <span>{promptText}</span>
-                              <ArrowRight className="w-3 h-3 text-clay-500 group-hover:text-amber-700 transition" />
-                            </button>
-                          ))}
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`flex items-start space-x-2.5 ${
+                        msg.role === 'USER' ? 'justify-end' : 'justify-start'
+                      }`}
+                    >
+                      {msg.role !== 'USER' && (
+                        <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-500 to-rose-600 text-white flex items-center justify-center shrink-0 mt-0.5 clay">
+                          <Bot className="w-4 h-4" />
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
 
-                  {msg.role === 'USER' && (
-                    <div className="w-7 h-7 rounded-lg bg-clay-200 text-clay-700 flex items-center justify-center shrink-0 mt-0.5">
-                      <UserIcon className="w-4 h-4" />
+                      <div
+                        className={`max-w-[85%] rounded-2xl p-3.5 text-xs sm:text-sm ${
+                          msg.role === 'USER'
+                            ? 'bg-gradient-to-r from-amber-600 to-rose-600 text-white shadow-md shadow-rose-600/10'
+                            : msg.isError
+                            ? 'bg-red-50/40 border border-red-200/60 text-red-800'
+                            : 'bg-clay-mint/70 border border-white/70 text-clay-900 clay-soft'
+                        }`}
+                      >
+                        {msg.isError && (
+                          <div className="flex items-center space-x-1.5 text-red-700 font-semibold mb-1 text-xs">
+                            <AlertTriangle className="w-3.5 h-3.5" />
+                            <span>Thông báo từ hệ thống</span>
+                          </div>
+                        )}
+
+                        {renderFormattedText(msg.content, msg.id, msg.citations)}
+
+                        {/* Source citations */}
+                        {msg.citations && msg.citations.length > 0 && (
+                          <SourceCitationList
+                            citations={msg.citations}
+                            highlightedIndex={highlightedCitation}
+                            messageId={msg.id}
+                          />
+                        )}
+
+                        {/* Suggested questions: ONLY for the latest assistant message, non-repeating */}
+                        {isLatestAssistant && followUps.length > 0 && (
+                          <div className="mt-3 pt-3 border-t border-clay-200/60 space-y-2">
+                            <span className="text-[10px] font-bold text-amber-700/90 uppercase tracking-wider flex items-center gap-1">
+                              <Sparkles className="w-3 h-3 text-amber-700" />
+                              Gợi ý câu hỏi khám phá tiếp theo:
+                            </span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {followUps.map((promptText, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  onClick={() => handleSendMessage(promptText)}
+                                  className="text-left text-[11px] px-2.5 py-1.5 rounded-lg bg-clay-butter/80 hover:bg-clay-butter border border-clay-300/80 hover:border-amber-500/60 text-clay-800 hover:text-amber-800 transition flex items-center gap-1 cursor-pointer shadow-sm group"
+                                >
+                                  <span>{promptText}</span>
+                                  <ArrowRight className="w-3 h-3 text-clay-500 group-hover:text-amber-700 transition shrink-0" />
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {msg.role === 'USER' && (
+                        <div className="w-7 h-7 rounded-lg bg-clay-200 text-clay-700 flex items-center justify-center shrink-0 mt-0.5">
+                          <UserIcon className="w-4 h-4" />
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))
+                  );
+                });
+              })()
+                    </div>
+                  );
+                });
+              })()
             )}
 
             {/* Loading Indicator */}
