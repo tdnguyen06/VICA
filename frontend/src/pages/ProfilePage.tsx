@@ -44,7 +44,7 @@ export const ProfilePage: React.FC = () => {
 
   if (!user) return <Navigate to="/login" replace />;
   if (loadError) return <AuthCard title="Hồ sơ"><Notice kind="error">{loadError}</Notice></AuthCard>;
-  if (!profile || !form) return <AuthCard title="Hồ sơ"><p className="text-sm text-slate-400">Đang tải…</p></AuthCard>;
+  if (!profile || !form) return <AuthCard title="Hồ sơ"><p className="text-sm text-clay-600">Đang tải…</p></AuthCard>;
 
   const set = (key: keyof ProfileInput) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setForm({ ...form, [key]: e.target.value });
@@ -83,24 +83,24 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <AuthCard title="Hồ sơ cá nhân" wide>
-      <div className="mt-4 mb-5 flex flex-wrap items-center gap-3 text-sm text-slate-300">
+      <div className="mt-4 mb-5 flex flex-wrap items-center gap-3 text-sm text-clay-700">
         {profile.avatarUrl && (
           <img src={profile.avatarUrl} alt="Ảnh đại diện" referrerPolicy="no-referrer"
                className="h-12 w-12 rounded-full object-cover ring-2 ring-amber-500/40" />
         )}
-        <span className="font-semibold text-white">{profile.username}</span>
+        <span className="font-semibold text-clay-900">{profile.username}</span>
         {profile.googleLinked && (
-          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[11px] text-sky-300">Google</span>
+          <span className="rounded bg-clay-200 px-1.5 py-0.5 text-[11px] text-sky-700">Google</span>
         )}
-        <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[11px]">{ROLE_LABEL[profile.role]}</span>
-        <span className="text-slate-400">{profile.email}</span>
+        <span className="rounded bg-clay-200 px-1.5 py-0.5 text-[11px]">{ROLE_LABEL[profile.role]}</span>
+        <span className="text-clay-600">{profile.email}</span>
         {profile.emailVerified ? (
-          <span className="inline-flex items-center gap-1 text-xs text-emerald-300">
+          <span className="inline-flex items-center gap-1 text-xs text-emerald-700">
             <BadgeCheck className="h-3.5 w-3.5" /> Email đã xác minh
           </span>
         ) : (
           <Link to={`/verify-email?email=${encodeURIComponent(profile.email)}`}
-            className="inline-flex items-center gap-1 text-xs text-amber-300 hover:underline">
+            className="inline-flex items-center gap-1 text-xs text-amber-700 hover:underline">
             <MailWarning className="h-3.5 w-3.5" /> Chưa xác minh email
           </Link>
         )}
@@ -111,9 +111,9 @@ export const ProfilePage: React.FC = () => {
         <TextField label="Số điện thoại" value={form.phone} onChange={set('phone')} placeholder="0xxxxxxxxx" />
         <TextField label="Ngày sinh" type="date" value={form.dateOfBirth} onChange={set('dateOfBirth')} />
         <label className="block text-sm">
-          <span className="text-slate-300">Giới tính</span>
+          <span className="text-clay-700">Giới tính</span>
           <select value={form.gender} onChange={set('gender')}
-            className="mt-1 w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 outline-none focus:border-amber-400">
+            className="mt-1 w-full rounded-lg border border-clay-300 bg-clay-50 px-3 py-2 text-clay-900 outline-none focus:border-amber-400">
             <option value="">Không chọn</option>
             <option value="MALE">Nam</option>
             <option value="FEMALE">Nữ</option>
@@ -129,7 +129,7 @@ export const ProfilePage: React.FC = () => {
         </div>
       </form>
 
-      <h3 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wide text-slate-400">Đổi mật khẩu</h3>
+      <h3 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wide text-clay-600">Đổi mật khẩu</h3>
       <form onSubmit={(e) => void submitPassword(e)} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <TextField label="Mật khẩu hiện tại" type="password" value={pw.oldPassword} autoComplete="current-password"
           onChange={(e) => setPw({ ...pw, oldPassword: e.target.value })} required />

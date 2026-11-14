@@ -53,16 +53,16 @@ export const AdminUsersPage: React.FC = () => {
       {/* Main column */}
       <div className="min-w-0 space-y-6">
         <div>
-          <h2 className="text-2xl font-bold text-white">Bảng điều khiển</h2>
-          <p className="text-xs text-slate-400">
+          <h2 className="text-2xl font-bold text-clay-900">Bảng điều khiển</h2>
+          <p className="text-xs text-clay-600">
             {new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })}
           </p>
         </div>
 
         <WelcomeBanner name={displayName} newUsers={s?.all.newLast7Days ?? 0} deleted={s?.all.deleted ?? 0} />
 
-        {stats.isPending && <p className="text-sm text-slate-400">Đang tải thống kê…</p>}
-        {stats.isError && <p className="text-sm text-red-300">Không tải được thống kê.</p>}
+        {stats.isPending && <p className="text-sm text-clay-600">Đang tải thống kê…</p>}
+        {stats.isError && <p className="text-sm text-red-700">Không tải được thống kê.</p>}
         {s && (
           <>
             <div className="grid gap-4 lg:grid-cols-[1.6fr_1fr_1fr]">
@@ -83,7 +83,7 @@ export const AdminUsersPage: React.FC = () => {
         )}
 
         <section className="space-y-3">
-          <h3 className="text-lg font-semibold text-white">Quản lý người dùng</h3>
+          <h3 className="text-lg font-semibold text-clay-900">Quản lý người dùng</h3>
           <div className="flex flex-wrap items-center gap-3">
             <input
               value={q}
@@ -92,9 +92,9 @@ export const AdminUsersPage: React.FC = () => {
                 setPage(0);
               }}
               placeholder="Tìm theo email, tên, username"
-              className="w-full max-w-sm rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white"
+              className="w-full max-w-sm rounded-lg border border-clay-300 bg-clay-50 px-3 py-2 text-sm text-clay-900"
             />
-            <label className="flex items-center gap-2 text-sm text-slate-300">
+            <label className="flex items-center gap-2 text-sm text-clay-700">
               <input
                 type="checkbox"
                 checked={includeDeleted}
@@ -108,12 +108,12 @@ export const AdminUsersPage: React.FC = () => {
           </div>
 
           {(remove.error || restore.error) && (
-            <p className="text-sm text-red-300">Thao tác thất bại. Vui lòng thử lại.</p>
+            <p className="text-sm text-red-700">Thao tác thất bại. Vui lòng thử lại.</p>
           )}
 
-          <div className="overflow-x-auto rounded-xl border border-slate-800">
+          <div className="overflow-x-auto rounded-xl border border-clay-200">
             <table className="w-full text-left text-sm">
-              <thead className="bg-slate-900 text-xs uppercase text-slate-400">
+              <thead className="bg-clay-100 text-xs uppercase text-clay-600">
                 <tr>
                   <th className="p-3">Người dùng</th>
                   <th className="p-3">Vai trò</th>
@@ -124,38 +124,38 @@ export const AdminUsersPage: React.FC = () => {
               </thead>
               <tbody>
                 {list.data?.items.map((u) => (
-                  <tr key={u.id} className={`border-t border-slate-800 ${u.deletedAt ? 'opacity-50' : ''}`}>
+                  <tr key={u.id} className={`border-t border-clay-200 ${u.deletedAt ? 'opacity-50' : ''}`}>
                     <td className="p-3">
                       <div className="flex items-center gap-2">
                         {u.avatarUrl ? (
                           <img src={u.avatarUrl} alt="" referrerPolicy="no-referrer" className="h-8 w-8 rounded-full object-cover" />
                         ) : (
-                          <div className="h-8 w-8 rounded-full bg-slate-800" />
+                          <div className="h-8 w-8 rounded-full bg-clay-200" />
                         )}
                         <div>
-                          <p className="text-white">{u.fullName || u.username}</p>
-                          <p className="text-xs text-slate-400">
+                          <p className="text-clay-900">{u.fullName || u.username}</p>
+                          <p className="text-xs text-clay-600">
                             {u.email}
                             {u.googleLinked && ' · Google'}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="p-3 text-slate-300">{u.role === 'ROLE_ADMIN' ? 'Quản trị' : 'Người dùng'}</td>
+                    <td className="p-3 text-clay-700">{u.role === 'ROLE_ADMIN' ? 'Quản trị' : 'Người dùng'}</td>
                     <td className="p-3">
                       {u.deletedAt ? (
-                        <span className="text-red-300">Đã xoá</span>
+                        <span className="text-red-700">Đã xoá</span>
                       ) : (
-                        <span className="text-emerald-300">Hoạt động</span>
+                        <span className="text-emerald-700">Hoạt động</span>
                       )}
                     </td>
-                    <td className="p-3 text-slate-400">{new Date(u.createdAt).toLocaleDateString('vi-VN')}</td>
+                    <td className="p-3 text-clay-600">{new Date(u.createdAt).toLocaleDateString('vi-VN')}</td>
                     <td className="p-3 text-right">
                       {u.deletedAt ? (
                         <button
                           type="button"
                           onClick={() => restore.mutate(u.id)}
-                          className="inline-flex items-center gap-1 text-sky-300 hover:text-sky-200"
+                          className="inline-flex items-center gap-1 text-sky-700 hover:text-sky-800"
                         >
                           <RotateCcw className="h-4 w-4" /> Khôi phục
                         </button>
@@ -166,7 +166,7 @@ export const AdminUsersPage: React.FC = () => {
                             onClick={() => {
                               if (window.confirm(`Xoá mềm tài khoản ${u.email}?`)) remove.mutate(u.id);
                             }}
-                            className="inline-flex items-center gap-1 text-red-300 hover:text-red-200"
+                            className="inline-flex items-center gap-1 text-red-700 hover:text-red-800"
                           >
                             <Trash2 className="h-4 w-4" /> Xoá
                           </button>
@@ -177,15 +177,15 @@ export const AdminUsersPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
-            {list.isPending && <p className="p-4 text-sm text-slate-400">Đang tải…</p>}
-            {list.isError && <p className="p-4 text-sm text-red-300">Không tải được danh sách người dùng.</p>}
+            {list.isPending && <p className="p-4 text-sm text-clay-600">Đang tải…</p>}
+            {list.isError && <p className="p-4 text-sm text-red-700">Không tải được danh sách người dùng.</p>}
             {list.data && list.data.items.length === 0 && (
-              <p className="p-4 text-sm text-slate-400">Không có người dùng phù hợp.</p>
+              <p className="p-4 text-sm text-clay-600">Không có người dùng phù hợp.</p>
             )}
           </div>
 
           {list.data && list.data.totalPages > 1 && (
-            <div className="flex items-center gap-3 text-sm text-slate-300">
+            <div className="flex items-center gap-3 text-sm text-clay-700">
               <button type="button" disabled={page === 0} onClick={() => setPage(page - 1)} className="disabled:opacity-40">
                 ← Trước
               </button>

@@ -50,8 +50,8 @@ export const RegisterPage: React.FC = () => {
           <UserPlus className="h-4 w-4" aria-hidden="true" /> Đăng ký
         </SubmitButton>
       </form>
-      <p className="mt-3 text-center text-xs text-slate-400">
-        Đã có tài khoản? <Link to="/login" className="text-amber-400 hover:text-amber-300">Đăng nhập</Link>
+      <p className="mt-3 text-center text-xs text-clay-600">
+        Đã có tài khoản? <Link to="/login" className="text-amber-700 hover:text-amber-700">Đăng nhập</Link>
       </p>
     </AuthCard>
   );

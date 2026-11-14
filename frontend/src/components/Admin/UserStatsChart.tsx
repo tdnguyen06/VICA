@@ -10,14 +10,14 @@ const METRICS: [keyof RoleStats, string][] = [
   ['newLast7Days', 'Mới trong 7 ngày'],
 ];
 
-const ADMIN_COLOR = '#fbbf24'; // amber-400
-const USER_COLOR = '#38bdf8'; // sky-400
+const ADMIN_COLOR = '#f59e0b'; // amber-400
+const USER_COLOR = '#0ea5e9'; // sky-400
 
 const Legend: React.FC<{ color: string; label: string; value: number; total: number }> = ({ color, label, value, total }) => (
-  <p className="flex items-center gap-2 text-slate-300">
+  <p className="flex items-center gap-2 text-clay-700">
     <span className="h-3 w-3 rounded-sm" style={{ backgroundColor: color }} />
-    {label}: <span className="font-semibold text-white">{value}</span>
-    <span className="text-slate-500">({total === 0 ? 0 : Math.round((value / total) * 100)}%)</span>
+    {label}: <span className="font-semibold text-clay-900">{value}</span>
+    <span className="text-clay-500">({total === 0 ? 0 : Math.round((value / total) * 100)}%)</span>
   </p>
 );
 
@@ -30,7 +30,7 @@ const RoleDonut: React.FC<{ admin: number; user: number }> = ({ admin, user }) =
   return (
     <div className="flex flex-col items-center gap-3">
       <svg viewBox="0 0 140 140" className="h-40 w-40" role="img" aria-label={`${admin} quản trị viên, ${user} người dùng`}>
-        <circle cx="70" cy="70" r={r} fill="none" stroke="#1e293b" strokeWidth="18" />
+        <circle cx="70" cy="70" r={r} fill="none" stroke="#f0dbe7" strokeWidth="18" />
         {total > 0 && (
           <>
             <circle cx="70" cy="70" r={r} fill="none" stroke={USER_COLOR} strokeWidth="18"
@@ -40,8 +40,8 @@ const RoleDonut: React.FC<{ admin: number; user: number }> = ({ admin, user }) =
                     strokeDasharray={`${adminLen} ${c}`} transform="rotate(-90 70 70)" />
           </>
         )}
-        <text x="70" y="68" textAnchor="middle" fill="#ffffff" fontSize="24" fontWeight="700">{total}</text>
-        <text x="70" y="86" textAnchor="middle" fill="#94a3b8" fontSize="10">tài khoản</text>
+        <text x="70" y="68" textAnchor="middle" fill="#34283a" fontSize="24" fontWeight="700">{total}</text>
+        <text x="70" y="86" textAnchor="middle" fill="#86687b" fontSize="10">tài khoản</text>
       </svg>
       <div className="space-y-1 text-sm">
         <Legend color={ADMIN_COLOR} label="Quản trị viên" value={admin} total={total} />
@@ -64,14 +64,14 @@ const MetricBars: React.FC<{ stats: UserStats }> = ({ stats }) => {
         return (
           <div key={key}>
             <div className="mb-1 flex justify-between text-xs">
-              <span className="text-slate-300">{label}</span>
-              <span className="text-slate-500">
-                Tổng: <span className="font-semibold text-white">{stats.all[key]}</span>
+              <span className="text-clay-700">{label}</span>
+              <span className="text-clay-500">
+                Tổng: <span className="font-semibold text-clay-900">{stats.all[key]}</span>
               </span>
             </div>
             {bars.map(([name, value, color]) => (
               <div key={name} className="mb-1 flex items-center gap-2" title={`${name}: ${value}`}>
-                <div className="h-3 flex-1 rounded bg-slate-800">
+                <div className="h-3 flex-1 rounded bg-clay-200">
                   <div
                     className="h-3 rounded transition-all duration-500"
                     style={{ width: `${(value / max) * 100}%`, backgroundColor: color, minWidth: value > 0 ? 4 : 0 }}
@@ -88,7 +88,7 @@ const MetricBars: React.FC<{ stats: UserStats }> = ({ stats }) => {
 };
 
 export const UserStatsChart: React.FC<{ stats: UserStats }> = ({ stats }) => (
-  <div className="grid gap-6 rounded-xl border border-slate-800 bg-slate-900/60 p-5 md:grid-cols-[auto_1fr]">
+  <div className="grid gap-6 rounded-xl border border-clay-200 bg-clay-100/60 p-5 md:grid-cols-[auto_1fr] clay-soft">
     <RoleDonut admin={stats.admin.total} user={stats.user.total} />
     <MetricBars stats={stats} />
   </div>

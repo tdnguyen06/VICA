@@ -64,17 +64,17 @@ export const ProvinceDetailDrawer: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="province-drawer-title"
-      className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-lg flex-col border-l border-slate-800 bg-slate-950/98 text-slate-100 shadow-2xl backdrop-blur-xl animate-in slide-in-from-right duration-300"
+      className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-lg flex-col border-l border-clay-200 bg-clay-cream/98 text-clay-900 shadow-2xl backdrop-blur-xl animate-in slide-in-from-right duration-300"
     >
-      <header className="flex items-start justify-between gap-3 border-b border-slate-800 p-4 bg-slate-900/60">
+      <header className="flex items-start justify-between gap-3 border-b border-white/60 p-4 bg-clay-pink sheen">
         <div className="min-w-0">
-          <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-400">
+          <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-amber-700">
             <Landmark className="h-3.5 w-3.5" aria-hidden="true" /> Khám phá Tri thức Văn hóa
           </p>
-          <h2 id="province-drawer-title" className="truncate text-xl font-extrabold text-white">
+          <h2 id="province-drawer-title" className="truncate text-xl font-extrabold text-clay-900">
             {province?.name ?? slug}
           </h2>
-          {province && <p className="text-xs text-slate-400 mt-0.5">{province.adminUnit}</p>}
+          {province && <p className="text-xs text-clay-600 mt-0.5">{province.adminUnit}</p>}
         </div>
         <div className="flex items-center gap-1.5">
           <button
@@ -84,7 +84,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
               openAssistantWithPrompt(prompt, slug);
             }}
             title="Mở Trợ lý AI để đàm thoại về địa phương này"
-            className="rounded-lg px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500/20 text-xs font-semibold flex items-center gap-1.5 transition"
+            className="rounded-lg px-2.5 py-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-700 hover:bg-amber-500/20 text-xs font-semibold flex items-center gap-1.5 transition"
           >
             <Sparkles className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Hỏi AI</span>
@@ -93,7 +93,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
             type="button"
             onClick={() => setIsCultureDrawerOpen(false)}
             aria-label="Đóng bảng khám phá văn hóa"
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-800 hover:text-white transition"
+            className="rounded-lg p-1.5 text-clay-600 hover:bg-clay-200 hover:text-clay-900 transition"
           >
             <X className="h-5 w-5" />
           </button>
@@ -102,7 +102,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
 
       {/* Navigation tabs: 3 cột x 2 hàng để luôn thấy đủ 6 tab */}
       <nav
-        className="grid grid-cols-3 gap-1 border-b border-slate-800/80 bg-slate-900/40 p-2"
+        className="grid grid-cols-3 gap-1 border-b border-white/60 bg-clay-lilac/60 p-2"
         aria-label="Loại nội dung"
       >
         {TABS.map((t) => {
@@ -117,14 +117,14 @@ export const ProvinceDetailDrawer: React.FC = () => {
               aria-current={active ? 'page' : undefined}
               className={`flex min-w-0 items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs font-medium transition ${
                 active
-                  ? 'bg-amber-500/15 font-bold text-amber-300 ring-1 ring-amber-500/40'
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                  ? 'bg-amber-500/15 font-bold text-amber-700 ring-1 ring-amber-500/40'
+                  : 'text-clay-600 hover:bg-clay-200/60 hover:text-clay-800'
               }`}
             >
               <Icon className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">{t.label}</span>
               {count !== undefined && count > 0 && (
-                <span className="shrink-0 rounded-full bg-slate-800 px-1.5 text-[10px] text-slate-400">
+                <span className="shrink-0 rounded-full bg-clay-200 px-1.5 text-[10px] text-clay-600">
                   {count}
                 </span>
               )}
@@ -143,11 +143,11 @@ export const ProvinceDetailDrawer: React.FC = () => {
             {overview.data && (
               <div className="space-y-5">
                 {overview.data.overview ? (
-                  <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4 space-y-3">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <div className="rounded-xl border border-clay-200 bg-clay-butter/70 p-4 space-y-3 clay-soft">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
                       <BookOpen className="h-3.5 w-3.5" /> Bản sắc & Tổng quan Văn hóa
                     </h3>
-                    <p className="text-sm leading-relaxed text-slate-200 whitespace-pre-line">
+                    <p className="text-sm leading-relaxed text-clay-800 whitespace-pre-line">
                       {overview.data.overview}
                     </p>
                   </div>
@@ -158,7 +158,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
                 {/* Highlights section */}
                 {overview.data.highlights.length > 0 && (
                   <section className="space-y-2.5">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-amber-700 flex items-center gap-1.5">
                       <Sparkles className="h-3.5 w-3.5" /> Các Điểm Nổi Bật Tiêu Biểu
                     </h3>
                     <div className="space-y-2">
@@ -189,7 +189,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
         )}
       </div>
 
-      <footer className="border-t border-slate-800 p-3 bg-slate-900/40 flex items-center justify-between text-xs text-slate-400">
+      <footer className="border-t border-clay-200 p-3 bg-clay-100/40 flex items-center justify-between text-xs text-clay-600">
         <span>VICA Cultural Intelligence</span>
         <button
           type="button"
@@ -197,7 +197,7 @@ export const ProvinceDetailDrawer: React.FC = () => {
             const prompt = `Kể về các truyền thuyết, phong tục và món ăn đặc sản tiêu biểu của ${province?.name || slug}`;
             openAssistantWithPrompt(prompt, slug);
           }}
-          className="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 transition"
+          className="text-amber-700 hover:text-amber-700 font-semibold flex items-center gap-1 transition"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>Trò chuyện với Trợ lý AI</span>

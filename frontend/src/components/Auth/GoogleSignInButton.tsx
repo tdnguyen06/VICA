@@ -83,7 +83,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onCreden
 
   if (!CLIENT_ID) {
     return (
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-clay-500">
         Đăng nhập Google chưa được bật (thiếu <code>VITE_GOOGLE_CLIENT_ID</code>).
       </p>
     );
@@ -93,7 +93,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({ onCreden
       {/* The page uses `color-scheme: light dark`; Google's button iframe is light-only. A mismatch makes the
           browser paint an opaque white box behind the iframe, so this container is pinned to light. */}
       <div ref={containerRef} style={{ colorScheme: 'light' }} />
-      {error && <p className="text-xs text-red-300">{error}</p>}
+      {error && <p className="text-xs text-red-700">{error}</p>}
     </div>
   );
 };

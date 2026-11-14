@@ -52,13 +52,14 @@ public class SecurityConfig {
                     "/api/v1/auth/reset-password",
                     "/api/v1/cultural-sites/**",
                     "/api/v1/geo/**",
-                    "/api/v1/assistant/**",
                     "/v3/api-docs/**",
                     "/swagger-ui/**",
                     "/swagger-ui.html",
                     "/actuator/health"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/cultures/**").permitAll()
+                // AI Assistant chỉ dành cho người đã đăng nhập; khách chỉ xem bản đồ.
+                .requestMatchers("/api/v1/assistant/**").authenticated()
                 .requestMatchers("/api/v1/admin/cultures/**").hasAnyRole("ADMIN", "RESEARCHER")
                 .requestMatchers("/api/v1/admin/users/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

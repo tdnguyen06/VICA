@@ -17,7 +17,7 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry, onOpen }) => (
   <button
     type="button"
     onClick={() => onOpen(entry.id)}
-    className="group flex w-full gap-3 rounded-xl border border-slate-800 bg-slate-900/70 p-3 text-left transition hover:border-amber-500/50 hover:bg-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+    className="group flex w-full gap-3 rounded-xl border border-clay-200 bg-clay-mint/60 p-3 text-left transition hover:border-amber-500/50 hover:bg-clay-mint focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 clay-soft"
   >
     {entry.thumbnailUrl && (
       <img src={entry.thumbnailUrl} alt="" loading="lazy" className="h-16 w-16 shrink-0 rounded-lg object-cover" />
@@ -26,14 +26,14 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry, onOpen }) => (
       <div className="flex flex-wrap items-center gap-1.5">
         <VerificationBadge status={entry.verificationStatus} />
         {entry.category && CATEGORY_LABEL[entry.category] && (
-          <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">
+          <span className="rounded bg-clay-200 px-1.5 py-0.5 text-[10px] text-clay-700">
             {CATEGORY_LABEL[entry.category]}
           </span>
         )}
       </div>
-      <h4 className="font-semibold text-slate-100 group-hover:text-amber-300">{entry.name}</h4>
-      {entry.summary && <p className="line-clamp-2 text-xs text-slate-400">{entry.summary}</p>}
-      <div className="flex items-center gap-3 text-[11px] text-slate-500">
+      <h4 className="font-semibold text-clay-900 group-hover:text-amber-700">{entry.name}</h4>
+      {entry.summary && <p className="line-clamp-2 text-xs text-clay-600">{entry.summary}</p>}
+      <div className="flex items-center gap-3 text-[11px] text-clay-500">
         <span className="inline-flex items-center gap-1">
           <BookOpen className="h-3 w-3" aria-hidden="true" /> {entry.sourceCount} nguồn
         </span>
@@ -44,6 +44,6 @@ export const EntryCard: React.FC<EntryCardProps> = ({ entry, onOpen }) => (
         )}
       </div>
     </div>
-    <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-slate-600 group-hover:text-amber-400" aria-hidden="true" />
+    <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-clay-400 group-hover:text-amber-700" aria-hidden="true" />
   </button>
 );

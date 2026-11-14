@@ -30,7 +30,7 @@ export const ForgotPasswordPage: React.FC = () => {
     return (
       <AuthCard title="Đã đặt lại mật khẩu">
         <Notice kind="success">Hãy đăng nhập bằng mật khẩu mới.</Notice>
-        <Link to="/login" className="mt-4 block text-center text-sm font-semibold text-amber-400 hover:text-amber-300">
+        <Link to="/login" className="mt-4 block text-center text-sm font-semibold text-amber-700 hover:text-amber-700">
           Đến trang đăng nhập
         </Link>
       </AuthCard>
@@ -58,13 +58,13 @@ export const ForgotPasswordPage: React.FC = () => {
           <SubmitButton pending={pending}>
             <KeyRound className="h-4 w-4" aria-hidden="true" /> Đặt lại mật khẩu
           </SubmitButton>
-          <button type="button" onClick={() => setStep(1)} className="w-full text-center text-xs text-slate-400 hover:text-amber-300">
+          <button type="button" onClick={() => setStep(1)} className="w-full text-center text-xs text-clay-600 hover:text-amber-700">
             Dùng email khác
           </button>
         </form>
       )}
-      <p className="mt-3 text-center text-xs text-slate-400">
-        <Link to="/login" className="hover:text-amber-300">Quay lại đăng nhập</Link>
+      <p className="mt-3 text-center text-xs text-clay-600">
+        <Link to="/login" className="hover:text-amber-700">Quay lại đăng nhập</Link>
       </p>
     </AuthCard>
   );

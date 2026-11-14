@@ -11,7 +11,7 @@ export const UserMenu: React.FC = () => {
 
   if (!user) {
     return (
-      <Link to="/login" className="flex items-center space-x-1.5 text-slate-300 hover:text-amber-400 transition-colors">
+      <Link to="/login" className="flex items-center space-x-1.5 text-clay-700 hover:text-amber-700 transition-colors">
         <LogIn className="h-4 w-4" />
         <span>Đăng nhập</span>
       </Link>
@@ -31,23 +31,23 @@ export const UserMenu: React.FC = () => {
   return (
     <div className="flex items-center gap-3">
       {user.role === 'ROLE_ADMIN' && (
-        <Link to="/admin" className="flex items-center gap-1 text-slate-300 hover:text-amber-300">
-          <Shield className="h-4 w-4 text-amber-400" /> <span>Quản trị</span>
+        <Link to="/admin" className="flex items-center gap-1 text-clay-700 hover:text-amber-700">
+          <Shield className="h-4 w-4 text-amber-700" /> <span>Quản trị</span>
         </Link>
       )}
-      <Link to="/profile" className="flex items-center gap-1.5 text-slate-200 hover:text-amber-300" title={user.email}>
+      <Link to="/profile" className="flex items-center gap-1.5 text-clay-800 hover:text-amber-700" title={user.email}>
         {user.avatarUrl ? (
           <img src={user.avatarUrl} alt="" referrerPolicy="no-referrer" className="h-6 w-6 rounded-full object-cover" />
         ) : (
-          <UserRound className="h-4 w-4 text-amber-400" />
+          <UserRound className="h-4 w-4 text-amber-700" />
         )}
         <span>{user.fullName || user.username}</span>
-        <span className="rounded bg-slate-800 px-1.5 py-0.5 text-[10px] text-slate-300">{ROLE_LABEL[user.role]}</span>
+        <span className="rounded bg-clay-200 px-1.5 py-0.5 text-[10px] text-clay-700">{ROLE_LABEL[user.role]}</span>
       </Link>
       <button
         type="button"
         onClick={() => void logout()}
-        className="flex items-center gap-1 text-slate-400 hover:text-red-300"
+        className="flex items-center gap-1 text-clay-600 hover:text-red-700"
       >
         <LogOut className="h-4 w-4" />
         <span>Đăng xuất</span>
