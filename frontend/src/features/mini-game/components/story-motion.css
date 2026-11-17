@@ -1,0 +1,16 @@
+@keyframes mini-game-scene-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mini-game-scene { animation: mini-game-scene-enter 220ms ease-out both; }
+.mini-game-photo { opacity: 0; transition: opacity 220ms ease-out; }
+.mini-game-photo[data-loaded="true"] { opacity: 1; }
+.mini-game-timeline-fill { transition: transform 220ms ease-out; }
+.mini-game-timeline-node { transition: background-color 220ms ease-out, border-color 220ms ease-out, color 220ms ease-out, box-shadow 220ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .mini-game-scene { animation: none; }
+  .mini-game-photo { opacity: 1; transition: none; }
+  .mini-game-timeline-fill, .mini-game-timeline-node { transition: none; }
+}
+.mini-game-journal-entry { animation: mini-game-scene-enter 240ms ease-out both; }
+@media (prefers-reduced-motion: reduce) { .mini-game-journal-entry { animation: none; } }

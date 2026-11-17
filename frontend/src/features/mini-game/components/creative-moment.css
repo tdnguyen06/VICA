@@ -1,0 +1,5 @@
+@keyframes creative-moment-draw { from { stroke-dashoffset: 240; opacity: 0; } to { stroke-dashoffset: 0; opacity: 1; } }
+@keyframes creative-moment-write { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.creative-moment-motif path { stroke-dasharray: 240; animation: creative-moment-draw 700ms ease-out both; }
+.creative-moment-message { animation: creative-moment-write 240ms ease-out both; }
+@media (prefers-reduced-motion: reduce) { .creative-moment-motif path, .creative-moment-message { animation: none; } }

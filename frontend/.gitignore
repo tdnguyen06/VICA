@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Compiled mini-game logic used by node:test
+.mini-game-test-build/
